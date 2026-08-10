@@ -13,14 +13,14 @@ Create a recipe management application that allows users to view, search, and or
 
 #### Backend setup
 ```
-cd backend
+cd backend-app
 npm install
 npm run dev # Starts express server on port 8080
 ```
 
 #### Frontend setup
 ```
-cd frontend
+cd frontend-app
 npm install
 npm run dev # Starts nextjs frontend server on port 3000
 ```
@@ -65,7 +65,7 @@ The application uses a JSON file (`data.json`) as a mock database
 - TypeScript/JavaScript best practices 
 
 ## Submission
-1. Update this README with a new section below called `Candidate Notes:
+1. Update this README with a new section below called `Candidate Notes`:
    - Setup instructions if you've added any requirements
    - Brief explanation of your implementation choices
    - List of completed features

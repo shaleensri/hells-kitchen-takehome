@@ -1,0 +1,28 @@
+# Dependencies (npm workspaces hoist most of this to the root)
+node_modules/
+**/node_modules/
+
+# Build output (backend-app has none by design — tsx runs source directly, §3.14 —
+# but ignore it anyway in case anyone runs `tsc` manually)
+dist/
+**/dist/
+
+# Env files — never commit secrets (e.g. OPENAI_API_KEY, Iteration 6)
+.env
+.env.local
+.env*.local
+
+# Test/coverage
+coverage/
+
+# OS cruft
+.DS_Store
+
+# Next.js (frontend-app, Iteration 3+)
+.next/
+out/
+.vercel
+
+# Logs
+npm-debug.log*
+*.log

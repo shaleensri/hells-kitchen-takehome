@@ -1,0 +1,19 @@
+{
+  "name": "hells-kitchen",
+  "private": true,
+  "version": "1.0.0",
+  "description": "Recipe Manager take-home — npm workspaces root. See PLAN.md for full context.",
+  "workspaces": [
+    "shared",
+    "backend-app",
+    "frontend-app"
+  ],
+  "scripts": {
+    "test": "vitest run",
+    "test:watch": "vitest"
+  },
+  "devDependencies": {
+    "vitest": "^3.0.0",
+    "typescript": "^5.7.0"
+  }
+}

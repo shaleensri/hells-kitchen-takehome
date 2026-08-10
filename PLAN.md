@@ -1,0 +1,380 @@
+# Recipe Manager — Project Plan & Decision Log
+
+**Status as of 2026-08-10:** Planning complete, plan externally reviewed (Codex, 3 rounds) and corrected. **Iteration 1 complete** (§6) — backend foundation built: npm workspaces, `shared` package (types + full unit-conversion module), seed-data fixed, dietary/nutrition/seed-validation modules, 28 passing tests, verified boot end-to-end. Frontend (`frontend-app`) is still the untouched plain-JS starter — untouched until Iteration 3.
+
+This file is the single source of truth for *why* the project is being built the way it is, not just *what* to build. If you are a new agent (or a human) picking this up cold, read this whole file before touching code — it captures decisions already made and the reasoning behind them, so you don't re-litigate settled questions or repeat analysis already done.
+
+---
+
+## Project summary
+
+**Recipe Manager** is a full-stack web app for browsing, searching, and organizing recipes. Backend is Express (being migrated to TypeScript) serving a mock JSON "database" (`backend-app/db/data.json`) of recipes and ingredients; frontend is Next.js (App Router, being migrated to TypeScript). Users can browse a recipe list with search/tag/ingredient filters, view a recipe detail page with joined ingredient quantities, instructions, tags, and computed nutrition (calculated server-side from per-ingredient nutrition + a shared unit-conversion module). On top of that core, the build adds: derived dietary filters (vegan/vegetarian/gluten-free/etc., computed from ingredient data rather than hand-tagged), sorting, live recipe scaling by servings, a shopping-list generator that merges ingredients across selected recipes, localStorage-based favoriting and a persistent dietary/interest profile (no accounts — see §3.1), and an "Ask about this recipe" panel backed by a server-side OpenAI proxy that's grounded in the specific recipe's ingredients/instructions. The whole thing is meant to be deployed live (Vercel + Render/Railway), not just run locally.
+
+See §1 below for the framing this is built under (it's a take-home assessment), and §3 for the full reasoning behind each of these choices.
+
+---
+
+## 1. What this actually is
+
+This is a **take-home coding assessment**, not a real product. Source of truth for requirements: [`README.md`](README.md) at repo root. Do not add requirements the README/candidate doesn't ask for (e.g. real auth) without checking §4 below — over-building unrequested infrastructure reads as poor judgment to reviewers, not initiative.
+
+- **Employer contacts for submission:** scott.nguyen@sprx.tax, anthony.difalco@sprx.tax
+- **Submission format:** zip of the whole project + a link to a deployed live version (explicitly called out as bonus points) + a `## Candidate Notes` section appended to `README.md`.
+- **Candidate's goal:** not just "meet requirements" but stand out in the interview. Plan was co-developed across two AI planning sessions (Gemini, then Claude) before any code was written — see §3 for the decision trail.
+- **Time budget:** candidate confirmed **~3-5 days**. This is comfortable for the full scope in §4 (core + all 5 chosen bonus features + the above-and-beyond list + deploy) at good polish. See §7 for what to cut first if time runs short anyway.
+
+---
+
+## 2. Repo state as found (pre-Iteration-1 baseline — kept for history, see §2.1 for current state)
+
+```
+hells-kitchen/
+├── README.md                  # assessment brief; setup-instructions typos fixed per §3.8 (folder names, backtick), Candidate Notes section still to be added in Iteration 8
+├── backend-app/
+│   ├── package.json           # plain JS, deps: express, cors, dotenv, nodemon
+│   ├── db/data.json           # mock DB — recipes[] and ingredients[]
+│   └── src/server.js          # ~30 lines: one route, GET /api/recipes, returns all recipes raw
+└── frontend-app/
+    ├── package.json           # Next.js 15.1.6 (App Router), React 19, plain JS (no TS configured)
+    ├── jsconfig.json          # @/* path alias only
+    └── app/page.js            # literally `<div>Hello World</div>`
+```
+
+Key facts:
+- Backend runs on port **8080** (`npm run dev` → nodemon), frontend on **3000** (`npm run dev` → `next dev --turbopack`).
+- **No TypeScript configured anywhere yet**, despite the plan requiring shared TS types (§4, §5.1). This needs to be set up in Iteration 1 — it's not already there.
+- **Git repo already exists and is set up correctly** — verified via `git status`/`git remote -v`/`git log` at the project root (`hells-kitchen/hells-kitchen`, where README/backend-app/frontend-app live): on branch `main`, tracking `origin/main` at `https://github.com/shaleensri/hells-kitchen-takehome.git`, 2 commits so far (`initial skeleton`, `rename folders`). **`PLAN.md` itself is currently untracked** — `git add`/commit it along with the rest of Iteration 0's output. (Note: an earlier draft of this file wrongly claimed no git repo existed — that was checked against the wrong directory level. Corrected here after Codex's review caught it; see §3.8.)
+- The existing `server.js` route is a placeholder — returns the raw recipe array with no filtering, no ingredient joins, no nutrition calc, and **re-reads + re-parses `data.json` from disk on every single request** (verified in the source — `getData()` is called inside the route handler, not cached). Effectively nothing to preserve; it'll be replaced wholesale in Iteration 2, and the "load once at boot" behavior described in §5.4 is a planned improvement, not something already in place.
+
+### 2.1 Repo state after Iteration 1 (current)
+
+```
+hells-kitchen/
+├── package.json               # NEW — root, npm workspaces: shared, backend-app, frontend-app
+├── vitest.config.ts           # NEW — single test runner for the whole workspace (§3.14)
+├── README.md
+├── PLAN.md
+├── shared/                    # NEW — @hells-kitchen/shared, source-only (no build step, §5.1/§3.14)
+│   ├── package.json
+│   ├── tsconfig.json
+│   └── src/
+│       ├── types.ts           # Recipe/Ingredient/API response shapes (§3.10)
+│       ├── units.ts           # the 3-tier conversion module + its test (§3.9) — all 24 density + 21 count values populated
+│       ├── units.test.ts
+│       ├── duration.ts        # "20 minutes" → 20, for sorting (§4.2 item 2)
+│       └── index.ts
+├── backend-app/
+│   ├── package.json           # now TS; dev/start both run under tsx, no dist/ build step (§3.14)
+│   ├── tsconfig.json
+│   ├── db/data.json           # UPDATED — 8 missing ingredients added (§3.4), now 54 ingredients / 15 recipes, zero seed-validation issues
+│   └── src/
+│       ├── server.ts          # boots, loads+precomputes data, ONE placeholder route — full contract is Iteration 2
+│       ├── data.ts            # boot-time load + precompute (dietary[], nutrition) + its test
+│       ├── data.test.ts
+│       ├── nutrition.ts       # basis assumption resolved (per-100g), partial/approximate contract + its test
+│       ├── nutrition.test.ts
+│       ├── dietary.ts         # §3.2 vegan⊇vegetarian normalization + its test
+│       ├── dietary.test.ts
+│       ├── seedValidation.ts  # warns, doesn't crash + its test
+│       └── seedValidation.test.ts
+└── frontend-app/               # UNTOUCHED — still the plain-JS starter, Iteration 3's job
+```
+
+28/28 tests passing (`npm test` from root or `backend-app/`); `npm start` in `backend-app/` boots a real server serving real computed data. Full detail of what was built and one real architecture snag (source-only `shared` vs. a compiled backend build) hit and resolved along the way: §3.14.
+
+---
+
+## 3. Decision log (chronological — how we got here)
+
+Each entry is a decision that was explicitly discussed and closed. Don't reopen these without a reason; if you find a reason, add a new dated entry rather than editing history.
+
+### 3.1 — No full user auth; lightweight localStorage profile instead
+**Decision:** No signup/login/sessions/password hashing. Instead, a "your preferences" panel (dietary restrictions/interests) saved to `localStorage`, same mechanism as favoriting.
+**Why:** README never asks for accounts. Building real auth on a recipe take-home eats significant time on something not being evaluated, and can read as scope-mismatch/over-engineering rather than initiative. The localStorage profile gets the same "wow, it remembers my restrictions" payoff at a fraction of the cost.
+**Behavior it must have:**
+- Set once, auto-applies as the **default filter state** on `/recipes` every visit (not just a one-time filter action).
+- The LLM panel (§3.3) reads this profile too, so it can proactively flag conflicts / suggest substitutions without the user having to ask.
+- Document explicitly in Candidate Notes as a conscious scope decision, not an oversight.
+**Stretch, only if time remains after everything else:** real lightweight auth (email/password or magic link) with server-stored profiles replacing localStorage, protecting favorites/profile behind login. This is **Iteration 9**, genuinely optional — do not plan around reaching it.
+
+### 3.2 — Dietary filters must be *derived*, not manually tagged, and need normalization
+**Decision:** A recipe's dietary compatibility (vegan/vegetarian/gluten-free/keto/etc.) is computed by intersecting the `dietary[]` arrays of every ingredient in that recipe — a recipe is "vegan" only if *every* ingredient is vegan.
+**Critical correction found during planning (do not skip this when implementing Iteration 4):** A literal set-intersection is wrong against this seed data. Ingredients are tagged with either `"vegan"` **or** `"vegetarian"`, never both, even though vegan implies vegetarian in reality. Concrete proof from `data.json`: recipe `1` (Margherita Pizza) is manually tagged `"vegetarian"` in the seed data, but its ingredients are `tomato:[vegan,gluten-free]`, `mozzarella:[vegetarian]`, `flour:[vegan]`, `olive_oil:[vegan,gluten-free]`. A naive "every ingredient has `vegetarian` in its array" check would call this recipe **not vegetarian**, directly contradicting the seed data's own tag.
+**Required fix:** before intersecting, apply a compatibility/equivalence rule — at minimum, treat `vegan` as satisfying a `vegetarian` requirement (vegan ⊇ vegetarian). Build this explicitly as a small rule table in Iteration 4, don't let it get implicit/forgotten inside a generic filter function.
+
+### 3.3 — LLM feature: OpenAI, not Anthropic
+**Decision:** Use OpenAI's API (candidate already has funded credits there), not Anthropic, despite earlier planning drafts assuming Claude.
+**Architecture unchanged regardless of provider:** backend proxy endpoint holds the API key server-side (`.env`, never shipped to the browser). Frontend panel — "Ask about this recipe" on `/recipes/[id]` — sends a user question to the backend; backend grounds the prompt in that recipe's actual ingredients/instructions (not a generic chatbot) and returns the answer.
+**Model choice:** use a cheap/fast model (e.g. `gpt-4o-mini` or equivalent at build time) — a grounded single-recipe Q&A panel doesn't need frontier reasoning, and it keeps spend/latency low for a live demo.
+**Resilience requirement:** if `OPENAI_API_KEY` isn't set on whatever host the backend deploys to, the feature must fail soft (disabled state with a clear message), not 500 the whole app. A live demo link must never break just because an env var didn't get wired.
+**Enhancement once §3.1's profile exists:** pass the saved dietary profile into the prompt so the panel can proactively flag conflicts, e.g. "This contains dairy — you've marked yourself dairy-free. Try oat milk instead of whole milk."
+
+### 3.4 — Seed data has real integrity holes; fix them *and* keep a validator
+**Finding:** Cross-checked every `ingredientId` referenced by a recipe against the `ingredients` array in `data.json`. **8 ingredient IDs are referenced by recipes but have no ingredient record at all:** `basil`, `broccoli`, `carrot`, `ginger`, `soy_sauce`, `brown_sugar`, `butter`, `white_sugar`. That's roughly 20% of recipes touching at least one undefined ingredient (e.g. recipe `1` Margherita Pizza references `basil`; recipe `3` Chicken Stir-Fry references `broccoli`, `carrot`, `soy_sauce`, `ginger`; recipe `2` Chocolate Chip Cookies references `butter`, `brown_sugar`, `white_sugar`).
+**Decision — do both:**
+1. **Fix the data**: add real (simple, reasonable USDA-ish) ingredient records for all 8 missing IDs directly into `data.json`. This is ~10 minutes of work and means the live demo doesn't visibly show incomplete nutrition for 1-in-5 recipes in front of an interviewer.
+2. **Keep a seed-validation script** that runs on server boot, checks every recipe's `ingredientId`s resolve against the ingredients list, and **logs a warning** (does not crash) for anything unresolved. This is explicit above-and-beyond scope from the original bonus list, and it's not just decorative — it caught the exact bug in (1). Keep it as the permanent safety net for any *future* bad data, even after (1) fixes the current gap.
+**Downstream contract this implies (settle in Iteration 1, not later):** the recipe-detail API and nutrition-calc module must tolerate an unresolved ingredient gracefully rather than crash. Suggested response shape: an unresolved ingredient line includes `resolved: false` with a null/partial nutrition contribution, and the recipe's aggregate computed-nutrition object carries a `partial: true` flag if any ingredient in it was unresolved. Decide this shape before Iteration 3 (frontend) starts consuming it, so the frontend isn't reverse-engineering an ad hoc shape later. (Should be moot after the (1) fix ships, but the contract still needs to exist for defensive correctness.)
+
+### 3.5 — Nutrition basis is inconsistent in the seed data — deferred, not yet resolved
+**Finding (for reference, not yet acted on):** Spot-checked several ingredient nutrition entries in `data.json` against real-world per-100g values:
+
+| Ingredient | Listed calories | Real-world per-100g | What it actually matches |
+|---|---|---|---|
+| `olive_oil` | 120 | ~884 | ~1 tbsp (~119 cal) |
+| `flour` | 455 | ~364 | ~1 cup (~455 cal) |
+| `chicken_breast` | 165 | ~165 | per-100g (matches) |
+
+There is no single consistent basis across entries — looks like it was sourced from different reference units per ingredient (some per-tbsp, some per-cup, some genuinely per-100g). This has **not been resolved yet** — candidate explicitly deferred it ("leave it as is for now, tackle later").
+**Leaning for when it is resolved:** don't chase real-world nutritional accuracy against inconsistent source data. Pick one simple, internally-consistent convention — most likely "treat each ingredient's listed nutrition value as its per-100g figure, and scale everything through the shared unit-conversion module (§5.1)" — and state that single assumption once, explicitly, in Candidate Notes. Internal consistency (same math applied everywhere) matters more here than matching real nutrition science, since the underlying seed data doesn't support real accuracy anyway.
+**Action item:** whoever builds the nutrition module (Iteration 1) must pick and document a basis before shipping, even if it's exactly this leaning. Don't leave it implicit.
+
+### 3.6 — Deploy is a protected priority, not a generic "cuttable bonus"
+**Decision:** if time gets tight, cut a bonus feature (e.g. favoriting) before cutting the deploy step. Target **Vercel** for the frontend, **Render or Railway** for the backend, env vars wired between them.
+**Why:** the README explicitly calls out a live deployed link as bonus points by name — it's not an arbitrary above-and-beyond idea, it's a named evaluation input. A working deploy also de-risks the whole submission (the reviewer doesn't have to trust `npm install` works on their machine).
+
+### 3.7 — Scope/tiering philosophy under the confirmed 3-5 day budget
+**Decision:** given the confirmed budget, build the **full plan** in §4/§7 at good polish — core + all 5 bonus features + the full above-and-beyond list + deploy + Candidate Notes. Do not preemptively cut anything on time-budget grounds. If something does need to be cut mid-build, use the priority order in §7 (deploy and core stay protected; Iteration 9 real accounts was never in scope for this budget to begin with).
+**Amended by 3.12** — an explicit MVP checkpoint was added to the iteration flow as insurance under this philosophy, not a reversal of it.
+
+### 3.8 — External review (Codex) caught a factual error in this plan and stale README setup instructions
+**What happened:** the candidate had Codex review this plan and `README.md`. It correctly flagged that §2's original claim of "no git repository initialized" was wrong (the project root already has a git repo, on `main`, tracking `origin/main` — verified and corrected in §2) and that §5.4 wrongly described "load once at boot" as the *current* behavior of `server.js` when the placeholder actually re-reads the file per request (also corrected in §2/§5.4). It also flagged that `README.md` still says `cd backend` / `cd frontend` instead of the real folder names `backend-app`/`frontend-app`, and has a malformed backtick around "Candidate Notes" in the submission instructions.
+**Decision:** both README issues were fixed directly (trivial, and leaving stale setup instructions in a submitted take-home is a bad look regardless of who introduced them). Lesson applied going forward: verify environment/tooling claims (git status, file behavior) by actually checking, not by inference from higher-level context — this file lost some credibility on exactly that kind of unverified claim once, don't repeat it.
+**Verdict on the rest of Codex's review:** substantive and largely adopted — see 3.9–3.12 below.
+
+### 3.9 — Nutrition and shopping-list unit handling need ingredient-specific reference data almost everywhere — a generic table barely covers anything
+**Correction to §3.5/§4.1/§4.2, further corrected here (second review pass caught a second, deeper version of the same mistake):** the first pass of this section already established that count/descriptive units (medium, cloves, whole, etc.) need per-ingredient reference weights. What it got wrong was calling **volume units** (`cup`, `cups`, `tbsp`, `tsp`, `ml`) "generically convertible via a standard table" alongside pure mass units (`g`, `oz`, `lb`). That's not correct: volume units convert to *each other* via fixed, universal ratios (1 cup = 16 tbsp = 48 tsp ≈ 236.6 ml — genuinely ingredient-independent), but converting a **volume to a mass** (grams — which is what the nutrition-per-100g math and unit-aware shopping-list merging both actually need) requires an ingredient-specific density/reference-weight, exactly like the count units do. "2 cups flour," "2 tbsp olive oil," and "400 ml coconut milk" cannot be turned into grams from a generic table — flour, olive oil, and coconut milk have different densities, and the table has no way to know that.
+
+**Recomputed, accurate breakdown (counted directly from `data.json`, not estimated):** the 15 recipes contain **71 total ingredient lines**, which collapse to **56 distinct (ingredientId, unit) pairs** — that's the number that matters for sizing the lookup table, since the same pair (e.g. `spaghetti`+`lb`) repeats across multiple recipes and only needs one table entry. Those 56 pairs split as:
+- **Truly generic, zero ingredient-specific data needed (mass units only — `g`, `lb`, and `oz` used as a dry-weight unit):** **10 pairs** — `crab_meat`, `feta_cheese`, `pancetta` (g), `chicken_breast`, `ground_beef`, `salmon_fillet`, `shrimp`, `spaghetti` (lb), `mozzarella`, `tofu` (oz). This is the *minority* case, not the majority as the first pass implied.
+- **Volume units needing a per-ingredient density/reference weight:** `cup`, `cups`, `tbsp`, `tsp`, `ml` — **25 (ingredientId, unit) pairs across 24 distinct ingredients** (one ingredient, `olive_oil`, appears under both `cup` and `tbsp` in different recipes — same ingredient, one reference number, reused for both, which is exactly why the lookup is keyed per-ingredient not per-pair for this category). The 24 ingredients: `almonds, brown_sugar, butter, cilantro, granola, greek_yogurt, olive_oil, parmesan, quinoa, white_sugar` (cup), `broccoli, chocolate_chips, flour, kale, mixed_berries, sushi_rice, tomato` (cups), `curry_powder, ginger, honey, soy_sauce, tahini` (tbsp, plus `olive_oil` again), `black_pepper` (tsp), `coconut_milk` (ml).
+- **Count/descriptive units needing a per-(ingredient, unit) reference weight (unchanged from the first pass):** `bunch, can, cloves, head, large, leaves, medium, pieces, sheets, small, whole` — **21 pairs**, table below.
+
+(10 + 25 + 21 = 56 — matches the total distinct pairs above.)
+
+| Unit | Ingredient(s) using it |
+|---|---|
+| `bunch` | asparagus |
+| `can` | chickpeas |
+| `cloves` | garlic |
+| `head` | cauliflower |
+| `large` | cucumber, eggs, sweet_potato |
+| `leaves` | basil |
+| `medium` | banana, bell_pepper, carrot, cucumber, onion, potato, tomato |
+| `pieces` | corn_tortillas |
+| `sheets` | nori |
+| `small` | red_onion |
+| `whole` | avocado, lemon, lime |
+
+**Decision:**
+1. **Volume→mass:** add a single `gramsPerCup` (or equivalent) reference number per ingredient that appears in a volume unit — sourced once per ingredient, not once per unit. Any other volume unit (`tbsp`, `tsp`, `ml`) for that same ingredient is then derived through the universal, ingredient-independent volume-ratio conversion (cup↔tbsp↔tsp↔ml) combined with that one density number. This keeps the lookup small (24 numbers, not 24×4) and internally consistent — a `cup` and a `tbsp` usage of the same ingredient can't disagree with each other, because they both derive from the same source number.
+2. **Count→mass:** unchanged from the first pass — a small, explicit **ingredient-specific reference-weight lookup** (e.g. `{ garlic: { clove: 3 }, onion: { medium: 110 }, red_onion: { small: 70 }, cucumber: { large: 300 }, basil: { leaves: 0.5 }, cauliflower: { head: 600 }, lemon: { whole: 58 }, ... }` — every key/unit pair here is one of the actual 21, not illustrative filler) covering exactly the 21 pairs above. Bounded and enumerable across only 15 recipes.
+3. **Both lookups live in the shared unit-conversion module (§5.1)**, alongside the small universal mass-mass and volume-volume conversion tables — reused by both the nutrition module (Iteration 1) and shopping-list merging (Iteration 5), same "one system, two problems" principle already in §4.3.
+4. **Fallback behavior differs by feature — this was wrong in the first pass, which applied one "omit" rule to both:**
+   - **Nutrition (unchanged from the first pass' resolution):** for any ingredient whose unit can't be resolved to grams (no density/reference-weight entry, and not a mass unit), **omit that ingredient's numeric contribution** from the computed nutrition total and set the aggregate's `partial: true`. A line item that *was* resolved via a density or count reference weight gets `approximate: true` (it's a real number, but an estimate) — same three-case contract as before (§3.4 unresolved ingredient / this section's unmapped unit / estimated-weight line), still consistent.
+   - **Shopping list — corrected, this is the actual bug the first pass had:** an unmapped/unconvertible unit must **never cause an ingredient to disappear from the list**. If a quantity can't be merged with other quantities of the same `ingredientId` (either because the unit has no reference data, or because merging would require a conversion we don't support), it stays on the list as its own **unmerged line item, in its original amount and unit, clearly attributed** (rather than being dropped or silently folded into a `partial` flag that has no visible UI representation). Losing an ingredient off a shopping list is a real functional failure — the user goes to the store and doesn't buy it — so "preserve the line, just don't merge it" is the only acceptable fallback there, unlike nutrition math where an omitted number is a reasonable degradation.
+5. **Also corrects §4.2 item 4 (shopping list) merge rule:** merge **by `ingredientId`, not display name** (stable key, avoids string-matching bugs); only merge quantities that are in the same unit, or in units both resolvable to a common one (mass-mass, volume-volume-then-density, or a shared count-unit reference). Everything else lists as separate unmerged lines per (4) above.
+
+### 3.10 — API contracts locked in now, before Iteration 2 starts
+**Correction:** the original plan left query-param semantics implicit, to be figured out "while building." Codex correctly flagged this as something that should be decided before the frontend starts depending on it. Locking in concrete defaults now:
+- **Search:** query param `q`, case-insensitive substring match against recipe `title` (and `description` as a secondary match).
+- **Tag filter:** query param `tags`, comma-separated, **AND semantics** (recipe must have *all* selected tags) — tags are a refinement/narrowing control, consistent with typical faceted search UIs.
+- **Ingredient filter:** query param `ingredients`, comma-separated (names or IDs), **ANY semantics** (recipe must contain *at least one* of the selected ingredients) — this is a browsing/discovery filter ("show me recipes with garlic or basil"), not a pantry-match tool. State this choice in the UI copy since it's a genuine judgment call, not an obvious default.
+- **Dietary filter (resolves a real gap Codex caught — §3.2's dietary derivation had no query param or response field defined):** query param `dietary`, comma-separated (e.g. `vegan,gluten-free`), **AND semantics** (recipe must satisfy *all* selected dietary requirements) — same reasoning as the tags filter. This is **server-side filtering** against a `dietary: string[]` field that's *precomputed once per recipe at boot* (§3.2's normalized intersection, computed alongside the other boot-time derivations in §5.4) and exposed on both list and detail responses — not recomputed per request, and not left to the frontend to derive from raw ingredient data.
+- **List response shape:** lightweight fields — `id, title, description, prepTime, cookTime, difficulty, servings, tags, dietary`, **plus a lightweight nutrition summary**: `caloriesPerServing: number | null` and `nutritionPartial: boolean`. Both `dietary` and `caloriesPerServing` are cheap to include because they're precomputed once at boot (§5.4), not calculated per list request. No full ingredient list, instructions, or full macro breakdown in the list payload — keep it light for a grid of 15+ recipes.
+  - **Resolves the sorting contradiction Codex flagged:** Iteration 4 requires calorie sorting on `/recipes`, which is impossible if the list response has no nutrition data at all. Adding `caloriesPerServing` to the list item (base-servings value, not scaled — scaling only applies on the detail page, §4.2 item 3) closes that gap without requiring the frontend to fetch every recipe's full detail just to sort.
+  - **Sort param:** `sort` = `prepTime | cookTime | difficulty | calories`, optional `order` = `asc | desc` (default `asc`). `difficulty` sorts on a fixed `easy < medium < hard` ordering, not alphabetical.
+- **Detail response shape:** full recipe object + resolved ingredients (name + quantity, with `resolved`/`approximate` flags per §3.4/§3.9 where applicable) + full computed nutrition breakdown (calories/protein/carbs/fat, with `partial`/`approximate` flags per §3.9's now-resolved fallback rule).
+- **`GET /api/ingredients` contract (previously undefined — gap caught on second review):** returns the full ingredients list as `{ id, name, category }[]`, sorted alphabetically by `name`. Optional query param `q` does a case-insensitive substring match against `name`, same matching rule as the recipe search (§3.10 `q` above) for consistency. No pagination or result limit — the dataset is 46 ingredients, trivially small; the whole (optionally filtered) list is returned every time. This endpoint exists specifically to back the frontend's ingredient-filter autocomplete (§4.1), so it deliberately stays a plain list-and-filter, not a search-ranked endpoint.
+- **Error format:** consistent envelope `{ "error": { "code": string, "message": string } }` with correct HTTP status codes — 400 for bad query params, 404 for unknown recipe ID, 500 for unexpected failures.
+- **Pagination:** explicitly **out of scope** for all endpoints — the dataset is 15 recipes / 46 ingredients, no pagination needed. State this as a deliberate assumption in Candidate Notes, not an oversight.
+
+### 3.11 — LLM endpoint needs abuse protection before it's live on a public URL
+**Correction:** keeping the OpenAI key server-side (§3.3) is necessary but not sufficient once the backend has a real public deploy URL and a real funded API key behind it — anyone who finds the URL could otherwise hit the endpoint directly and run up spend. Adding to §3.3's scope for Iteration 6:
+- **Question length cap** (e.g. reject anything over ~500 characters with a 400).
+- **Basic rate limiting** — a simple in-memory per-IP limit (e.g. N requests/minute) is enough for a take-home; no need for a distributed rate limiter.
+- **Pinned exact model string** committed to code/env (not "whatever's latest" resolved at request time) — resolve the open item in §8 here.
+- **Timeout + provider-error handling** — if OpenAI times out or errors, return a clean error to the frontend, don't hang or 500 the whole request pipeline.
+- **Visible disabled state** in the UI when the feature is unavailable (key missing, rate-limited, provider error) — already required by §3.3, reiterated here as part of the same defensive package.
+
+### 3.12 — Explicit MVP checkpoint added to the iteration flow
+**Decision:** even under the confirmed 3-5 day budget (§3.7), add a hard stop-and-assess gate rather than relying only on the end-of-project cut list in §7. **After Iteration 3 (core frontend + backend fully working, deployed-quality) and again after Iteration 4 (dietary/sort/scale added):** stop and honestly assess pace before continuing. If behind pace at either checkpoint, skip straight to Iteration 8 (writeup + deploy) rather than continuing to layer on bonus features — a deployed, polished core beats an ambitious but half-finished feature set. See §6 for where these gates sit in the iteration list and §7 for what to cut if a gate is missed.
+
+### 3.13 — Automated tests required, not just manual curl checks or a scratch script
+**Correction:** Iteration 1 and 2's original "definition of done" allowed "a scratch script" and "manually verifiable (curl/Postman)" as sufficient. That's too weak for the parts of this system with real correctness risk (unit conversion, nutrition math, the §3.4/§3.9 fallback flags, filter semantics) — manual spot-checks don't catch regressions once Iteration 4+ starts changing the same code paths.
+**Decision:** add an actual automated test suite (recommend **Vitest** — fast, native TS support, minimal config, pairs well with the `shared` workspace package from §5.1) with a real `npm test` command, covering at minimum:
+- Unit-conversion + nutrition module (§3.5, §3.9): mass-mass, volume-volume, density-based volume→mass, count-based reference weights, and the `partial`/`approximate` fallback flags on unmapped units
+- Seed-validation script (§3.4): correctly flags known-bad references, doesn't false-positive on good data
+- Recipe filtering (name/tags/ingredients/dietary — §3.10): correct AND/OR semantics per filter type
+- Invalid query params → 400s, unknown recipe ID → 404 (§3.10's error contract)
+**This replaces, not supplements, the "scratch script"/"curl only" language in §6's Iteration 1 and 2 definitions of done** — updated there directly.
+
+### 3.14 — Iteration 1 built; one real architecture snag hit and resolved along the way
+**What got built** (see §6 Iteration 1 for the checklist — all done): root npm workspaces (`shared`, `backend-app`, `frontend-app`); `@hells-kitchen/shared` with `types.ts` (§3.10's shapes), `units.ts` (the full three-tier conversion module from §3.9 — mass/volume/count, all 24 density + 21 count reference values populated), `duration.ts` (parses `"20 minutes"` → `20` for sorting); the 8 missing ingredients added to `data.json` (§3.4); `backend-app/src/`: `seedValidation.ts`, `dietary.ts` (§3.2's vegan⊇vegetarian normalization), `nutrition.ts` (§3.5's basis decision, §3.9's partial/approximate contract), `data.ts` (boot-time load + precompute, §5.4), `server.ts` (boots, loads data, one placeholder route — full route contract is Iteration 2). 28 tests passing (`npm test` from root or from `backend-app/`).
+
+**Snag: `shared` as source-only TS broke a compiled production build.** The original plan (§5.1) said `shared` ships as raw TypeScript, no build step, consumed directly by TS-aware tooling. That's fine for `tsx`/`vitest`/Next.js — but the first version of `backend-app`'s `start` script compiled `backend-app` to `dist/` via `tsc` and ran it with plain `node`, which cannot resolve `@hells-kitchen/shared`'s `package.json` `main` field pointing at `src/index.ts` (plain Node has no TypeScript support at all). This is exactly the kind of "workspace friction with the deploy setup" §5.1 flagged as the trigger for falling back to type duplication — but duplication wasn't necessary here. **Resolution:** `backend-app` now runs under `tsx` uniformly in both dev and production — `"dev": "tsx watch src/server.ts"`, `"start": "tsx src/server.ts"`, no compiled `dist/` artifact at all; `tsx` is a `dependencies` entry (not `devDependencies`) since it's needed at runtime. A separate `"typecheck": "tsc --noEmit"` script exists for CI/dev-time type safety without producing build output. This keeps `shared` genuinely source-only as planned, adds no duplication, and is a legitimate, common pattern for small-to-medium Node/TS services — confirmed working end-to-end (`npm start` boots the real server, serves real data). **Relevant for Iteration 8:** Render/Railway's "Start Command" should be `npm start` (or `npm run start --workspace=backend-app`), not a build+`node dist/...` two-step — there is no build step for the backend.
+
+**Also resolved:** the root `vitest.config.ts`'s `include` globs are relative to the config's root, which isn't always `process.cwd()` depending on where `npm test` is invoked from — running `npm test` from inside `backend-app/` found zero tests until its script was changed to `vitest run --root ..`. Noted here since it's a non-obvious gotcha for anyone adding more workspace packages later.
+
+---
+
+## 4. Final feature scope
+
+### 4.1 Core (required, non-negotiable — from README)
+- `GET /api/recipes` — list with basic info, query params for search/filter
+- `GET /api/recipes/:id` — full detail: ingredients (names + quantities, joined from ingredient IDs), instructions, tags, computed nutrition
+- `GET /api/ingredients` — supporting endpoint for filter/search UI (autocomplete)
+- Filtering: by name (case-insensitive substring, per §3.10), tags (exact match, multi-select, AND), ingredients (by name, joined against IDs, ANY)
+- Nutrition calculation module: generic mass-mass/volume-volume conversion table **plus** per-ingredient density and count-unit reference-weight lookups (§3.9), applied consistently, basis assumption per §3.5
+- Frontend `/recipes` — list, search, tag filter, ingredient filter, responsive grid, loading/error/empty states
+- Frontend `/recipes/[id]` — ingredients w/ quantities, instructions, tags, nutrition table, loading/error/empty states
+
+### 4.2 The 5 bonus features chosen (from README's example list)
+1. **Dietary filters** — vegan/vegetarian/gluten-free/keto/etc., derived from ingredient `dietary[]` intersection with normalization (§3.2)
+2. **Sorting** — prep time, cook time, difficulty, calories, dropdown on `/recipes`
+3. **Recipe scaling** — servings input on detail page, live recalculation of ingredient amounts and nutrition
+4. **Shopping list generator** — select multiple recipes / "add to list" per recipe, aggregate ingredients **by `ingredientId`** (not display name) with unit-aware merging that only sums compatible units and keeps incompatible units as separate line items (§3.9), dedicated `/shopping-list` page with checkboxes
+5. **LLM feature** — "Ask about this recipe" panel, grounded via backend proxy to OpenAI (§3.3)
+
+### 4.3 Above-and-beyond (stand-out signal, not asked for)
+- Shared TypeScript types between backend and frontend — single source of truth for `Recipe`/`Ingredient` shapes (mechanism TBD, see §5.1 and §8)
+- One unit-conversion module reused by both nutrition calc and shopping-list merging
+- Lightweight preference profile via localStorage (dietary restrictions/interests, auto-applied filter) — §3.1
+- Favoriting via localStorage — documented as an explicit assumption (no auth in scope)
+- Skeleton loaders / empty states / 404 handling for bad recipe IDs, no search results, etc.
+- Mobile-considered filter UX — collapsible filter drawer on small screens rather than a cramped sidebar
+- Seed-data validation script on server boot — warns, doesn't crash (§3.4)
+- A real deploy — Vercel (frontend) + Render/Railway (backend), env-wired (§3.6)
+- Well-written Candidate Notes — nutrition-basis assumption stated explicitly, what's stubbed vs. production-ready, "with more time" list
+
+---
+
+## 5. Architecture decisions
+
+### 5.1 Shared types & the unit-conversion module — mechanism still to be finalized in Iteration 1
+The *what* is decided (§4.3); the *how* to physically share code between two independent `npm` projects (`backend-app`, `frontend-app`, currently unrelated packages, no monorepo tooling) is not yet locked. Leading option, to be confirmed at the start of Iteration 1:
+- Introduce a root-level `package.json` with **npm workspaces** (`"workspaces": ["backend-app", "frontend-app", "shared"]`) and a small `shared/` package (e.g. `@hells-kitchen/shared`) exporting the `Recipe`/`Ingredient`/etc. TypeScript types **and** the unit-conversion module (gram-conversion table + helpers).
+- Both `backend-app` and `frontend-app` depend on `@hells-kitchen/shared` as a local workspace package and import from it directly — no code duplication, no manual copy-paste sync.
+- Alternative considered: just duplicate a `types.ts` file in both apps and keep them manually in sync. Rejected as the default — it's exactly the "duplicating interfaces" anti-pattern the above-and-beyond list calls out avoiding. Only fall back to this if workspaces cause unexpected friction with the Vercel/Render deploy setup (worth a quick sanity check early, since monorepo deploys occasionally need extra config on those platforms).
+
+### 5.2 TypeScript migration
+Both apps currently ship plain JS (§2). Since shared types and "TypeScript/JavaScript best practices" are both explicit evaluation/above-and-beyond items, Iteration 1 includes converting `backend-app` to TS (`ts-node`/`tsx` + build step) and `frontend-app` to TS (Next.js has first-class TS support, low-friction migration). Not optional — it's load-bearing for §5.1.
+
+### 5.3 Shopping list aggregation: client or backend? — open, lean client-side
+The shared unit-conversion module (§5.1) is importable from both sides, so shopping-list ingredient aggregation doesn't strictly need a backend round-trip — it can happen client-side once the relevant recipes' full ingredient data is fetched. Leaning **client-side** for simplicity (no new backend endpoint required, `/shopping-list` page just merges already-fetched recipe data). Revisit only if the aggregation logic turns out to need data the client wouldn't otherwise fetch (unlikely, given recipes already carry full ingredient lists).
+
+### 5.4 Data layer
+`data.json` stays the mock DB (per README — no real database in scope). Backend will read it once at boot into memory, and at that same boot step: run the seed-validation pass (§3.4), and **precompute per-recipe derived fields** that Iteration 4's filters/sorting depend on — the normalized `dietary[]` array (§3.2) and the base-servings `caloriesPerServing`/`nutritionPartial` summary (§3.9, §3.10) — so list requests never recompute them per call. **This is a planned change, not existing behavior** — the current placeholder `server.js` re-reads and re-parses the file on every request (§2). No write endpoints are in scope (recipes/ingredients are read-only from the frontend's perspective; favorites/profile/shopping-list-selections are client-only via localStorage, §3.1/§4.3).
+
+---
+
+## 6. Iteration plan
+
+Ordering is dependency-driven: shared foundation before anything consumes it, backend before frontend, filters before the dietary-derivation layer that extends them, cross-cutting bonus features after the modules they reuse exist, LLM after the profile exists (so it can be grounded in it), polish before deploy.
+
+**Legend:** ✅ done · 🔲 not started. Everything below is 🔲 as of this writing — nothing has been implemented yet, only planned.
+
+### Iteration 0 — Planning (this document) — ✅ done
+Scope agreed, seed data audited, provider choices made, decision log written.
+
+### Iteration 1 — Backend foundation (no UI yet) — ✅ done
+- [x] Set up TypeScript in `backend-app` (§5.2) — via `tsx`, no compiled build step (§3.14)
+- [x] Stand up the `shared/` workspace package with `Recipe`/`Ingredient`/etc. types (§5.1)
+- [x] Data access layer over `data.json` (load once at boot, in-memory) — `backend-app/src/data.ts`
+- [x] Fix the 8 missing ingredient records directly in `data.json` (§3.4)
+- [x] Seed-validation script: warns (not crashes) on any remaining unresolved `ingredientId`s, runs at boot — `backend-app/src/seedValidation.ts`
+- [x] "Unresolved ingredient" response contract (§3.4) — `ResolvedIngredientLine.resolved`, implemented in `nutrition.ts`
+- [x] Unit-conversion module (shared package) — full three-tier table: mass, volume+density, count-unit — `shared/src/units.ts`
+- [x] Nutrition calculation module — basis assumption resolved (per-100g, §3.14), `partial`/`approximate` fallback rule implemented — `backend-app/src/nutrition.ts`
+- [x] Boot-time precompute of per-recipe `dietary[]` and `caloriesPerServing`/`nutritionPartial` — `backend-app/src/data.ts`
+- [x] Dietary normalization module (§3.2) — `backend-app/src/dietary.ts`, vegan⊇vegetarian rule, verified against the Margherita Pizza proof case
+- **Definition of done — met:** 28 automated tests passing (`npm test`, Vitest) covering unit-conversion (mass/volume/count tiers, fallback contract), nutrition math, dietary derivation, and seed validation — plus an end-to-end smoke test (`npm start`, real `curl` against `/api/recipes`, verified the Margherita Pizza dietary/calorie output by hand). Full route contract (§3.10) is still Iteration 2 — this iteration's `/api/recipes` route is a placeholder, not yet spec-compliant.
+
+### Iteration 2 — Backend API (core requirement) — 🔲
+- `GET /api/recipes` with search (case-insensitive substring on name/description) + tag filter (multi-select, AND) + ingredient filter (by name, ANY, joined against IDs) + dietary filter (AND, against the boot-precomputed `dietary[]` field) + `sort`/`order` — per the contract locked in §3.10
+- `GET /api/recipes/:id` with joined ingredients (names + quantities) and computed nutrition
+- `GET /api/ingredients` (autocomplete support)
+- Consistent error handling: 404s for bad IDs, input validation on query params, error envelope per §3.10, sensible 500 handling
+- **Definition of done:** automated tests (§3.13) covering filter semantics (name/tags/ingredients/dietary), invalid-param 400s, and unknown-ID 404s, passing via `npm test` — plus a manual curl/Postman pass as a final sanity check, not as the primary verification.
+
+### Iteration 3 — Frontend core (core requirement) — 🔲
+- Wire shared types into `frontend-app` (§5.1), set up TS (§5.2)
+- API client layer
+- `/recipes` — list page, search bar, tag filter, ingredient filter, responsive grid
+- `/recipes/[id]` — detail page: ingredients w/ quantities, instructions, tags, nutrition table
+- Loading/error/empty states on both pages
+- **Definition of done:** core README requirements fully satisfied end-to-end, no bonus features yet.
+
+> **🛑 Checkpoint 1 (§3.12):** stop here and honestly assess pace. Core + deploy-ready is a complete, submittable project on its own. If behind schedule, skip to Iteration 8 (writeup + deploy) now rather than continuing.
+
+### Iteration 4 — Bonus batch 1: filter/sort/scale (self-contained, extends existing filter logic) — 🔲
+- Dietary filter **UI** — the derivation/normalization (§3.2) and the `dietary` query param (§3.10) are backend work already done in Iterations 1-2; this iteration is the `/recipes` filter chips/checkboxes that call it
+- Sorting **UI** — dropdown on `/recipes` for prep time, cook time, difficulty, calories, wired to the `sort`/`order` query params (§3.10) — the `caloriesPerServing` list field it depends on is already precomputed as of Iteration 1
+- Recipe scaling — servings input on detail page, live recalculation of ingredient amounts + nutrition (reuses the unit-conversion module)
+
+> **🛑 Checkpoint 2 (§3.12):** assess pace again. If behind, skip to Iteration 8. If on pace, continue to Iteration 5+.
+
+### Iteration 5 — Lightweight profile + cross-cutting bonus batch 2 — 🔲
+- Lightweight dietary/interest profile (localStorage) — build this *right after* Iteration 4's dietary filters, since its whole value is auto-applying as their default state (§3.1) — don't let it drift to being bundled arbitrarily with unrelated features
+- Shopping list generator — multi-recipe select / per-recipe "add to list," merge by `ingredientId` with compatible-unit-only summing (§3.9), `/shopping-list` page with checkboxes (leaning client-side aggregation, §5.3)
+- Favoriting via localStorage
+
+### Iteration 6 — LLM feature — 🔲
+- Backend proxy endpoint to OpenAI, API key server-side only (§3.3)
+- "Ask about this recipe" panel on `/recipes/[id]`, grounded in that recipe's actual ingredients/instructions
+- Abuse protection per §3.11: question length cap, basic per-IP rate limiting, pinned exact model string, timeout/provider-error handling
+- Fail-soft behavior when `OPENAI_API_KEY` is absent, or the feature is rate-limited/erroring (§3.3, §3.11) — visible disabled state, never a 500
+- Proactive conflict/substitution banner using the saved profile from Iteration 5
+
+### Iteration 7 — Polish pass — 🔲
+- Mobile filter drawer (collapsible, not a cramped sidebar), full responsive check
+- Skeleton loaders everywhere data is fetched
+- Edge cases: no search results, malformed/nonexistent recipe IDs (404 page), empty states
+
+### Iteration 8 — Writeup + deploy — 🔲
+- `## Candidate Notes` section appended to `README.md`: setup instructions for anything added, implementation choices, completed features list, assumptions (nutrition basis from §3.5, no-auth/localStorage-profile from §3.1, favoriting from §4.3), known limitations/bugs, "additional features with more time" list
+- Deploy frontend (Vercel) + backend (Render/Railway), wire env vars (`OPENAI_API_KEY`, API base URL, etc.) between them
+- Smoke-test the live link end to end before calling it done
+- Zip the project for submission, send to scott.nguyen@sprx.tax & anthony.difalco@sprx.tax with the deployed link
+
+### Iteration 9 — Stretch only, if time remains after Iteration 8 — 🔲
+- Real lightweight auth (email+password or magic link), server-stored profiles replacing localStorage, favorites/profile behind login. Not planned for in the 3-5 day budget (§3.7) — pure upside if reached, no loss if not.
+
+---
+
+## 7. Priority order if time runs short (even though budget is currently 3-5 days)
+
+This is the fallback list if a checkpoint in §6/§3.12 is missed and cutting mid-iteration (rather than cleanly stopping at a checkpoint) becomes necessary. Protected, cut last, in order of protection:
+1. Core requirements (§4.1) — non-negotiable regardless of time
+2. Deploy (§3.6) — explicitly named as bonus points in the README, de-risks the whole submission
+3. Candidate Notes writeup — required for submission regardless of feature count
+4. Iterations 4 (dietary/sort/scale) — cheapest, highest-value bonus batch, reuses existing filter/unit modules
+5. Shared types + unit-conversion module (§5.1) — architecture decision, not a bolt-on feature; hard to retrofit late, so don't defer it even under time pressure
+6. Seed-validation script + data fix (§3.4) — cheap, prevents visible demo bugs
+
+Cut first if truly squeezed: favoriting, shopping list, LLM panel, mobile drawer polish — in roughly that order. Iteration 9 (real accounts) was never in scope for this budget.
+
+---
+
+## 8. Open questions / not yet decided
+
+Track these here as they get resolved — update this section, don't just delete it.
+
+- [x] ~~**Shared-types mechanism** (§5.1): npm workspaces vs. manual duplication~~ **Resolved in Iteration 1 (§3.14):** npm workspaces, confirmed working end-to-end for dev/test/start. No fallback to duplication needed.
+- [x] ~~**Nutrition basis** (§3.5)~~ **Resolved in Iteration 1 (§3.14):** implemented as per-100g in `backend-app/src/nutrition.ts`, documented inline at the top of that file.
+- [ ] **Shopping list aggregation location** (§5.3): leaning client-side; revisit only if a concrete reason to move it server-side surfaces. Still open — Iteration 5.
+- [x] ~~**Git repo**: not yet initialized.~~ **Resolved (§3.8, §2):** repo already exists at the project root, on `main`, tracking `origin/main`. Iteration 1's work is committed on top of it.
+- [ ] **Deploy target confirmation**: Vercel + Render/Railway assumed (§3.6); not yet actually provisioned/confirmed available. Still open — Iteration 8.
+- [ ] **OpenAI model choice** (§3.3, §3.11): "a cheap/fast model" — pin the exact model string when Iteration 6 starts, based on whatever's current/available at build time. Must be a hard-pinned constant, not resolved dynamically per request.
+- [x] ~~**Exact reference values** for the ingredient-specific unit tables (§3.9)~~ **Resolved in Iteration 1:** all 21 count-unit weights and 24 `gramsPerCup` density values are populated in `shared/src/units.ts` (USDA-ish approximations, as anticipated — good enough for a take-home, not claimed lab-precise).
+- [ ] **Rate-limit thresholds** for the LLM endpoint (§3.11) — pick specific numbers (requests/minute, max question length) when Iteration 6 starts.
+- [ ] **New, found during Iteration 1:** `frontend-app`'s pinned `next@15.1.6` has known vulnerabilities (`npm audit` reports 2 high + 1 critical, all in `next`/`postcss`/`sharp`). Not touched in Iteration 1 (frontend is out of scope until Iteration 3) but `npm audit fix` offers `next@15.5.23` — still a 15.x version, not a breaking major bump. Fix this at the start of Iteration 3, before building on top of the frontend scaffold.
+
+---
+
+## 9. How to use this file going forward
+
+- When a decision changes, add a new dated entry to §3 rather than silently editing an old one — the point is to preserve *why* something changed, not just the current state.
+- When an iteration starts/finishes, flip its status marker in §6.
+- When an open question in §8 gets resolved, move the resolution into §3 as a proper decision entry and check the box in §8.
+- Candidate Notes in the final `README.md` (Iteration 8) should be a distilled, reader-facing summary — this file is the full working history behind it, not a replacement for it.
