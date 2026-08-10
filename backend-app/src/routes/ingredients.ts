@@ -1,7 +1,7 @@
 /**
  * GET /api/ingredients — PLAN.md §3.10. Backs the frontend's ingredient-
  * filter autocomplete; deliberately a plain list-and-filter, not ranked
- * search. No pagination — 46-ingredient dataset, whole list every time.
+ * search. No pagination — 54-ingredient dataset, whole list every time.
  */
 import { Router } from "express";
 import type { AppData } from "../data";

@@ -11,17 +11,21 @@ Create a recipe management application that allows users to view, search, and or
 
 ## Setup Instructions
 
-#### Backend setup
+This repo is an npm workspaces monorepo (`shared`, `backend-app`, `frontend-app`) — install once from the repository root, not separately inside each app. See `PLAN.md` §5.1 for why.
+
+```
+npm install   # from the repo root — installs shared, backend-app, and frontend-app together
+```
+
+#### Backend
 ```
 cd backend-app
-npm install
 npm run dev # Starts express server on port 8080
 ```
 
-#### Frontend setup
+#### Frontend
 ```
 cd frontend-app
-npm install
 npm run dev # Starts nextjs frontend server on port 3000
 ```
 
