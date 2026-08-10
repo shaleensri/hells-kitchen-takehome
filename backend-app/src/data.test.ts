@@ -1,6 +1,8 @@
 import { describe, expect, it } from "vitest";
+import type { RawData } from "@hells-kitchen/shared";
 import {
   DEFAULT_DATA_PATH,
+  buildAppData,
   loadAppData,
   toRecipeDetail,
   toRecipeListItem,
@@ -47,5 +49,82 @@ describe("loadAppData against the real backend-app/db/data.json", () => {
     const pizza = appData.recipesById.get("1")!;
     expect(pizza.prepTimeMinutes).toBe(20);
     expect(pizza.cookTimeMinutes).toBe(15);
+  });
+});
+
+describe("dietary derivation with an unresolved ingredient (regression, caught on external review)", () => {
+  function veganIngredient(id: string): RawData["ingredients"][number] {
+    return {
+      id,
+      name: id,
+      category: "test",
+      nutrition: { calories: 10, protein: 0, carbs: 0, fat: 0 },
+      commonAllergens: [],
+      dietary: ["vegan", "gluten-free"],
+    };
+  }
+
+  it("does NOT claim 'vegan' for a recipe with several vegan ingredients plus one unresolved ingredient", () => {
+    const data: RawData = {
+      recipes: [
+        {
+          id: "r1",
+          title: "Suspicious Salad",
+          description: "",
+          servings: 2,
+          prepTime: "10 minutes",
+          cookTime: "0 minutes",
+          difficulty: "easy",
+          ingredients: [
+            { ingredientId: "lettuce", amount: "1", unit: "g" },
+            { ingredientId: "cucumber_test", amount: "1", unit: "g" },
+            { ingredientId: "tomato_test", amount: "1", unit: "g" },
+            // unresolved — no matching ingredient record below. Could be
+            // anything, including meat; must not be silently ignored.
+            { ingredientId: "mystery_ingredient", amount: "1", unit: "whole" },
+          ],
+          instructions: [],
+          tags: [],
+          dateAdded: "2024-01-01T00:00:00Z",
+        },
+      ],
+      ingredients: [
+        veganIngredient("lettuce"),
+        veganIngredient("cucumber_test"),
+        veganIngredient("tomato_test"),
+      ],
+    };
+
+    const appData = buildAppData(data);
+    const recipe = appData.recipesById.get("r1")!;
+    expect(recipe.dietary).toEqual([]);
+  });
+
+  it("still derives dietary tags normally once every ingredient resolves", () => {
+    const data: RawData = {
+      recipes: [
+        {
+          id: "r1",
+          title: "Actually Vegan Salad",
+          description: "",
+          servings: 2,
+          prepTime: "10 minutes",
+          cookTime: "0 minutes",
+          difficulty: "easy",
+          ingredients: [
+            { ingredientId: "lettuce", amount: "1", unit: "g" },
+            { ingredientId: "cucumber_test", amount: "1", unit: "g" },
+          ],
+          instructions: [],
+          tags: [],
+          dateAdded: "2024-01-01T00:00:00Z",
+        },
+      ],
+      ingredients: [veganIngredient("lettuce"), veganIngredient("cucumber_test")],
+    };
+
+    const appData = buildAppData(data);
+    const recipe = appData.recipesById.get("r1")!;
+    expect(recipe.dietary).toContain("vegan");
   });
 });

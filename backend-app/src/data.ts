@@ -60,11 +60,23 @@ export function buildAppData(raw: RawData): AppData {
       recipe,
       ingredientsById
     );
+    // Bug caught on external review: filtering out unresolved lines before
+    // deriving dietary tags meant an unknown ingredient was silently dropped
+    // from the intersection instead of failing it — a recipe with 4 vegan
+    // ingredients and 1 unresolved one would be claimed "vegan" even though
+    // we have no idea what the unresolved ingredient actually is. dietary.ts's
+    // own contract says "an unknown ingredient can't be assumed to satisfy
+    // anything" (§3.4) — that only holds if any unresolved line makes the
+    // WHOLE recipe's dietary claims indeterminate, not just vanish from the
+    // count. So: any unresolved ingredient → no dietary tags asserted at all,
+    // full stop, rather than computing an intersection over a shrunk list.
+    const hasUnresolvedIngredient = resolvedIngredients.some((line) => !line.resolved);
     const resolvedIngredientRecords = resolvedIngredients
-      .filter((line) => line.resolved)
       .map((line) => ingredientsById.get(line.ingredientId))
       .filter((i): i is RawIngredient => Boolean(i));
-    const dietary = deriveDietaryTags(resolvedIngredientRecords);
+    const dietary = hasUnresolvedIngredient
+      ? []
+      : deriveDietaryTags(resolvedIngredientRecords);
 
     return {
       raw: recipe,
