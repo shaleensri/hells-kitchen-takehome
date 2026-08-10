@@ -1,0 +1,46 @@
+.page {
+  padding-bottom: 60px;
+}
+
+@keyframes pulse {
+  0%,
+  100% {
+    opacity: 0.6;
+  }
+  50% {
+    opacity: 1;
+  }
+}
+
+.headingSkeleton {
+  width: 140px;
+  height: 32px;
+  margin-top: 28px;
+  margin-bottom: 24px;
+  border-radius: 6px;
+  background: var(--surface-border);
+  animation: pulse 1.4s ease-in-out infinite;
+}
+
+.filterSkeleton {
+  height: 96px;
+  margin-bottom: 24px;
+  border-radius: var(--radius);
+  background: var(--surface);
+  border: 1px solid var(--surface-border);
+  animation: pulse 1.4s ease-in-out infinite;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 16px;
+}
+
+.cardSkeleton {
+  height: 172px;
+  border-radius: var(--radius);
+  background: var(--surface);
+  border: 1px solid var(--surface-border);
+  animation: pulse 1.4s ease-in-out infinite;
+}

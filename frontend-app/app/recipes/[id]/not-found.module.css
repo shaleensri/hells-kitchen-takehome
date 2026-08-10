@@ -1,0 +1,27 @@
+/* See frontend-app/app/recipes/error.module.css for why margin is reset
+   explicitly here (the combined .container class's margin:auto would
+   otherwise center this narrower box instead of left-aligning it). */
+.wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 14px;
+  padding: 80px 20px;
+  max-width: 480px;
+  margin: 0;
+}
+
+.wrapper h1 {
+  font-size: 1.4rem;
+  font-weight: 700;
+}
+
+.wrapper p {
+  color: var(--muted);
+  line-height: 1.5;
+}
+
+.link {
+  font-weight: 600;
+  color: var(--accent);
+}

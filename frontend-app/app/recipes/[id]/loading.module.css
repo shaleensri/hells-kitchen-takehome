@@ -1,0 +1,56 @@
+.page {
+  padding-bottom: 60px;
+}
+
+@keyframes pulse {
+  0%,
+  100% {
+    opacity: 0.6;
+  }
+  50% {
+    opacity: 1;
+  }
+}
+
+.backSkeleton,
+.titleSkeleton,
+.metaSkeleton,
+.blockSkeleton {
+  background: var(--surface-border);
+  border-radius: 6px;
+  animation: pulse 1.4s ease-in-out infinite;
+}
+
+.backSkeleton {
+  width: 110px;
+  height: 16px;
+  margin-top: 20px;
+}
+
+.titleSkeleton {
+  width: 60%;
+  height: 34px;
+  margin-top: 20px;
+}
+
+.metaSkeleton {
+  width: 100%;
+  height: 60px;
+  margin: 16px 0 28px;
+}
+
+.columns {
+  display: grid;
+  grid-template-columns: 1fr 1.4fr;
+  gap: 36px;
+}
+
+.blockSkeleton {
+  height: 260px;
+}
+
+@media (max-width: 720px) {
+  .columns {
+    grid-template-columns: 1fr;
+  }
+}

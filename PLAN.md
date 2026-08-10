@@ -1,6 +1,6 @@
 # Recipe Manager — Project Plan & Decision Log
 
-**Status as of 2026-08-10:** Planning complete, plan externally reviewed (Codex, 3 rounds). **Iterations 1-2 complete** (§6) — backend foundation (§3.14) + implementation review/bugfix (§3.15) + the full core API (`GET /api/recipes` with search/tags/ingredients/dietary/sort, `GET /api/recipes/:id`, `GET /api/ingredients`, consistent error envelope) per the §3.10 contract, then Iteration 2's own implementation reviewed and 3 small gaps fixed (§3.16). **64 passing tests**, verified end-to-end via both automated HTTP-level tests (`supertest`) and manual `curl` against a booted server. Frontend (`frontend-app`) is still the untouched plain-JS starter — untouched until Iteration 3.
+**Status as of 2026-08-10:** Planning complete, plan externally reviewed (Codex, 3 rounds). **Iterations 1-3 complete** (§6) — full backend (§3.14-§3.16: foundation, API, two review passes) plus the frontend core (§3.17): `/recipes` list with search/tag/ingredient filters, `/recipes/[id]` detail with nutrition table, loading/error/not-found states, all wired to the live backend via a typed API client. **82 passing tests** plus a real Playwright browser-screenshot verification pass that caught and fixed 3 visual bugs no test suite would have (§3.17). **Checkpoint 1 (§3.12) reached** — this is a complete, submittable, deployable project as of right now. There is now an actual website to open in a browser (`npm run dev` in both `backend-app` and `frontend-app`, then `localhost:3000/recipes`).
 
 This file is the single source of truth for *why* the project is being built the way it is, not just *what* to build. If you are a new agent (or a human) picking this up cold, read this whole file before touching code — it captures decisions already made and the reasoning behind them, so you don't re-litigate settled questions or repeat analysis already done.
 
@@ -8,7 +8,7 @@ This file is the single source of truth for *why* the project is being built the
 
 ## Project summary
 
-**Recipe Manager** is a full-stack web app for browsing, searching, and organizing recipes. Backend is Express/TypeScript (migration done as of Iteration 1) serving a mock JSON "database" (`backend-app/db/data.json`) of recipes and ingredients; frontend is Next.js (App Router, still plain JS — migration to TypeScript is Iteration 3's job). Users can browse a recipe list with search/tag/ingredient filters, view a recipe detail page with joined ingredient quantities, instructions, tags, and computed nutrition (calculated server-side from per-ingredient nutrition + a shared unit-conversion module). On top of that core, the build adds: derived dietary filters (vegan/vegetarian/gluten-free/etc., computed from ingredient data rather than hand-tagged), sorting, live recipe scaling by servings, a shopping-list generator that merges ingredients across selected recipes, localStorage-based favoriting and a persistent dietary/interest profile (no accounts — see §3.1), and an "Ask about this recipe" panel backed by a server-side OpenAI proxy that's grounded in the specific recipe's ingredients/instructions. The whole thing is meant to be deployed live (Vercel + Render/Railway), not just run locally.
+**Recipe Manager** is a full-stack web app for browsing, searching, and organizing recipes. Backend is Express/TypeScript (Iteration 1) serving a mock JSON "database" (`backend-app/db/data.json`) of recipes and ingredients; frontend is Next.js/TypeScript, App Router (Iteration 3). Users can browse a recipe list with search/tag/ingredient filters, view a recipe detail page with joined ingredient quantities, instructions, tags, and computed nutrition (calculated server-side from per-ingredient nutrition + a shared unit-conversion module) — this core loop is live and working end to end as of Iteration 3. On top of that core, the build adds: derived dietary filters (vegan/vegetarian/gluten-free/etc., computed from ingredient data rather than hand-tagged), sorting, live recipe scaling by servings, a shopping-list generator that merges ingredients across selected recipes, localStorage-based favoriting and a persistent dietary/interest profile (no accounts — see §3.1), and an "Ask about this recipe" panel backed by a server-side OpenAI proxy that's grounded in the specific recipe's ingredients/instructions. The whole thing is meant to be deployed live (Vercel + Render/Railway), not just run locally.
 
 See §1 below for the framing this is built under (it's a take-home assessment), and §3 for the full reasoning behind each of these choices.
 
@@ -46,7 +46,7 @@ Key facts:
 - **Git repo already exists and is set up correctly** — verified via `git status`/`git remote -v`/`git log` at the project root (`hells-kitchen/hells-kitchen`, where README/backend-app/frontend-app live): on branch `main`, tracking `origin/main` at `https://github.com/shaleensri/hells-kitchen-takehome.git`, 2 commits so far (`initial skeleton`, `rename folders`). **`PLAN.md` itself is currently untracked** — `git add`/commit it along with the rest of Iteration 0's output. (Note: an earlier draft of this file wrongly claimed no git repo existed — that was checked against the wrong directory level. Corrected here after Codex's review caught it; see §3.8.)
 - The existing `server.js` route is a placeholder — returns the raw recipe array with no filtering, no ingredient joins, no nutrition calc, and **re-reads + re-parses `data.json` from disk on every single request** (verified in the source — `getData()` is called inside the route handler, not cached). Effectively nothing to preserve; it'll be replaced wholesale in Iteration 2, and the "load once at boot" behavior described in §5.4 is a planned improvement, not something already in place.
 
-### 2.1 Repo state after Iteration 2 (current)
+### 2.1 Repo state after Iteration 3 (current)
 
 ```
 hells-kitchen/
@@ -86,10 +86,38 @@ hells-kitchen/
 │       ├── dietary.test.ts
 │       ├── seedValidation.ts  # warns, doesn't crash + its test
 │       └── seedValidation.test.ts
-└── frontend-app/               # UNTOUCHED — still the plain-JS starter, Iteration 3's job
+└── frontend-app/
+    ├── package.json           # TS; next@15.5.23 (bumped from 15.1.6, §3.17); test script added
+    ├── tsconfig.json          # jsconfig.json removed, superseded by this
+    ├── next.config.mjs        # transpilePackages: ["@hells-kitchen/shared"] (§5.1)
+    ├── .env.example           # documents NEXT_PUBLIC_API_URL for Iteration 8's deploy
+    ├── lib/
+    │   ├── api.ts             # typed client over the §3.10 contract, ApiRequestError + its test
+    │   ├── api.test.ts
+    │   ├── searchParams.ts    # raw Next.js searchParams → API client params + its test
+    │   ├── searchParams.test.ts
+    │   ├── tags.ts             # dedupes a raw tag against a dietary badge showing the same word (§3.17 bugfix) + its test
+    │   └── tags.test.ts
+    └── app/
+        ├── layout.tsx          # site header/nav
+        ├── page.tsx            # redirects to /recipes
+        ├── not-found.tsx       # global 404 (unmatched routes)
+        ├── globals.css         # design tokens (light/dark), extended from the create-next-app default
+        └── recipes/
+            ├── page.tsx        # list: server component, fetches via searchParams, renders FilterBar + grid
+            ├── loading.tsx     # skeleton grid (Next Suspense convention)
+            ├── error.tsx       # retry button, client component (Next error-boundary requirement)
+            ├── _components/
+            │   ├── FilterBar.tsx    # plain <form method="GET"> — no client JS needed (§3.17)
+            │   └── RecipeCard.tsx
+            └── [id]/
+                ├── page.tsx        # detail: ingredients w/ resolved/approximate badges, instructions, nutrition table
+                ├── loading.tsx
+                ├── error.tsx
+                └── not-found.tsx   # route-specific 404, triggered by notFound() on a backend 404
 ```
 
-**64/64 tests passing** (`npm test` from root or `backend-app/`): 30 from Iteration 1 + 17 in `filtering.test.ts` + 14 in `app.test.ts` + 3 in `errors.test.ts` (added on Iteration 2's review, §3.16, to cover the previously-untested 500/`INTERNAL_ERROR` fallback path). `npm start` boots a real server serving the full §3.10 route contract — manually smoke-tested end to end (search, tag/ingredient/dietary filters, sorting, 400s, 404s all confirmed against live `curl` output). Full detail: §3.14 (Iteration 1's architecture snag), §3.15 (the dietary bug found on review), §3.16 (Iteration 2's review), Iteration 2's entry below for what was built this round.
+**82/82 tests passing** (`npm test` from root or any workspace): 64 backend + 18 frontend (`api.test.ts`, `searchParams.test.ts`, `tags.test.ts`). Beyond the automated suite: a real headless-Chromium Playwright pass against the actually-running app produced screenshots that caught 3 visual bugs invisible to typecheck/tests alone (§3.17) — all fixed and re-verified. `npm run dev` in both `backend-app` and `frontend-app` now serves a real, working website at `localhost:3000/recipes`. Full detail: §3.14 (Iteration 1's architecture snag), §3.15-§3.16 (backend review passes), §3.17 (Iteration 3's build + the visual-verification bugs).
 
 ---
 
@@ -235,6 +263,21 @@ There is no single consistent basis across entries — looks like it was sourced
 2. **Stale `46` ingredient count in three places** (`PLAN.md` §3.10 ×2, `ingredients.ts`'s comment) — the dataset became 54 ingredients once §3.4 added the 8 missing ones, but these three mentions were written before that fix and never updated. Fixed all three.
 3. **The 500/`INTERNAL_ERROR` fallback path had zero test coverage** — `app.test.ts` covers 400s and 404s (real `ApiError` subclasses thrown from real routes) but nothing exercised `errorHandler`'s generic catch-all for a non-`ApiError` throw. Added `errors.test.ts`, testing `errorHandler` directly against a minimal throwaway Express app (rather than adding a test-only route to the real `app.ts`, which would pollute production route code) — confirms the 500 envelope is correct and that the real error message never leaks to the client (always the generic "Something went wrong."). 64/64 tests passing now.
 
+### 3.17 — Iteration 3 built: the frontend core, plus a real visual-verification pass that earned its keep
+**Architecture decisions made while building:**
+- **Filtering via a plain native `<form method="GET">`, not a client-side router.push.** Submitting navigates the browser to `/recipes?q=...&tags=...&ingredients=...`, which the `/recipes` server component re-fetches against directly. No `"use client"` needed for the basic filter bar at all — works with JS disabled, filtered views are bookmarkable/shareable for free, and it's the pattern the Next.js team itself recommends for exactly this "filtered list driven by URL state" shape.
+- **Next.js's file-based conventions carry the loading/error/not-found states** (`loading.tsx`, `error.tsx`, `not-found.tsx`) rather than hand-rolled client-side spinner/error state — `page.tsx` just lets exceptions propagate (a 404 from the backend calls `notFound()`, anything else rethrows) and the framework handles the rest. Idiomatic App Router, less code than doing it by hand.
+- **Next 15.1.6 → 15.5.23 first**, resolving §8's flagged critical CVE (dev-server origin verification). The remaining `postcss`/`sharp` high-severity advisories only clear via a Next 16 major bump — deliberately not chased this iteration (breaking-change risk mid-build for advisories with low practical exposure here: no `next/image` usage, no attacker-controlled CSS input). Logged as a known, accepted trade-off, not silently ignored.
+
+**The verification pass is the notable part.** Typecheck and `next build` both passed cleanly, and could easily have been reported as "done." Instead, since the user's whole reason for green-lighting this iteration was "I want something to actually look at," the app was launched for real (both servers) and driven with a headless-Chromium Playwright script (no project run-skill existed yet, so one was improvised per the `run` skill's browser-driven fallback pattern) — nav to `/recipes`, screenshot, filter, screenshot, click into a detail page, screenshot, hit a 404, screenshot, resize to a mobile viewport, screenshot. **Looking at the actual screenshots surfaced 3 real bugs that typecheck/build could never have caught:**
+1. **The card's PREP/COOK/SERVES/CALORIES row was a cramped 4-column grid** — `"545/serving"` was visibly truncated to `"545/ser"` on desktop and completely cut off on mobile. Fixed: 2×2 grid instead of 1×4, plus `white-space: nowrap` on the value.
+2. **Tags rendered twice on any recipe where a raw tag and a derived dietary badge shared a word** (e.g. Margherita Pizza showing "vegetarian" as both the orange dietary badge and a plain gray tag chip) — both pieces of data are individually correct (§3.2's derivation vs. the seed data's manual tag), but showing both reads as a duplicate-content bug. Fixed with a new `dedupeTagsAgainstDietary` helper (`lib/tags.ts`, tested), used on both the card and detail page.
+3. **A real, non-obvious CSS bug**: combining the global `.container` class (`max-width: 1100px; margin: 0 auto`) with a page-specific wrapper class that *also* declared its own smaller `max-width` (520px/480px, on the error/not-found pages) caused the browser to center using the *smaller* width instead of leaving the content flush-left like every other page — `margin: 0 auto` from `.container` was never overridden by the wrapper's own rules, so it centered a narrow box in the middle of the screen instead of aligning it with the rest of the app's content. Only visible by actually looking at a screenshot; the CSS reads as innocuous in isolation. Fixed by explicitly resetting `margin: 0` on each affected wrapper, with a comment explaining why (so it doesn't silently regress if someone adds a similar wrapper later).
+
+This is the same lesson as §3.15's dietary bug and §3.16's Codex findings, generalized: **passing typecheck/tests is necessary, not sufficient — verification has to exercise the thing a user would actually see/do.** Recorded here as a reusable practice, not a one-off: future iterations with a visual/interactive surface (Iteration 4's filter chips, Iteration 5's shopping list, Iteration 6's LLM panel) should get the same screenshot-based pass before being called done, not just `npm test` + `next build`.
+
+**Checkpoint 1 (§3.12) is now reached** — core frontend + backend fully working, deploy-quality by the plan's own definition. Per §3.12, this is a legitimate stopping point: a complete, submittable project on its own. Continuing to Iteration 4+ is a deliberate choice to keep going, not a default.
+
 ---
 
 ## 4. Final feature scope
@@ -317,13 +360,14 @@ Scope agreed, seed data audited, provider choices made, decision log written.
 - **Definition of done — met:** 64 automated tests passing (30 from Iteration 1 + 17 in `filtering.test.ts` covering search/tag/ingredient/dietary semantics and sort null-handling + 14 in `app.test.ts`, an HTTP-level supertest suite hitting the real Express app end-to-end: 200s with correct shapes, 400s on invalid `sort`/`order`, 404s on unknown recipe ID and unmatched routes, zero-results-not-an-error on unrecognized filter values + 3 in `errors.test.ts`, added on review (§3.16) to directly cover the 500/`INTERNAL_ERROR` fallback that app.test.ts's real routes never happened to trigger). Plus a manual `curl` pass against a booted server as a final sanity check (confirmed: dietary=vegan correctly excludes Margherita Pizza and includes exactly the 3 genuinely-vegan recipes; sort=calories&order=desc correctly descending).
 - **Architecture note:** `server.ts` now just boots data + calls `createApp()` (new `app.ts`) and listens — the app-construction/route-wiring is separate from the process entry point specifically so `app.test.ts` can exercise real HTTP requests via `supertest` without binding a port.
 
-### Iteration 3 — Frontend core (core requirement) — 🔲
-- Wire shared types into `frontend-app` (§5.1), set up TS (§5.2)
-- API client layer
-- `/recipes` — list page, search bar, tag filter, ingredient filter, responsive grid
-- `/recipes/[id]` — detail page: ingredients w/ quantities, instructions, tags, nutrition table
-- Loading/error/empty states on both pages
-- **Definition of done:** core README requirements fully satisfied end-to-end, no bonus features yet.
+### Iteration 3 — Frontend core (core requirement) — ✅ done
+- [x] Bumped `next` 15.1.6 → 15.5.23 first (§8's flagged open item) — resolved the critical dev-server-origin-verification CVE; remaining `postcss`/`sharp` high-severity advisories are transitive-inside-Next and only fixable via a Next 16 major bump, accepted as a documented trade-off for now (§3.17)
+- [x] `frontend-app` converted to TypeScript, wired to `@hells-kitchen/shared` via `transpilePackages` (§5.1/§5.2) — confirmed working, no duplication
+- [x] API client (`lib/api.ts`) — typed wrapper over the §3.10 contract, `ApiRequestError` carrying the backend's `code`/status, + unit tests
+- [x] `/recipes` — list page, search/tags/ingredients filter bar (plain native `<form method="GET">`, no client JS — §3.17), responsive grid, result count, empty state
+- [x] `/recipes/[id]` — detail page: ingredients w/ quantities + resolved/approximate badges, instructions, tags, nutrition table (per-serving + recipe-total)
+- [x] Loading states (`loading.tsx`, Next's Suspense convention), error states (`error.tsx`, retry button), not-found state (`not-found.tsx`, both route-level and global)
+- **Definition of done — met:** 82 automated tests passing (64 backend + 18 new frontend: `api.test.ts`, `searchParams.test.ts`, `tags.test.ts`) + a real Playwright-driven browser verification pass (§3.17) — not just typecheck/build, actual screenshots of the actual rendered app, which caught and led to fixing 3 real visual bugs before they'd have been discovered by a human tester.
 
 > **🛑 Checkpoint 1 (§3.12):** stop here and honestly assess pace. Core + deploy-ready is a complete, submittable project on its own. If behind schedule, skip to Iteration 8 (writeup + deploy) now rather than continuing.
 
@@ -388,7 +432,7 @@ Track these here as they get resolved — update this section, don't just delete
 - [ ] **OpenAI model choice** (§3.3, §3.11): "a cheap/fast model" — pin the exact model string when Iteration 6 starts, based on whatever's current/available at build time. Must be a hard-pinned constant, not resolved dynamically per request.
 - [x] ~~**Exact reference values** for the ingredient-specific unit tables (§3.9)~~ **Resolved in Iteration 1:** all 21 count-unit weights and 24 `gramsPerCup` density values are populated in `shared/src/units.ts` (USDA-ish approximations, as anticipated — good enough for a take-home, not claimed lab-precise).
 - [ ] **Rate-limit thresholds** for the LLM endpoint (§3.11) — pick specific numbers (requests/minute, max question length) when Iteration 6 starts.
-- [ ] **New, found during Iteration 1:** `frontend-app`'s pinned `next@15.1.6` has known vulnerabilities (`npm audit` reports 2 high + 1 critical, all in `next`/`postcss`/`sharp`). Not touched in Iteration 1 (frontend is out of scope until Iteration 3) but `npm audit fix` offers `next@15.5.23` — still a 15.x version, not a breaking major bump. Fix this at the start of Iteration 3, before building on top of the frontend scaffold.
+- [x] ~~`frontend-app`'s pinned `next@15.1.6` has known vulnerabilities~~ **Resolved in Iteration 3 (§3.17):** bumped to `next@15.5.23`, clearing the critical dev-server-origin-verification CVE. Remaining high-severity `postcss`/`sharp` advisories are transitive inside Next itself and only clear via a Next 16 major bump — deliberately not chased (breaking-change risk vs. low practical exposure: no `next/image`, no attacker-controlled CSS). Revisit if there's time in the polish pass (Iteration 7) or note as a known limitation in Candidate Notes (Iteration 8).
 
 ---
 
