@@ -1,30 +1,18 @@
 /**
- * Entry point. PLAN.md Iteration 1 scope is the foundation (data layer, unit
- * conversion, nutrition, seed validation) — full route coverage (filtering,
- * dietary/sort query params, error envelope, GET /api/ingredients) is
- * Iteration 2. This file boots the app and exposes a minimal /api/recipes so
- * `npm run dev` has something real to serve in the meantime.
+ * Entry point. Boots the app-data layer (§5.4) and the Express app (§3.10's
+ * full route contract, wired in app.ts as of Iteration 2).
  */
-import cors from "cors";
-import express from "express";
-import { loadAppData, toRecipeListItem } from "./data";
+import { createApp } from "./app";
+import { loadAppData } from "./data";
 
-const app = express();
 const PORT = process.env.PORT || 8080;
-
-app.use(cors());
-app.use(express.json());
 
 const appData = loadAppData();
 console.log(
   `[boot] Loaded ${appData.recipes.length} recipes, ${appData.ingredientsById.size} ingredients.`
 );
 
-// Placeholder route — replaced with the full §3.10 contract (search/tags/
-// ingredients/dietary/sort query params, error envelope) in Iteration 2.
-app.get("/api/recipes", (_req, res) => {
-  res.json(appData.recipes.map(toRecipeListItem));
-});
+const app = createApp(appData);
 
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);

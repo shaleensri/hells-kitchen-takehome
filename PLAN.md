@@ -1,6 +1,6 @@
 # Recipe Manager — Project Plan & Decision Log
 
-**Status as of 2026-08-10:** Planning complete, plan externally reviewed (Codex, 3 rounds). **Iteration 1 complete** (§6) — backend foundation built: npm workspaces, `shared` package (types + full unit-conversion module), seed-data fixed, dietary/nutrition/seed-validation modules, verified boot end-to-end. Iteration 1's implementation was then also reviewed (Codex) and one real bug fixed (§3.15) — **30 passing tests** as of that fix, two commits in (`bdc957a`, `5ec320a`). Frontend (`frontend-app`) is still the untouched plain-JS starter — untouched until Iteration 3.
+**Status as of 2026-08-10:** Planning complete, plan externally reviewed (Codex, 3 rounds). **Iterations 1-2 complete** (§6) — backend foundation (§3.14) + implementation review/bugfix (§3.15) + the full core API (`GET /api/recipes` with search/tags/ingredients/dietary/sort, `GET /api/recipes/:id`, `GET /api/ingredients`, consistent error envelope) per the §3.10 contract. **61 passing tests**, verified end-to-end via both automated HTTP-level tests (`supertest`) and manual `curl` against a booted server. Frontend (`frontend-app`) is still the untouched plain-JS starter — untouched until Iteration 3.
 
 This file is the single source of truth for *why* the project is being built the way it is, not just *what* to build. If you are a new agent (or a human) picking this up cold, read this whole file before touching code — it captures decisions already made and the reasoning behind them, so you don't re-litigate settled questions or repeat analysis already done.
 
@@ -46,15 +46,15 @@ Key facts:
 - **Git repo already exists and is set up correctly** — verified via `git status`/`git remote -v`/`git log` at the project root (`hells-kitchen/hells-kitchen`, where README/backend-app/frontend-app live): on branch `main`, tracking `origin/main` at `https://github.com/shaleensri/hells-kitchen-takehome.git`, 2 commits so far (`initial skeleton`, `rename folders`). **`PLAN.md` itself is currently untracked** — `git add`/commit it along with the rest of Iteration 0's output. (Note: an earlier draft of this file wrongly claimed no git repo existed — that was checked against the wrong directory level. Corrected here after Codex's review caught it; see §3.8.)
 - The existing `server.js` route is a placeholder — returns the raw recipe array with no filtering, no ingredient joins, no nutrition calc, and **re-reads + re-parses `data.json` from disk on every single request** (verified in the source — `getData()` is called inside the route handler, not cached). Effectively nothing to preserve; it'll be replaced wholesale in Iteration 2, and the "load once at boot" behavior described in §5.4 is a planned improvement, not something already in place.
 
-### 2.1 Repo state after Iteration 1 (current)
+### 2.1 Repo state after Iteration 2 (current)
 
 ```
 hells-kitchen/
-├── package.json               # NEW — root, npm workspaces: shared, backend-app, frontend-app
-├── vitest.config.ts           # NEW — single test runner for the whole workspace (§3.14)
+├── package.json               # root, npm workspaces: shared, backend-app, frontend-app
+├── vitest.config.ts           # single test runner for the whole workspace (§3.14)
 ├── README.md
 ├── PLAN.md
-├── shared/                    # NEW — @hells-kitchen/shared, source-only (no build step, §5.1/§3.14)
+├── shared/                    # @hells-kitchen/shared, source-only (no build step, §5.1/§3.14)
 │   ├── package.json
 │   ├── tsconfig.json
 │   └── src/
@@ -64,11 +64,19 @@ hells-kitchen/
 │       ├── duration.ts        # "20 minutes" → 20, for sorting (§4.2 item 2)
 │       └── index.ts
 ├── backend-app/
-│   ├── package.json           # now TS; dev/start both run under tsx, no dist/ build step (§3.14)
+│   ├── package.json           # TS; dev/start both run under tsx, no dist/ build step (§3.14)
 │   ├── tsconfig.json
-│   ├── db/data.json           # UPDATED — 8 missing ingredients added (§3.4), now 54 ingredients / 15 recipes, zero seed-validation issues
+│   ├── db/data.json           # 8 missing ingredients added (§3.4), 54 ingredients / 15 recipes, zero seed-validation issues
 │   └── src/
-│       ├── server.ts          # boots, loads+precomputes data, ONE placeholder route — full contract is Iteration 2
+│       ├── server.ts          # NOW SLIM (Iteration 2) — boots data, calls createApp(), listens. Route wiring moved to app.ts.
+│       ├── app.ts             # NEW — Express app factory (routes + error middleware), separate from server.ts so tests can hit it via supertest without a real port
+│       ├── app.test.ts        # NEW — HTTP-level integration tests, full §3.10 contract against the real app + real data.json
+│       ├── errors.ts          # NEW — ApiError/BadRequestError/NotFoundError + the { error: { code, message } } envelope middleware
+│       ├── filtering.ts       # NEW — query parsing + filter (q/tags/ingredients/dietary) + sort, pure functions + its test
+│       ├── filtering.test.ts
+│       ├── routes/
+│       │   ├── recipes.ts     # NEW — GET /api/recipes, GET /api/recipes/:id
+│       │   └── ingredients.ts # NEW — GET /api/ingredients
 │       ├── data.ts            # boot-time load + precompute (dietary[], nutrition) + its test
 │       ├── data.test.ts
 │       ├── nutrition.ts       # basis assumption resolved (per-100g), partial/approximate contract + its test
@@ -80,7 +88,7 @@ hells-kitchen/
 └── frontend-app/               # UNTOUCHED — still the plain-JS starter, Iteration 3's job
 ```
 
-30/30 tests passing as of the §3.15 bugfix (`npm test` from root or `backend-app/`; 28 originally, +2 regression tests added when Codex's review caught the dietary-derivation bug); `npm start` in `backend-app/` boots a real server serving real computed data. Full detail of what was built and one real architecture snag (source-only `shared` vs. a compiled backend build) hit and resolved along the way: §3.14. The one real bug found on implementation review: §3.15.
+**61/61 tests passing** (`npm test` from root or `backend-app/`): 30 from Iteration 1 + 17 in `filtering.test.ts` + 14 in `app.test.ts` (real HTTP requests via `supertest` against the real app and real `data.json`). `npm start` boots a real server serving the full §3.10 route contract — manually smoke-tested end to end (search, tag/ingredient/dietary filters, sorting, 400s, 404s all confirmed against live `curl` output). Full detail: §3.14 (Iteration 1's architecture snag), §3.15 (the dietary bug found on review), Iteration 2's entry below for what was built this round.
 
 ---
 
@@ -294,12 +302,13 @@ Scope agreed, seed data audited, provider choices made, decision log written.
 - [x] Dietary normalization module (§3.2) — `backend-app/src/dietary.ts`, vegan⊇vegetarian rule, verified against the Margherita Pizza proof case
 - **Definition of done — met:** 30 automated tests passing (`npm test`, Vitest; 28 originally + 2 regression tests from the §3.15 dietary bugfix) covering unit-conversion (mass/volume/count tiers, fallback contract), nutrition math, dietary derivation (including the unresolved-ingredient edge case), and seed validation — plus an end-to-end smoke test (`npm start`, real `curl` against `/api/recipes`, verified the Margherita Pizza dietary/calorie output by hand). Full route contract (§3.10) is still Iteration 2 — this iteration's `/api/recipes` route is a placeholder, not yet spec-compliant.
 
-### Iteration 2 — Backend API (core requirement) — 🔲
-- `GET /api/recipes` with search (case-insensitive substring on name/description) + tag filter (multi-select, AND) + ingredient filter (by name, ANY, joined against IDs) + dietary filter (AND, against the boot-precomputed `dietary[]` field) + `sort`/`order` — per the contract locked in §3.10
-- `GET /api/recipes/:id` with joined ingredients (names + quantities) and computed nutrition
-- `GET /api/ingredients` (autocomplete support)
-- Consistent error handling: 404s for bad IDs, input validation on query params, error envelope per §3.10, sensible 500 handling
-- **Definition of done:** automated tests (§3.13) covering filter semantics (name/tags/ingredients/dietary), invalid-param 400s, and unknown-ID 404s, passing via `npm test` — plus a manual curl/Postman pass as a final sanity check, not as the primary verification.
+### Iteration 2 — Backend API (core requirement) — ✅ done
+- [x] `GET /api/recipes` with search (case-insensitive substring on title/description) + tag filter (AND) + ingredient filter (ANY, by exact id or substring name) + dietary filter (AND, against the boot-precomputed `dietary[]` field) + `sort`/`order` — `backend-app/src/filtering.ts` + `routes/recipes.ts`, per the §3.10 contract
+- [x] `GET /api/recipes/:id` with joined ingredients and full computed nutrition — `routes/recipes.ts`
+- [x] `GET /api/ingredients` with optional `q` substring filter, alphabetical, no pagination — `routes/ingredients.ts`
+- [x] Consistent error handling — `errors.ts`: `ApiError`/`BadRequestError`/`NotFoundError` + Express error middleware, the `{ error: { code, message } }` envelope from §3.10 on every failure path including unmatched routes (not Express's default HTML 404)
+- **Definition of done — met:** 61 automated tests passing (30 from Iteration 1 + 17 new in `filtering.test.ts` covering search/tag/ingredient/dietary semantics and sort null-handling + 14 new in `app.test.ts`, an HTTP-level supertest suite hitting the real Express app end-to-end: 200s with correct shapes, 400s on invalid `sort`/`order`, 404s on unknown recipe ID and unmatched routes, zero-results-not-an-error on unrecognized filter values). Plus a manual `curl` pass against a booted server as a final sanity check (confirmed: dietary=vegan correctly excludes Margherita Pizza and includes exactly the 3 genuinely-vegan recipes; sort=calories&order=desc correctly descending).
+- **Architecture note:** `server.ts` now just boots data + calls `createApp()` (new `app.ts`) and listens — the app-construction/route-wiring is separate from the process entry point specifically so `app.test.ts` can exercise real HTTP requests via `supertest` without binding a port.
 
 ### Iteration 3 — Frontend core (core requirement) — 🔲
 - Wire shared types into `frontend-app` (§5.1), set up TS (§5.2)
