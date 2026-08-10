@@ -1,6 +1,6 @@
 # Recipe Manager — Project Plan & Decision Log
 
-**Status as of 2026-08-10:** Planning complete, plan externally reviewed (Codex, 3 rounds) and corrected. **Iteration 1 complete** (§6) — backend foundation built: npm workspaces, `shared` package (types + full unit-conversion module), seed-data fixed, dietary/nutrition/seed-validation modules, 28 passing tests, verified boot end-to-end. Frontend (`frontend-app`) is still the untouched plain-JS starter — untouched until Iteration 3.
+**Status as of 2026-08-10:** Planning complete, plan externally reviewed (Codex, 3 rounds). **Iteration 1 complete** (§6) — backend foundation built: npm workspaces, `shared` package (types + full unit-conversion module), seed-data fixed, dietary/nutrition/seed-validation modules, verified boot end-to-end. Iteration 1's implementation was then also reviewed (Codex) and one real bug fixed (§3.15) — **30 passing tests** as of that fix, two commits in (`bdc957a`, `5ec320a`). Frontend (`frontend-app`) is still the untouched plain-JS starter — untouched until Iteration 3.
 
 This file is the single source of truth for *why* the project is being built the way it is, not just *what* to build. If you are a new agent (or a human) picking this up cold, read this whole file before touching code — it captures decisions already made and the reasoning behind them, so you don't re-litigate settled questions or repeat analysis already done.
 
@@ -8,7 +8,7 @@ This file is the single source of truth for *why* the project is being built the
 
 ## Project summary
 
-**Recipe Manager** is a full-stack web app for browsing, searching, and organizing recipes. Backend is Express (being migrated to TypeScript) serving a mock JSON "database" (`backend-app/db/data.json`) of recipes and ingredients; frontend is Next.js (App Router, being migrated to TypeScript). Users can browse a recipe list with search/tag/ingredient filters, view a recipe detail page with joined ingredient quantities, instructions, tags, and computed nutrition (calculated server-side from per-ingredient nutrition + a shared unit-conversion module). On top of that core, the build adds: derived dietary filters (vegan/vegetarian/gluten-free/etc., computed from ingredient data rather than hand-tagged), sorting, live recipe scaling by servings, a shopping-list generator that merges ingredients across selected recipes, localStorage-based favoriting and a persistent dietary/interest profile (no accounts — see §3.1), and an "Ask about this recipe" panel backed by a server-side OpenAI proxy that's grounded in the specific recipe's ingredients/instructions. The whole thing is meant to be deployed live (Vercel + Render/Railway), not just run locally.
+**Recipe Manager** is a full-stack web app for browsing, searching, and organizing recipes. Backend is Express/TypeScript (migration done as of Iteration 1) serving a mock JSON "database" (`backend-app/db/data.json`) of recipes and ingredients; frontend is Next.js (App Router, still plain JS — migration to TypeScript is Iteration 3's job). Users can browse a recipe list with search/tag/ingredient filters, view a recipe detail page with joined ingredient quantities, instructions, tags, and computed nutrition (calculated server-side from per-ingredient nutrition + a shared unit-conversion module). On top of that core, the build adds: derived dietary filters (vegan/vegetarian/gluten-free/etc., computed from ingredient data rather than hand-tagged), sorting, live recipe scaling by servings, a shopping-list generator that merges ingredients across selected recipes, localStorage-based favoriting and a persistent dietary/interest profile (no accounts — see §3.1), and an "Ask about this recipe" panel backed by a server-side OpenAI proxy that's grounded in the specific recipe's ingredients/instructions. The whole thing is meant to be deployed live (Vercel + Render/Railway), not just run locally.
 
 See §1 below for the framing this is built under (it's a take-home assessment), and §3 for the full reasoning behind each of these choices.
 
@@ -80,7 +80,7 @@ hells-kitchen/
 └── frontend-app/               # UNTOUCHED — still the plain-JS starter, Iteration 3's job
 ```
 
-28/28 tests passing (`npm test` from root or `backend-app/`); `npm start` in `backend-app/` boots a real server serving real computed data. Full detail of what was built and one real architecture snag (source-only `shared` vs. a compiled backend build) hit and resolved along the way: §3.14.
+30/30 tests passing as of the §3.15 bugfix (`npm test` from root or `backend-app/`; 28 originally, +2 regression tests added when Codex's review caught the dietary-derivation bug); `npm start` in `backend-app/` boots a real server serving real computed data. Full detail of what was built and one real architecture snag (source-only `shared` vs. a compiled backend build) hit and resolved along the way: §3.14. The one real bug found on implementation review: §3.15.
 
 ---
 
@@ -116,8 +116,8 @@ Each entry is a decision that was explicitly discussed and closed. Don't reopen 
 2. **Keep a seed-validation script** that runs on server boot, checks every recipe's `ingredientId`s resolve against the ingredients list, and **logs a warning** (does not crash) for anything unresolved. This is explicit above-and-beyond scope from the original bonus list, and it's not just decorative — it caught the exact bug in (1). Keep it as the permanent safety net for any *future* bad data, even after (1) fixes the current gap.
 **Downstream contract this implies (settle in Iteration 1, not later):** the recipe-detail API and nutrition-calc module must tolerate an unresolved ingredient gracefully rather than crash. Suggested response shape: an unresolved ingredient line includes `resolved: false` with a null/partial nutrition contribution, and the recipe's aggregate computed-nutrition object carries a `partial: true` flag if any ingredient in it was unresolved. Decide this shape before Iteration 3 (frontend) starts consuming it, so the frontend isn't reverse-engineering an ad hoc shape later. (Should be moot after the (1) fix ships, but the contract still needs to exist for defensive correctness.)
 
-### 3.5 — Nutrition basis is inconsistent in the seed data — deferred, not yet resolved
-**Finding (for reference, not yet acted on):** Spot-checked several ingredient nutrition entries in `data.json` against real-world per-100g values:
+### 3.5 — Nutrition basis is inconsistent in the seed data — RESOLVED in Iteration 1 (§3.14), leaning below is what shipped
+**Finding:** Spot-checked several ingredient nutrition entries in `data.json` against real-world per-100g values:
 
 | Ingredient | Listed calories | Real-world per-100g | What it actually matches |
 |---|---|---|---|
@@ -125,9 +125,8 @@ Each entry is a decision that was explicitly discussed and closed. Don't reopen 
 | `flour` | 455 | ~364 | ~1 cup (~455 cal) |
 | `chicken_breast` | 165 | ~165 | per-100g (matches) |
 
-There is no single consistent basis across entries — looks like it was sourced from different reference units per ingredient (some per-tbsp, some per-cup, some genuinely per-100g). This has **not been resolved yet** — candidate explicitly deferred it ("leave it as is for now, tackle later").
-**Leaning for when it is resolved:** don't chase real-world nutritional accuracy against inconsistent source data. Pick one simple, internally-consistent convention — most likely "treat each ingredient's listed nutrition value as its per-100g figure, and scale everything through the shared unit-conversion module (§5.1)" — and state that single assumption once, explicitly, in Candidate Notes. Internal consistency (same math applied everywhere) matters more here than matching real nutrition science, since the underlying seed data doesn't support real accuracy anyway.
-**Action item:** whoever builds the nutrition module (Iteration 1) must pick and document a basis before shipping, even if it's exactly this leaning. Don't leave it implicit.
+There is no single consistent basis across entries — looks like it was sourced from different reference units per ingredient (some per-tbsp, some per-cup, some genuinely per-100g). This was originally deferred by the candidate ("leave it as is for now, tackle later") but had to be resolved once Iteration 1 actually built the nutrition module — a module can't compute anything without picking a basis.
+**Resolved as:** don't chase real-world nutritional accuracy against inconsistent source data. Treat each ingredient's listed nutrition value as its per-100g figure, scaled through the shared unit-conversion module (§5.1) — implemented exactly this way in `backend-app/src/nutrition.ts`, with the assumption documented inline at the top of that file. Internal consistency (same math applied everywhere) matters more here than matching real nutrition science, since the underlying seed data doesn't support real accuracy anyway. State this explicitly in Candidate Notes (Iteration 8) too — it's the kind of assumption a reviewer should hear from the candidate, not discover by reading source.
 
 ### 3.6 — Deploy is a protected priority, not a generic "cuttable bonus"
 **Decision:** if time gets tight, cut a bonus feature (e.g. favoriting) before cutting the deploy step. Target **Vercel** for the frontend, **Render or Railway** for the backend, env vars wired between them.
@@ -256,11 +255,11 @@ There is no single consistent basis across entries — looks like it was sourced
 
 ## 5. Architecture decisions
 
-### 5.1 Shared types & the unit-conversion module — mechanism still to be finalized in Iteration 1
-The *what* is decided (§4.3); the *how* to physically share code between two independent `npm` projects (`backend-app`, `frontend-app`, currently unrelated packages, no monorepo tooling) is not yet locked. Leading option, to be confirmed at the start of Iteration 1:
-- Introduce a root-level `package.json` with **npm workspaces** (`"workspaces": ["backend-app", "frontend-app", "shared"]`) and a small `shared/` package (e.g. `@hells-kitchen/shared`) exporting the `Recipe`/`Ingredient`/etc. TypeScript types **and** the unit-conversion module (gram-conversion table + helpers).
-- Both `backend-app` and `frontend-app` depend on `@hells-kitchen/shared` as a local workspace package and import from it directly — no code duplication, no manual copy-paste sync.
-- Alternative considered: just duplicate a `types.ts` file in both apps and keep them manually in sync. Rejected as the default — it's exactly the "duplicating interfaces" anti-pattern the above-and-beyond list calls out avoiding. Only fall back to this if workspaces cause unexpected friction with the Vercel/Render deploy setup (worth a quick sanity check early, since monorepo deploys occasionally need extra config on those platforms).
+### 5.1 Shared types & the unit-conversion module — mechanism confirmed, implemented in Iteration 1
+The *what* was decided here (§4.3); the *how* was **npm workspaces**, confirmed working end-to-end in Iteration 1 (§3.14) — no fallback to duplication needed, though one real deploy-shaped snag was hit and resolved along the way (§3.14's `tsx`-not-`tsc` resolution).
+- Root-level `package.json` with `"workspaces": ["shared", "backend-app", "frontend-app"]` and `shared/` (`@hells-kitchen/shared`) exporting the `Recipe`/`Ingredient`/etc. TypeScript types **and** the full unit-conversion module (gram-conversion table + density/count-unit lookups, §3.9).
+- Both `backend-app` and `frontend-app` depend on `@hells-kitchen/shared` as a local workspace package and import from it directly — no code duplication, no manual copy-paste sync. `backend-app` has consumed it since Iteration 1; `frontend-app` will start in Iteration 3.
+- Alternative considered and rejected: duplicating a `types.ts` file in both apps, kept manually in sync — exactly the anti-pattern the above-and-beyond list calls out avoiding. Not needed — workspaces worked, once the source-only-package-vs-compiled-build friction in §3.14 was resolved.
 
 ### 5.2 TypeScript migration
 Both apps started as plain JS (§2). Since shared types and "TypeScript/JavaScript best practices" are both explicit evaluation/above-and-beyond items, both get converted — not optional, it's load-bearing for §5.1. **Corrected on external review (this section previously said both apps convert in Iteration 1 — inconsistent with §6, which always scoped it as backend-app in Iteration 1, frontend-app in Iteration 3):** `backend-app` was converted in Iteration 1, running under `tsx` in both dev and production with no compiled build step (§3.14 — not "`ts-node`/`tsx` + build step" as this section previously and inaccurately said). `frontend-app`'s conversion is Iteration 3's job (Next.js has first-class TS support, low-friction migration expected).
@@ -277,7 +276,7 @@ The shared unit-conversion module (§5.1) is importable from both sides, so shop
 
 Ordering is dependency-driven: shared foundation before anything consumes it, backend before frontend, filters before the dietary-derivation layer that extends them, cross-cutting bonus features after the modules they reuse exist, LLM after the profile exists (so it can be grounded in it), polish before deploy.
 
-**Legend:** ✅ done · 🔲 not started. Everything below is 🔲 as of this writing — nothing has been implemented yet, only planned.
+**Legend:** ✅ done · 🔲 not started. Iteration 1 is done (see below); Iterations 2-9 are still 🔲.
 
 ### Iteration 0 — Planning (this document) — ✅ done
 Scope agreed, seed data audited, provider choices made, decision log written.
@@ -293,7 +292,7 @@ Scope agreed, seed data audited, provider choices made, decision log written.
 - [x] Nutrition calculation module — basis assumption resolved (per-100g, §3.14), `partial`/`approximate` fallback rule implemented — `backend-app/src/nutrition.ts`
 - [x] Boot-time precompute of per-recipe `dietary[]` and `caloriesPerServing`/`nutritionPartial` — `backend-app/src/data.ts`
 - [x] Dietary normalization module (§3.2) — `backend-app/src/dietary.ts`, vegan⊇vegetarian rule, verified against the Margherita Pizza proof case
-- **Definition of done — met:** 28 automated tests passing (`npm test`, Vitest) covering unit-conversion (mass/volume/count tiers, fallback contract), nutrition math, dietary derivation, and seed validation — plus an end-to-end smoke test (`npm start`, real `curl` against `/api/recipes`, verified the Margherita Pizza dietary/calorie output by hand). Full route contract (§3.10) is still Iteration 2 — this iteration's `/api/recipes` route is a placeholder, not yet spec-compliant.
+- **Definition of done — met:** 30 automated tests passing (`npm test`, Vitest; 28 originally + 2 regression tests from the §3.15 dietary bugfix) covering unit-conversion (mass/volume/count tiers, fallback contract), nutrition math, dietary derivation (including the unresolved-ingredient edge case), and seed validation — plus an end-to-end smoke test (`npm start`, real `curl` against `/api/recipes`, verified the Margherita Pizza dietary/calorie output by hand). Full route contract (§3.10) is still Iteration 2 — this iteration's `/api/recipes` route is a placeholder, not yet spec-compliant.
 
 ### Iteration 2 — Backend API (core requirement) — 🔲
 - `GET /api/recipes` with search (case-insensitive substring on name/description) + tag filter (multi-select, AND) + ingredient filter (by name, ANY, joined against IDs) + dietary filter (AND, against the boot-precomputed `dietary[]` field) + `sort`/`order` — per the contract locked in §3.10
@@ -368,7 +367,7 @@ Track these here as they get resolved — update this section, don't just delete
 - [x] ~~**Shared-types mechanism** (§5.1): npm workspaces vs. manual duplication~~ **Resolved in Iteration 1 (§3.14):** npm workspaces, confirmed working end-to-end for dev/test/start. No fallback to duplication needed.
 - [x] ~~**Nutrition basis** (§3.5)~~ **Resolved in Iteration 1 (§3.14):** implemented as per-100g in `backend-app/src/nutrition.ts`, documented inline at the top of that file.
 - [ ] **Shopping list aggregation location** (§5.3): leaning client-side; revisit only if a concrete reason to move it server-side surfaces. Still open — Iteration 5.
-- [x] ~~**Git repo**: not yet initialized.~~ **Resolved (§3.8, §2):** repo already exists at the project root, on `main`, tracking `origin/main`. Iteration 1's work is committed on top of it.
+- [x] ~~**Git repo**: not yet initialized.~~ **Resolved (§3.8, §2):** repo already exists at the project root, on `main`, tracking `origin/main`. Iteration 1's work is committed on top of it locally (`bdc957a`, `5ec320a` — not yet pushed to `origin`).
 - [ ] **Deploy target confirmation**: Vercel + Render/Railway assumed (§3.6); not yet actually provisioned/confirmed available. Still open — Iteration 8.
 - [ ] **OpenAI model choice** (§3.3, §3.11): "a cheap/fast model" — pin the exact model string when Iteration 6 starts, based on whatever's current/available at build time. Must be a hard-pinned constant, not resolved dynamically per request.
 - [x] ~~**Exact reference values** for the ingredient-specific unit tables (§3.9)~~ **Resolved in Iteration 1:** all 21 count-unit weights and 24 `gramsPerCup` density values are populated in `shared/src/units.ts` (USDA-ish approximations, as anticipated — good enough for a take-home, not claimed lab-precise).
