@@ -84,3 +84,55 @@ The application uses a JSON file (`data.json`) as a mock database
 
 
 Good luck! We're excited to see your implementation.
+
+## Candidate Notes
+
+**Live deployment:** https://hells-kitchen-frontend.vercel.app
+(backend: https://hells-kitchen-backend-production.up.railway.app — Express API, not meant to be browsed directly)
+
+The full decision log for this project — every architectural choice, every bug found and how, every external (Codex) review round and what came of it — lives in [`PLAN.md`](./PLAN.md). It's long on purpose: it was written to let a new agent or reviewer pick up the project with full context, not just a feature list. This section is the condensed version.
+
+### Setup instructions beyond the base README
+
+This became an npm workspaces monorepo (`shared`, `backend-app`, `frontend-app`) — install once from the repo root as documented above, not separately per app. Two environment files matter beyond that:
+
+- `backend-app/.env` (gitignored, copy from `backend-app/.env.example`): `OPENAI_API_KEY` for the "Ask about this recipe" panel. The app runs completely fine without it — the feature just shows a clear disabled state instead of a crash (see "Assumptions," below).
+- `frontend-app/.env.local` (or platform env vars in production): `NEXT_PUBLIC_API_URL`, the backend's base URL. Defaults to `http://localhost:8080` for local dev.
+
+### Implementation choices worth calling out
+
+- **Shared TypeScript types** (`@hells-kitchen/shared`, a source-only workspace package — no build step, consumed via `tsx` on the backend and `transpilePackages` on the frontend) so the two apps can't silently drift on the `Recipe`/`Ingredient` shapes.
+- **A real three-tier unit-conversion system** for nutrition and shopping-list math: pure mass conversions (universal), volume conversions (universal ratios, but volume→mass needs a per-ingredient density), and count/descriptive units ("2 cloves," "1 medium") which need a per-ingredient-and-unit reference weight. This is the one piece of the app I'd call genuinely non-trivial engineering rather than CRUD-with-styling.
+- **No real authentication.** Favoriting, a dietary/interest profile, and a shopping list are all `localStorage`-only, keyed by device/browser rather than account. The README doesn't ask for accounts, and building real auth on a recipe take-home reads as scope-mismatch more than initiative — see PLAN.md §3.1 for the full reasoning. It's a deliberate choice, not an oversight.
+- **The LLM feature is a grounded, narrow assistant, not a generic chatbot** bolted onto the page. The backend proxy builds its system prompt from the specific recipe's actual ingredients/instructions/nutrition, explicitly instructed not to invent facts about the recipe but to still give normal cooking help (substitutions, technique questions) — off-topic questions get politely declined. It also receives the visitor's saved dietary profile so it can proactively flag conflicts. Backend-only API key, question-length cap, per-IP rate limiting, and a pinned model string (`gpt-4o-mini`) so nothing about the endpoint depends on "whatever's currently cheapest."
+- **A deliberate design pass.** The initial build was functionally complete but visually generic; a later pass rebuilt the whole frontend against a real UI mockup (an "engineering spec sheet" look — corner-bracket card framing, dotted rules, a condensed technical typeface) rather than shipping default-Tailwind-card styling.
+
+### Completed features
+
+*Core (required):* recipe list with search/tag/ingredient filtering, recipe detail with joined ingredients/instructions/tags, server-computed nutrition (real per-ingredient unit conversion, not hardcoded numbers).
+
+*Bonus, from the README's suggested list:* dietary-restriction filters (derived from ingredient data, not hand-tagged — see the vegan/vegetarian normalization note below), sorting (prep time/cook time/difficulty/calories, both directions), live recipe scaling by servings, a shopping-list generator that merges ingredients by identity (not display-name string matching) across multiple recipes, favoriting, and the LLM feature.
+
+*Beyond the suggested list:* a persistent dietary/interest profile that auto-applies as your default filter state on a fresh visit; a difficulty filter; a proactive dietary-conflict banner on the recipe detail page.
+
+### Assumptions made
+
+- **Ingredient nutrition values in the seed data are treated as per-100g.** The seed data doesn't state its basis explicitly; per-100g is the most common real-world convention and produces sane numbers against the recipes' actual serving sizes, but it's a documented assumption, not a verified fact about how the original data was authored.
+- **No accounts** — see "Implementation choices," above.
+- **Favoriting/shopping-list/profile are device-local**, not synced anywhere. Clearing browser storage clears them.
+- **The 15-recipe/54-ingredient seed dataset is the full catalog.** No live recipe-import API — see "Additional features," below.
+
+### Known limitations
+
+- **No mobile-specific filter drawer yet.** The filter rail is a fixed left column; it reflows into a stacked layout below ~900px but hasn't had a dedicated mobile-first pass (planned as the next iteration, not reached before the deploy step).
+- **CORS on the backend is fully permissive** (`cors()` with no origin restriction) rather than locked to the deployed frontend's origin — a reasonable simplification for a take-home with two public-but-obscure URLs, not something I'd ship at a company handling real user data.
+- **The LLM rate limiter is in-memory and per-process** — fine for this single-instance deploy, wouldn't hold up unmodified behind a horizontally-scaled backend.
+- **The shopping list adds a recipe at its own base servings**, not whatever serving count you'd scaled it to on the detail page — a deliberate scope cut, not a bug (see PLAN.md §3.25).
+- **The unmerged-ingredient path in the shopping list** (for a unit/ingredient combination with no conversion reference data) is implemented and unit-tested, but the current 15-recipe dataset happens to have zero ingredient lines that actually hit it — so it's real but currently unexercised by the live data.
+
+### Additional features I'd add with more time
+
+- A real mobile filter-drawer pass (Iteration 7 in PLAN.md, not reached before prioritizing deploy).
+- An expanded recipe dataset — the plan (PLAN.md §3.21, §6 Iteration 10) is either LLM-generating a larger, still-realistic set of recipes+ingredients offline, or importing from a real public recipe API, both deliberately run as an offline script rather than a new live runtime dependency.
+- Real lightweight auth (email/magic-link) so favorites/profile/shopping-list could follow a person across devices instead of living in one browser's `localStorage`.
+- Locking down the backend's CORS policy and adding a persistent (not in-memory) rate-limit store, if this were headed toward real production traffic rather than a take-home demo.
