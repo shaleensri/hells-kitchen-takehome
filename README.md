@@ -124,7 +124,7 @@ This became an npm workspaces monorepo (`shared`, `backend-app`, `frontend-app`)
 
 ### Known limitations
 
-- **No mobile-specific filter drawer yet.** The filter rail is a fixed left column; it reflows into a stacked layout below ~900px but hasn't had a dedicated mobile-first pass (planned as the next iteration, not reached before the deploy step).
+- **No dedicated mobile filter drawer.** The filter rail is a fixed left column; it reflows into a stacked layout below ~900px, which works, but isn't a purpose-built mobile pattern. This was planned as its own iteration but deliberately skipped after deploy — once it was clear it meant phone-screen-specific UI work rather than a functional gap (loading/error/404/empty states and general responsiveness were already in place), it didn't seem worth the added time for this submission.
 - **CORS on the backend is fully permissive** (`cors()` with no origin restriction) rather than locked to the deployed frontend's origin — a reasonable simplification for a take-home with two public-but-obscure URLs, not something I'd ship at a company handling real user data.
 - **The LLM rate limiter is in-memory and per-process** — fine for this single-instance deploy, wouldn't hold up unmodified behind a horizontally-scaled backend.
 - **The shopping list adds a recipe at its own base servings**, not whatever serving count you'd scaled it to on the detail page — a deliberate scope cut, not a bug (see PLAN.md §3.25).
@@ -132,7 +132,7 @@ This became an npm workspaces monorepo (`shared`, `backend-app`, `frontend-app`)
 
 ### Additional features I'd add with more time
 
-- A real mobile filter-drawer pass (Iteration 7 in PLAN.md, not reached before prioritizing deploy).
+- A real mobile filter-drawer pass (Iteration 7 in PLAN.md — deliberately skipped rather than unreached; see "Known limitations," above).
 - An expanded recipe dataset — the plan (PLAN.md §3.21, §6 Iteration 10) is either LLM-generating a larger, still-realistic set of recipes+ingredients offline, or importing from a real public recipe API, both deliberately run as an offline script rather than a new live runtime dependency.
 - Real lightweight auth (email/magic-link) so favorites/profile/shopping-list could follow a person across devices instead of living in one browser's `localStorage`.
 - Locking down the backend's CORS policy and adding a persistent (not in-memory) rate-limit store, if this were headed toward real production traffic rather than a take-home demo.
