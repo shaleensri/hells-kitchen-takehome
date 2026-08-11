@@ -10,7 +10,12 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en">
+    // suppressHydrationWarning here only covers attributes on <html> itself —
+    // some browser extensions (ad blockers, price-comparison tools, etc.)
+    // inject data-* attributes into <html>/<body> before React hydrates,
+    // which React otherwise (correctly, but noisily) flags as a mismatch.
+    // Doesn't hide a real content mismatch anywhere else in the tree.
+    <html lang="en" suppressHydrationWarning>
       <body>
         <header className={styles.header}>
           <div className={`container ${styles.headerInner}`}>
