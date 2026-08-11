@@ -1,6 +1,6 @@
 # Recipe Manager — Project Plan & Decision Log
 
-**Status as of 2026-08-10:** Planning complete, plan externally reviewed (Codex, 3 rounds). **Iterations 1-3 complete** (§6) — full backend (§3.14-§3.16) plus the frontend core (§3.17). **Checkpoint 1 (§3.12) reached** after Iteration 3. Since then, two design passes: §3.19's warm/serif direction was superseded entirely by **§3.20 — a full redesign matching a user-supplied UI mockup**, an "engineering spec sheet" aesthetic (Barlow Condensed, steel-blue accent, corner-bracket cards, sharp edges, dotted rules). That pass also pulled forward real functionality: a **working recipe-scaling servings stepper** (Iteration 4 feature, verified with exact math), fully wired dietary/tag/difficulty/ingredient filters with live counts, and a new backend `difficulty` filter param. **100 passing tests**, typecheck/build clean, verified via Playwright across light/dark × desktop/tablet/mobile with zero console errors, plus genuinely-triggered (not just code-reviewed) loading and 404 states. `npm run dev` in both `backend-app` and `frontend-app`, then `localhost:3000/recipes` (or whatever port Next.js falls back to if 3000 is taken). New: **Iteration 10 (§3.21, §6) — an expanded dataset beyond the 15 seed recipes** is now on the plan as a stretch item, genuinely undecided between LLM-generated vs. real-API-sourced recipes.
+**Status as of 2026-08-10:** Planning complete, plan externally reviewed (Codex, 3 rounds). **Iterations 1-3 complete** (§6) — full backend (§3.14-§3.16) plus the frontend core (§3.17). **Checkpoint 1 (§3.12) reached** after Iteration 3. Since then, two design passes: §3.19's warm/serif direction was superseded entirely by **§3.20 — a full redesign matching a user-supplied UI mockup**, an "engineering spec sheet" aesthetic (Barlow Condensed, steel-blue accent, corner-bracket cards, sharp edges, dotted rules). That pass also pulled forward real functionality: a **working recipe-scaling servings stepper** (Iteration 4 feature, verified with exact math), fully wired dietary/tag/difficulty/ingredient filters with live counts, and a new backend `difficulty` filter param. **100 passing tests**, typecheck/build clean, verified via Playwright across light/dark × desktop/tablet/mobile with zero console errors, plus genuinely-triggered (not just code-reviewed) loading and 404 states. `npm run dev` in both `backend-app` and `frontend-app`, then `localhost:3000/recipes` (or whatever port Next.js falls back to if 3000 is taken). New: **Iteration 10 (§3.21, §6) — an expanded dataset beyond the 15 seed recipes** is now on the plan as a stretch item, genuinely undecided between LLM-generated vs. real-API-sourced recipes. **§3.20's redesign then got its own review pass (§3.22)** — 4 real gaps found and fixed (a genuine multi-select-filter bug in the search form, an overpromising placeholder, an incomplete scaled-nutrition display, and PLAN.md itself having drifted) — all reproduced and re-verified live before being called fixed, not just patched and trusted.
 
 This file is the single source of truth for *why* the project is being built the way it is, not just *what* to build. If you are a new agent (or a human) picking this up cold, read this whole file before touching code — it captures decisions already made and the reasoning behind them, so you don't re-litigate settled questions or repeat analysis already done.
 
@@ -46,7 +46,7 @@ Key facts:
 - **Git repo already exists and is set up correctly** — verified via `git status`/`git remote -v`/`git log` at the project root (`hells-kitchen/hells-kitchen`, where README/backend-app/frontend-app live): on branch `main`, tracking `origin/main` at `https://github.com/shaleensri/hells-kitchen-takehome.git`, 2 commits so far (`initial skeleton`, `rename folders`). **`PLAN.md` itself is currently untracked** — `git add`/commit it along with the rest of Iteration 0's output. (Note: an earlier draft of this file wrongly claimed no git repo existed — that was checked against the wrong directory level. Corrected here after Codex's review caught it; see §3.8.)
 - The existing `server.js` route is a placeholder — returns the raw recipe array with no filtering, no ingredient joins, no nutrition calc, and **re-reads + re-parses `data.json` from disk on every single request** (verified in the source — `getData()` is called inside the route handler, not cached). Effectively nothing to preserve; it'll be replaced wholesale in Iteration 2, and the "load once at boot" behavior described in §5.4 is a planned improvement, not something already in place.
 
-### 2.1 Repo state after Iteration 3 (current)
+### 2.1 Repo state after the §3.20 redesign (current)
 
 ```
 hells-kitchen/
@@ -92,32 +92,37 @@ hells-kitchen/
     ├── next.config.mjs        # transpilePackages: ["@hells-kitchen/shared"] (§5.1)
     ├── .env.example           # documents NEXT_PUBLIC_API_URL for Iteration 8's deploy
     ├── lib/
-    │   ├── api.ts             # typed client over the §3.10 contract, ApiRequestError + its test
+    │   ├── api.ts             # typed client over the §3.10 contract (incl. difficulty, §3.20), ApiRequestError + its test
     │   ├── api.test.ts
     │   ├── searchParams.ts    # raw Next.js searchParams → API client params + its test
     │   ├── searchParams.test.ts
     │   ├── tags.ts             # dedupes a raw tag against a dietary badge showing the same word (§3.17 bugfix) + its test
-    │   └── tags.test.ts
+    │   ├── tags.test.ts
+    │   ├── filterUrl.ts        # NEW (§3.20) — computes filter-rail toggle hrefs server-side, comma-joined multi-value convention + its test
+    │   └── filterUrl.test.ts
     └── app/
-        ├── layout.tsx          # site header/nav
+        ├── layout.tsx          # site header/nav, Barlow Condensed + Barlow via next/font (§3.20)
         ├── page.tsx            # redirects to /recipes
         ├── not-found.tsx       # global 404 (unmatched routes)
-        ├── globals.css         # design tokens (light/dark), extended from the create-next-app default
+        ├── globals.css         # spec-sheet design tokens (§3.20) — Barlow fonts, steel-blue accent, zero radius, corner-bracket/rule utilities
         └── recipes/
-            ├── page.tsx        # list: server component, fetches via searchParams, renders FilterBar + grid
-            ├── loading.tsx     # skeleton grid (Next Suspense convention)
+            ├── page.tsx        # list: fetches unfiltered (for stats/counts) + filtered lists, search form, stats header, rail + grid layout
+            ├── loading.tsx     # skeleton grid w/ blueprint corners (Next Suspense convention)
             ├── error.tsx       # retry button, client component (Next error-boundary requirement)
             ├── _components/
-            │   ├── FilterBar.tsx    # plain <form method="GET"> — no client JS needed (§3.17)
-            │   └── RecipeCard.tsx
+            │   ├── FilterRail.tsx        # NEW (§3.20) — dietary/tags checkboxes + difficulty toggle, server-computed links via lib/filterUrl.ts, no client JS
+            │   ├── IngredientChips.tsx   # NEW (§3.20) — the one real client component in the rail (free-text add/remove isn't a fixed set)
+            │   ├── SortControl.tsx       # NEW (§3.20) — sort/order <select>, client component (needs onChange navigation)
+            │   └── RecipeCard.tsx        # numbered spec-sheet card, corner brackets + dotted outline (§3.20 + its follow-up fix)
             └── [id]/
-                ├── page.tsx        # detail: ingredients w/ resolved/approximate badges, instructions, nutrition table
+                ├── page.tsx               # detail: header/stats strip, delegates ingredients/method/nutrition to ScalableRecipeBody
+                ├── ScalableRecipeBody.tsx # NEW (§3.20) — real servings scaler, client component, pure math against data already in the response
                 ├── loading.tsx
                 ├── error.tsx
-                └── not-found.tsx   # route-specific 404, triggered by notFound() on a backend 404
+                └── not-found.tsx          # route-specific 404, fetches real suggested recipes (§3.20)
 ```
 
-**82/82 tests passing** (`npm test` from root or any workspace): 64 backend + 18 frontend (`api.test.ts`, `searchParams.test.ts`, `tags.test.ts`). Beyond the automated suite: a real headless-Chromium Playwright pass against the actually-running app produced screenshots that caught 3 visual bugs invisible to typecheck/tests alone (§3.17) — all fixed and re-verified. `npm run dev` in both `backend-app` and `frontend-app` now serves a real, working website at `localhost:3000/recipes`. Full detail: §3.14 (Iteration 1's architecture snag), §3.15-§3.16 (backend review passes), §3.17 (Iteration 3's build + the visual-verification bugs).
+**100/100 tests passing** (`npm test` from root or any workspace): 86 backend + 14 `filterUrl.test.ts` covering the rail's toggle-link logic — the search form's own hidden-input rendering (the bug in §3.22) isn't Vitest-covered, verified via Playwright instead, consistent with how every other UI-interaction concern in this project has been checked (§3.17, §3.19, §3.20). `npm run dev` in both `backend-app` and `frontend-app` now serves a real, working website at `localhost:3000/recipes`. Full detail: §3.14 (Iteration 1's architecture snag), §3.15-§3.16 (backend review passes), §3.17 (Iteration 3's build), §3.20 (the spec-sheet redesign), §3.22 (this review's fixes).
 
 ---
 
@@ -337,6 +342,16 @@ Confirmed via `grep` (not assumption) that the README says nothing about a live 
 
 **Either way, the architecture stays "generate/import once, offline, into the static dataset"** — not a live fetch on every request. That preserves the existing boot-time-load design (§5.4) instead of introducing a runtime external dependency into the request path, and keeps the seed-validation safety net (§3.4) meaningful for whatever gets added.
 
+### 3.22 — §3.20's redesign reviewed (Codex); 4 real gaps found and fixed, none of them deliberate deferrals
+**Verdict up front:** all four were genuine misses, not "planned for later" — worth being direct about that rather than rationalizing after the fact. Verified each independently before fixing, same as every prior review pass:
+
+1. **Real bug: submitting the search form silently dropped multi-select filters.** `page.tsx`'s search `<form>` preserved active `tags`/`ingredients`/`dietary` filters via one hidden `<input>` per value sharing a single `name` — native browser form semantics turn that into a *repeated query key* (`?dietary=vegan&dietary=gluten-free`) on submit. But `lib/searchParams.ts`'s `firstValue()` takes only the first element of an array, and that's what every page in the app uses to parse incoming params. Net effect: search with 2+ values active in the same filter, and all but the first silently vanished. Root cause: I used two different multi-value serialization conventions in the same app — comma-joined single values everywhere else (`lib/filterUrl.ts`, `IngredientChips`, the backend's own `parseCommaList`), repeated-key elsewhere (just this form) — and never actually tested "two values of the *same* filter type, then submit search," only individual filters and combinations of *different* filter types. **Fixed:** one hidden input per filter, comma-joined, matching the convention used everywhere else. **Verified by reproducing Codex's exact scenario in a real browser** (not just reading the fix): loaded `?dietary=vegan,gluten-free`, submitted a search, confirmed both values survived in the resulting URL.
+2. **Real bug, minor: the search placeholder overpromised.** "Search recipes, ingredients…" — but `q` only ever searched title/description per the locked §3.10 contract; ingredient filtering has always lived in the dedicated ingredient chips. Fixed the copy rather than expanding `q`'s scope, per Codex's own suggested resolution — the two filters serve different purposes (full-text search vs. exact/substring ingredient matching) and conflating them would blur that.
+3. **Real gap: the scaled "recipe total" note only recalculated calories, not the full macro breakdown**, even though per-serving protein/carbs/fat were already on screen and the plan's own Iteration 4 wording says scaling recalculates "nutrition," not just calories specifically. Fixed — the total note now shows all four scaled values. Verified the arithmetic directly (8 servings on Margherita Pizza: 4360.8 kcal / 192g protein / 639.2g carbs / 112g fat — each exactly 8× the per-serving figure).
+4. **PLAN.md itself had drifted**, the same category of gap as §3.15/§3.16: §2.1's "current repo state" tree and test count were still describing the pre-§3.20 app (old `FilterBar.tsx`, no `FilterRail`/`IngredientChips`/`SortControl`/`ScalableRecipeBody`/`filterUrl.ts`, "82/82" instead of 100), and **Iteration 4's own checklist was still unchecked** even though §3.20 had already built all three of its items (dietary filter UI, sorting UI, recipe scaling) — the decision log got a new entry when that work happened, but nobody went back to flip the iteration checklist itself. Both fixed: §2.1 rewritten to match the actual current tree, Iteration 4 marked done with a note explaining it was completed inside §3.20's redesign rather than as its own separate pass.
+
+**On why #1 wasn't caught by the extensive Playwright verification already done for §3.20:** every filter type was tested individually, and multiple *different* filter types were tested combined (dietary + difficulty + ingredient + sort together, per §3.20's own verification writeup) — but never two *values of the same* filter type followed by a search-form submission specifically, which is the one path that touches the hidden-input code that had the bug. A real gap in test coverage, not a contradiction of the earlier "verified" claim — just a scenario the verification pass didn't happen to include. No new automated test added for this specific case (component-level rendering tests aren't part of this project's test architecture, which uses Playwright for UI-interaction concerns and Vitest for pure logic, consistent with §3.17/§3.19/§3.20) — the fix is verified via the same Playwright reproduction described above, documented here for anyone who wants to re-run it.
+
 ---
 
 ## 4. Final feature scope
@@ -430,10 +445,12 @@ Scope agreed, seed data audited, provider choices made, decision log written.
 
 > **🛑 Checkpoint 1 (§3.12):** stop here and honestly assess pace. Core + deploy-ready is a complete, submittable project on its own. If behind schedule, skip to Iteration 8 (writeup + deploy) now rather than continuing.
 
-### Iteration 4 — Bonus batch 1: filter/sort/scale (self-contained, extends existing filter logic) — 🔲
-- Dietary filter **UI** — the derivation/normalization (§3.2) and the `dietary` query param (§3.10) are backend work already done in Iterations 1-2; this iteration is the `/recipes` filter chips/checkboxes that call it
-- Sorting **UI** — dropdown on `/recipes` for prep time, cook time, difficulty, calories, wired to the `sort`/`order` query params (§3.10) — the `caloriesPerServing` list field it depends on is already precomputed as of Iteration 1
-- Recipe scaling — servings input on detail page, live recalculation of ingredient amounts + nutrition (reuses the unit-conversion module)
+### Iteration 4 — Bonus batch 1: filter/sort/scale — ✅ done (pulled forward into §3.20's redesign, not built separately)
+- [x] Dietary filter **UI** — checkboxes in `FilterRail.tsx`, live counts, wired to the `dietary` query param
+- [x] Sorting **UI** — `SortControl.tsx` dropdown for prep time, cook time, difficulty, calories, wired to `sort`/`order`
+- [x] Recipe scaling — `ScalableRecipeBody.tsx`, servings stepper, live recalculation of ingredient amounts + nutrition, verified with exact math (doubling servings exactly doubled every amount and the total)
+- **Not originally scoped for this iteration, added anyway because the mockup's rail needed it:** a difficulty toggle (new backend `difficulty` filter param) and ingredient chips (upgraded from a plain text field).
+- This box was left unchecked for a while after the work was actually done — §3.20 built all three items but nobody went back to flip this checklist, caught on review (§3.22). Lesson: when a later iteration's work gets pulled forward, update *that* iteration's own checklist immediately, not just the decision log narrating it.
 
 > **🛑 Checkpoint 2 (§3.12):** assess pace again. If behind, skip to Iteration 8. If on pace, continue to Iteration 5+.
 

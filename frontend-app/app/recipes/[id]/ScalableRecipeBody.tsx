@@ -133,7 +133,10 @@ export function ScalableRecipeBody({ recipe }: { recipe: RecipeDetail }) {
             </div>
             <p className={styles.totalNote}>
               Per serving. Recipe total at {servings} {servings === 1 ? "serving" : "servings"}:{" "}
-              {formatAmount(nutrition.perServing.calories * servings)} kcal.
+              {formatAmount(nutrition.perServing.calories * servings)} kcal,{" "}
+              {formatAmount(nutrition.perServing.protein * servings)}g protein,{" "}
+              {formatAmount(nutrition.perServing.carbs * servings)}g carbs,{" "}
+              {formatAmount(nutrition.perServing.fat * servings)}g fat.
             </p>
           </div>
         </section>
