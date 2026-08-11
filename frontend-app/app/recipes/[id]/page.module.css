@@ -185,6 +185,7 @@
   border: 1px solid var(--surface-border);
   border-radius: var(--radius-md);
   padding: var(--space-5);
+  margin-bottom: var(--space-7);
 }
 
 .partialNote {

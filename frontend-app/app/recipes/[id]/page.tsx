@@ -86,6 +86,39 @@ export default async function RecipeDetailPage({ params }: RecipeDetailPageProps
         )}
       </header>
 
+      <section aria-labelledby="nutrition-heading" className={styles.nutritionSection}>
+        <h2 id="nutrition-heading">
+          <span aria-hidden="true">🔥</span> Nutrition (per serving)
+        </h2>
+        {nutrition.partial && (
+          <p className={styles.partialNote}>
+            Some ingredients couldn&rsquo;t be fully resolved — these numbers may be incomplete.
+          </p>
+        )}
+        <table className={styles.nutritionTable}>
+          <thead>
+            <tr>
+              <th scope="col">Calories</th>
+              <th scope="col">Protein</th>
+              <th scope="col">Carbs</th>
+              <th scope="col">Fat</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>{nutrition.perServing.calories} kcal</td>
+              <td>{nutrition.perServing.protein} g</td>
+              <td>{nutrition.perServing.carbs} g</td>
+              <td>{nutrition.perServing.fat} g</td>
+            </tr>
+          </tbody>
+        </table>
+        <p className={styles.totalNote}>
+          Recipe total ({recipe.servings} servings): {nutrition.total.calories} kcal, {nutrition.total.protein}g
+          protein, {nutrition.total.carbs}g carbs, {nutrition.total.fat}g fat.
+        </p>
+      </section>
+
       <div className={styles.columns}>
         <section aria-labelledby="ingredients-heading">
           <h2 id="ingredients-heading">
@@ -126,39 +159,6 @@ export default async function RecipeDetailPage({ params }: RecipeDetailPageProps
           </ol>
         </section>
       </div>
-
-      <section aria-labelledby="nutrition-heading" className={styles.nutritionSection}>
-        <h2 id="nutrition-heading">
-          <span aria-hidden="true">🔥</span> Nutrition (per serving)
-        </h2>
-        {nutrition.partial && (
-          <p className={styles.partialNote}>
-            Some ingredients couldn&rsquo;t be fully resolved — these numbers may be incomplete.
-          </p>
-        )}
-        <table className={styles.nutritionTable}>
-          <thead>
-            <tr>
-              <th scope="col">Calories</th>
-              <th scope="col">Protein</th>
-              <th scope="col">Carbs</th>
-              <th scope="col">Fat</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td>{nutrition.perServing.calories} kcal</td>
-              <td>{nutrition.perServing.protein} g</td>
-              <td>{nutrition.perServing.carbs} g</td>
-              <td>{nutrition.perServing.fat} g</td>
-            </tr>
-          </tbody>
-        </table>
-        <p className={styles.totalNote}>
-          Recipe total ({recipe.servings} servings): {nutrition.total.calories} kcal, {nutrition.total.protein}g
-          protein, {nutrition.total.carbs}g carbs, {nutrition.total.fat}g fat.
-        </p>
-      </section>
     </div>
   );
 }
