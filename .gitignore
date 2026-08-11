@@ -18,6 +18,11 @@ coverage/
 # OS cruft
 .DS_Store
 
+# Editor swap/backup files
+*.swp
+*.swo
+*~
+
 # Next.js (frontend-app, Iteration 3+)
 .next/
 out/
