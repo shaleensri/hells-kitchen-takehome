@@ -9,20 +9,44 @@
       "cookTime": "15 minutes",
       "difficulty": "easy",
       "ingredients": [
-        {"ingredientId": "tomato", "amount": "2", "unit": "cups"},
-        {"ingredientId": "mozzarella", "amount": "8", "unit": "oz"},
-        {"ingredientId": "basil", "amount": "10", "unit": "leaves"},
-        {"ingredientId": "flour", "amount": "2.5", "unit": "cups"},
-        {"ingredientId": "olive_oil", "amount": "2", "unit": "tbsp"}
+        {
+          "ingredientId": "tomato",
+          "amount": "2",
+          "unit": "cups"
+        },
+        {
+          "ingredientId": "mozzarella",
+          "amount": "8",
+          "unit": "oz"
+        },
+        {
+          "ingredientId": "basil",
+          "amount": "10",
+          "unit": "leaves"
+        },
+        {
+          "ingredientId": "flour",
+          "amount": "2.5",
+          "unit": "cups"
+        },
+        {
+          "ingredientId": "olive_oil",
+          "amount": "2",
+          "unit": "tbsp"
+        }
       ],
       "instructions": [
         "Prepare pizza dough with flour",
         "Spread tomato sauce",
         "Add fresh mozzarella",
-        "Bake at 450°F",
+        "Bake at 450\u00b0F",
         "Top with fresh basil"
       ],
-      "tags": ["italian", "vegetarian", "dinner"],
+      "tags": [
+        "italian",
+        "vegetarian",
+        "dinner"
+      ],
       "dateAdded": "2024-01-15T10:30:00Z"
     },
     {
@@ -34,19 +58,43 @@
       "cookTime": "12 minutes",
       "difficulty": "easy",
       "ingredients": [
-        {"ingredientId": "flour", "amount": "2.25", "unit": "cups"},
-        {"ingredientId": "butter", "amount": "1", "unit": "cup"},
-        {"ingredientId": "brown_sugar", "amount": "0.75", "unit": "cup"},
-        {"ingredientId": "white_sugar", "amount": "0.75", "unit": "cup"},
-        {"ingredientId": "chocolate_chips", "amount": "2", "unit": "cups"}
+        {
+          "ingredientId": "flour",
+          "amount": "2.25",
+          "unit": "cups"
+        },
+        {
+          "ingredientId": "butter",
+          "amount": "1",
+          "unit": "cup"
+        },
+        {
+          "ingredientId": "brown_sugar",
+          "amount": "0.75",
+          "unit": "cup"
+        },
+        {
+          "ingredientId": "white_sugar",
+          "amount": "0.75",
+          "unit": "cup"
+        },
+        {
+          "ingredientId": "chocolate_chips",
+          "amount": "2",
+          "unit": "cups"
+        }
       ],
       "instructions": [
         "Cream butter and sugars",
         "Mix in dry ingredients",
         "Add chocolate chips",
-        "Bake at 375°F for 12 minutes"
+        "Bake at 375\u00b0F for 12 minutes"
       ],
-      "tags": ["dessert", "baking", "crowd-pleaser"],
+      "tags": [
+        "dessert",
+        "baking",
+        "crowd-pleaser"
+      ],
       "dateAdded": "2024-02-01T15:45:00Z"
     },
     {
@@ -58,11 +106,31 @@
       "cookTime": "15 minutes",
       "difficulty": "medium",
       "ingredients": [
-        {"ingredientId": "chicken_breast", "amount": "1", "unit": "lb"},
-        {"ingredientId": "broccoli", "amount": "2", "unit": "cups"},
-        {"ingredientId": "carrot", "amount": "2", "unit": "medium"},
-        {"ingredientId": "soy_sauce", "amount": "3", "unit": "tbsp"},
-        {"ingredientId": "ginger", "amount": "1", "unit": "tbsp"}
+        {
+          "ingredientId": "chicken_breast",
+          "amount": "1",
+          "unit": "lb"
+        },
+        {
+          "ingredientId": "broccoli",
+          "amount": "2",
+          "unit": "cups"
+        },
+        {
+          "ingredientId": "carrot",
+          "amount": "2",
+          "unit": "medium"
+        },
+        {
+          "ingredientId": "soy_sauce",
+          "amount": "3",
+          "unit": "tbsp"
+        },
+        {
+          "ingredientId": "ginger",
+          "amount": "1",
+          "unit": "tbsp"
+        }
       ],
       "instructions": [
         "Cut chicken into bite-sized pieces",
@@ -71,7 +139,11 @@
         "Season with soy sauce and ginger",
         "Serve hot with rice"
       ],
-      "tags": ["asian", "dinner", "healthy"],
+      "tags": [
+        "asian",
+        "dinner",
+        "healthy"
+      ],
       "dateAdded": "2024-02-15T18:20:00Z"
     },
     {
@@ -83,11 +155,31 @@
       "cookTime": "25 minutes",
       "difficulty": "easy",
       "ingredients": [
-        {"ingredientId": "ground_beef", "amount": "1", "unit": "lb"},
-        {"ingredientId": "corn_tortillas", "amount": "12", "unit": "pieces"},
-        {"ingredientId": "onion", "amount": "1", "unit": "medium"},
-        {"ingredientId": "cilantro", "amount": "0.5", "unit": "cup"},
-        {"ingredientId": "lime", "amount": "2", "unit": "whole"}
+        {
+          "ingredientId": "ground_beef",
+          "amount": "1",
+          "unit": "lb"
+        },
+        {
+          "ingredientId": "corn_tortillas",
+          "amount": "12",
+          "unit": "pieces"
+        },
+        {
+          "ingredientId": "onion",
+          "amount": "1",
+          "unit": "medium"
+        },
+        {
+          "ingredientId": "cilantro",
+          "amount": "0.5",
+          "unit": "cup"
+        },
+        {
+          "ingredientId": "lime",
+          "amount": "2",
+          "unit": "whole"
+        }
       ],
       "instructions": [
         "Brown the ground beef",
@@ -96,7 +188,11 @@
         "Assemble with toppings",
         "Serve with lime wedges"
       ],
-      "tags": ["mexican", "dinner", "family"],
+      "tags": [
+        "mexican",
+        "dinner",
+        "family"
+      ],
       "dateAdded": "2024-02-20T19:15:00Z"
     },
     {
@@ -108,11 +204,31 @@
       "cookTime": "0 minutes",
       "difficulty": "easy",
       "ingredients": [
-        {"ingredientId": "cucumber", "amount": "1", "unit": "large"},
-        {"ingredientId": "tomato", "amount": "3", "unit": "medium"},
-        {"ingredientId": "feta_cheese", "amount": "200", "unit": "g"},
-        {"ingredientId": "red_onion", "amount": "1", "unit": "small"},
-        {"ingredientId": "olive_oil", "amount": "3", "unit": "tbsp"}
+        {
+          "ingredientId": "cucumber",
+          "amount": "1",
+          "unit": "large"
+        },
+        {
+          "ingredientId": "tomato",
+          "amount": "3",
+          "unit": "medium"
+        },
+        {
+          "ingredientId": "feta_cheese",
+          "amount": "200",
+          "unit": "g"
+        },
+        {
+          "ingredientId": "red_onion",
+          "amount": "1",
+          "unit": "small"
+        },
+        {
+          "ingredientId": "olive_oil",
+          "amount": "3",
+          "unit": "tbsp"
+        }
       ],
       "instructions": [
         "Chop vegetables",
@@ -121,7 +237,11 @@
         "Drizzle with olive oil",
         "Season to taste"
       ],
-      "tags": ["greek", "vegetarian", "salad"],
+      "tags": [
+        "greek",
+        "vegetarian",
+        "salad"
+      ],
       "dateAdded": "2024-02-25T12:00:00Z"
     },
     {
@@ -133,11 +253,31 @@
       "cookTime": "20 minutes",
       "difficulty": "hard",
       "ingredients": [
-        {"ingredientId": "sushi_rice", "amount": "2", "unit": "cups"},
-        {"ingredientId": "nori", "amount": "4", "unit": "sheets"},
-        {"ingredientId": "avocado", "amount": "1", "unit": "whole"},
-        {"ingredientId": "cucumber", "amount": "1", "unit": "medium"},
-        {"ingredientId": "crab_meat", "amount": "200", "unit": "g"}
+        {
+          "ingredientId": "sushi_rice",
+          "amount": "2",
+          "unit": "cups"
+        },
+        {
+          "ingredientId": "nori",
+          "amount": "4",
+          "unit": "sheets"
+        },
+        {
+          "ingredientId": "avocado",
+          "amount": "1",
+          "unit": "whole"
+        },
+        {
+          "ingredientId": "cucumber",
+          "amount": "1",
+          "unit": "medium"
+        },
+        {
+          "ingredientId": "crab_meat",
+          "amount": "200",
+          "unit": "g"
+        }
       ],
       "instructions": [
         "Cook sushi rice",
@@ -146,7 +286,11 @@
         "Cut into pieces",
         "Serve with soy sauce"
       ],
-      "tags": ["japanese", "seafood", "dinner"],
+      "tags": [
+        "japanese",
+        "seafood",
+        "dinner"
+      ],
       "dateAdded": "2024-03-01T14:30:00Z"
     },
     {
@@ -158,20 +302,44 @@
       "cookTime": "35 minutes",
       "difficulty": "medium",
       "ingredients": [
-        {"ingredientId": "potato", "amount": "3", "unit": "medium"},
-        {"ingredientId": "cauliflower", "amount": "1", "unit": "head"},
-        {"ingredientId": "coconut_milk", "amount": "400", "unit": "ml"},
-        {"ingredientId": "curry_powder", "amount": "2", "unit": "tbsp"},
-        {"ingredientId": "chickpeas", "amount": "1", "unit": "can"}
+        {
+          "ingredientId": "potato",
+          "amount": "3",
+          "unit": "medium"
+        },
+        {
+          "ingredientId": "cauliflower",
+          "amount": "1",
+          "unit": "head"
+        },
+        {
+          "ingredientId": "coconut_milk",
+          "amount": "400",
+          "unit": "ml"
+        },
+        {
+          "ingredientId": "curry_powder",
+          "amount": "2",
+          "unit": "tbsp"
+        },
+        {
+          "ingredientId": "chickpeas",
+          "amount": "1",
+          "unit": "can"
+        }
       ],
       "instructions": [
         "Chop vegetables",
-        "Sauté spices",
+        "Saut\u00e9 spices",
         "Add vegetables and coconut milk",
         "Simmer until tender",
         "Serve with rice"
       ],
-      "tags": ["indian", "vegan", "spicy"],
+      "tags": [
+        "indian",
+        "vegan",
+        "spicy"
+      ],
       "dateAdded": "2024-03-05T16:45:00Z"
     },
     {
@@ -183,11 +351,31 @@
       "cookTime": "0 minutes",
       "difficulty": "easy",
       "ingredients": [
-        {"ingredientId": "mixed_berries", "amount": "2", "unit": "cups"},
-        {"ingredientId": "banana", "amount": "1", "unit": "medium"},
-        {"ingredientId": "greek_yogurt", "amount": "1", "unit": "cup"},
-        {"ingredientId": "honey", "amount": "2", "unit": "tbsp"},
-        {"ingredientId": "granola", "amount": "0.5", "unit": "cup"}
+        {
+          "ingredientId": "mixed_berries",
+          "amount": "2",
+          "unit": "cups"
+        },
+        {
+          "ingredientId": "banana",
+          "amount": "1",
+          "unit": "medium"
+        },
+        {
+          "ingredientId": "greek_yogurt",
+          "amount": "1",
+          "unit": "cup"
+        },
+        {
+          "ingredientId": "honey",
+          "amount": "2",
+          "unit": "tbsp"
+        },
+        {
+          "ingredientId": "granola",
+          "amount": "0.5",
+          "unit": "cup"
+        }
       ],
       "instructions": [
         "Blend fruits and yogurt",
@@ -196,7 +384,11 @@
         "Add fresh berries",
         "Drizzle with honey"
       ],
-      "tags": ["breakfast", "healthy", "vegetarian"],
+      "tags": [
+        "breakfast",
+        "healthy",
+        "vegetarian"
+      ],
       "dateAdded": "2024-03-10T08:00:00Z"
     },
     {
@@ -208,11 +400,31 @@
       "cookTime": "20 minutes",
       "difficulty": "medium",
       "ingredients": [
-        {"ingredientId": "spaghetti", "amount": "1", "unit": "lb"},
-        {"ingredientId": "pancetta", "amount": "200", "unit": "g"},
-        {"ingredientId": "eggs", "amount": "3", "unit": "large"},
-        {"ingredientId": "parmesan", "amount": "1", "unit": "cup"},
-        {"ingredientId": "black_pepper", "amount": "2", "unit": "tsp"}
+        {
+          "ingredientId": "spaghetti",
+          "amount": "1",
+          "unit": "lb"
+        },
+        {
+          "ingredientId": "pancetta",
+          "amount": "200",
+          "unit": "g"
+        },
+        {
+          "ingredientId": "eggs",
+          "amount": "3",
+          "unit": "large"
+        },
+        {
+          "ingredientId": "parmesan",
+          "amount": "1",
+          "unit": "cup"
+        },
+        {
+          "ingredientId": "black_pepper",
+          "amount": "2",
+          "unit": "tsp"
+        }
       ],
       "instructions": [
         "Cook pasta al dente",
@@ -221,7 +433,11 @@
         "Combine with hot pasta",
         "Season generously"
       ],
-      "tags": ["italian", "pasta", "dinner"],
+      "tags": [
+        "italian",
+        "pasta",
+        "dinner"
+      ],
       "dateAdded": "2024-03-15T19:20:00Z"
     },
     {
@@ -233,11 +449,31 @@
       "cookTime": "20 minutes",
       "difficulty": "easy",
       "ingredients": [
-        {"ingredientId": "quinoa", "amount": "1", "unit": "cup"},
-        {"ingredientId": "sweet_potato", "amount": "1", "unit": "large"},
-        {"ingredientId": "kale", "amount": "2", "unit": "cups"},
-        {"ingredientId": "chickpeas", "amount": "1", "unit": "can"},
-        {"ingredientId": "tahini", "amount": "2", "unit": "tbsp"}
+        {
+          "ingredientId": "quinoa",
+          "amount": "1",
+          "unit": "cup"
+        },
+        {
+          "ingredientId": "sweet_potato",
+          "amount": "1",
+          "unit": "large"
+        },
+        {
+          "ingredientId": "kale",
+          "amount": "2",
+          "unit": "cups"
+        },
+        {
+          "ingredientId": "chickpeas",
+          "amount": "1",
+          "unit": "can"
+        },
+        {
+          "ingredientId": "tahini",
+          "amount": "2",
+          "unit": "tbsp"
+        }
       ],
       "instructions": [
         "Cook quinoa",
@@ -246,7 +482,11 @@
         "Arrange in bowls",
         "Drizzle with dressing"
       ],
-      "tags": ["vegan", "healthy", "lunch"],
+      "tags": [
+        "vegan",
+        "healthy",
+        "lunch"
+      ],
       "dateAdded": "2024-03-20T11:30:00Z"
     },
     {
@@ -258,18 +498,38 @@
       "cookTime": "15 minutes",
       "difficulty": "medium",
       "ingredients": [
-        {"ingredientId": "shrimp", "amount": "1", "unit": "lb"},
-        {"ingredientId": "spaghetti", "amount": "1", "unit": "lb"},
-        {"ingredientId": "olive_oil", "amount": "3", "unit": "tbsp"},
-        {"ingredientId": "parmesan", "amount": "0.5", "unit": "cup"}
+        {
+          "ingredientId": "shrimp",
+          "amount": "1",
+          "unit": "lb"
+        },
+        {
+          "ingredientId": "spaghetti",
+          "amount": "1",
+          "unit": "lb"
+        },
+        {
+          "ingredientId": "olive_oil",
+          "amount": "3",
+          "unit": "tbsp"
+        },
+        {
+          "ingredientId": "parmesan",
+          "amount": "0.5",
+          "unit": "cup"
+        }
       ],
       "instructions": [
         "Cook pasta according to package",
-        "Sauté shrimp in garlic and oil",
+        "Saut\u00e9 shrimp in garlic and oil",
         "Combine with pasta",
         "Top with parmesan"
       ],
-      "tags": ["seafood", "pasta", "italian"],
+      "tags": [
+        "seafood",
+        "pasta",
+        "italian"
+      ],
       "dateAdded": "2024-03-25T13:00:00Z"
     },
     {
@@ -281,9 +541,21 @@
       "cookTime": "15 minutes",
       "difficulty": "medium",
       "ingredients": [
-        {"ingredientId": "tofu", "amount": "14", "unit": "oz"},
-        {"ingredientId": "bell_pepper", "amount": "2", "unit": "medium"},
-        {"ingredientId": "soy_sauce", "amount": "3", "unit": "tbsp"}
+        {
+          "ingredientId": "tofu",
+          "amount": "14",
+          "unit": "oz"
+        },
+        {
+          "ingredientId": "bell_pepper",
+          "amount": "2",
+          "unit": "medium"
+        },
+        {
+          "ingredientId": "soy_sauce",
+          "amount": "3",
+          "unit": "tbsp"
+        }
       ],
       "instructions": [
         "Press and cube tofu",
@@ -291,7 +563,11 @@
         "Add tofu and sauce",
         "Serve hot"
       ],
-      "tags": ["vegetarian", "asian", "healthy"],
+      "tags": [
+        "vegetarian",
+        "asian",
+        "healthy"
+      ],
       "dateAdded": "2024-03-26T14:15:00Z"
     },
     {
@@ -303,11 +579,31 @@
       "cookTime": "20 minutes",
       "difficulty": "medium",
       "ingredients": [
-        {"ingredientId": "salmon_fillet", "amount": "1.5", "unit": "lb"},
-        {"ingredientId": "asparagus", "amount": "1", "unit": "bunch"},
-        {"ingredientId": "lemon", "amount": "1", "unit": "whole"},
-        {"ingredientId": "garlic", "amount": "3", "unit": "cloves"},
-        {"ingredientId": "olive_oil", "amount": "2", "unit": "tbsp"}
+        {
+          "ingredientId": "salmon_fillet",
+          "amount": "1.5",
+          "unit": "lb"
+        },
+        {
+          "ingredientId": "asparagus",
+          "amount": "1",
+          "unit": "bunch"
+        },
+        {
+          "ingredientId": "lemon",
+          "amount": "1",
+          "unit": "whole"
+        },
+        {
+          "ingredientId": "garlic",
+          "amount": "3",
+          "unit": "cloves"
+        },
+        {
+          "ingredientId": "olive_oil",
+          "amount": "2",
+          "unit": "tbsp"
+        }
       ],
       "instructions": [
         "Preheat grill to medium-high",
@@ -316,7 +612,11 @@
         "Grill salmon 4-5 minutes per side",
         "Grill asparagus until tender"
       ],
-      "tags": ["seafood", "healthy", "dinner"],
+      "tags": [
+        "seafood",
+        "healthy",
+        "dinner"
+      ],
       "dateAdded": "2024-03-27T18:30:00Z"
     },
     {
@@ -328,10 +628,26 @@
       "cookTime": "20 minutes",
       "difficulty": "medium",
       "ingredients": [
-        {"ingredientId": "chicken_breast", "amount": "1.5", "unit": "lb"},
-        {"ingredientId": "almonds", "amount": "1", "unit": "cup"},
-        {"ingredientId": "eggs", "amount": "2", "unit": "large"},
-        {"ingredientId": "olive_oil", "amount": "3", "unit": "tbsp"}
+        {
+          "ingredientId": "chicken_breast",
+          "amount": "1.5",
+          "unit": "lb"
+        },
+        {
+          "ingredientId": "almonds",
+          "amount": "1",
+          "unit": "cup"
+        },
+        {
+          "ingredientId": "eggs",
+          "amount": "2",
+          "unit": "large"
+        },
+        {
+          "ingredientId": "olive_oil",
+          "amount": "3",
+          "unit": "tbsp"
+        }
       ],
       "instructions": [
         "Grind almonds into fine crumbs",
@@ -340,7 +656,11 @@
         "Cook chicken 6-7 minutes per side",
         "Let rest before serving"
       ],
-      "tags": ["dinner", "gluten-free", "high-protein"],
+      "tags": [
+        "dinner",
+        "gluten-free",
+        "high-protein"
+      ],
       "dateAdded": "2024-03-28T19:45:00Z"
     },
     {
@@ -352,21 +672,555 @@
       "cookTime": "15 minutes",
       "difficulty": "easy",
       "ingredients": [
-        {"ingredientId": "spaghetti", "amount": "1", "unit": "lb"},
-        {"ingredientId": "garlic", "amount": "6", "unit": "cloves"},
-        {"ingredientId": "lemon", "amount": "2", "unit": "whole"},
-        {"ingredientId": "olive_oil", "amount": "1/3", "unit": "cup"},
-        {"ingredientId": "parmesan", "amount": "1/2", "unit": "cup"}
+        {
+          "ingredientId": "spaghetti",
+          "amount": "1",
+          "unit": "lb"
+        },
+        {
+          "ingredientId": "garlic",
+          "amount": "6",
+          "unit": "cloves"
+        },
+        {
+          "ingredientId": "lemon",
+          "amount": "2",
+          "unit": "whole"
+        },
+        {
+          "ingredientId": "olive_oil",
+          "amount": "1/3",
+          "unit": "cup"
+        },
+        {
+          "ingredientId": "parmesan",
+          "amount": "1/2",
+          "unit": "cup"
+        }
       ],
       "instructions": [
         "Cook pasta al dente",
-        "Sauté garlic in olive oil",
+        "Saut\u00e9 garlic in olive oil",
         "Add lemon juice and zest",
         "Toss with pasta",
         "Top with parmesan"
       ],
-      "tags": ["vegetarian", "pasta", "italian"],
+      "tags": [
+        "vegetarian",
+        "pasta",
+        "italian"
+      ],
       "dateAdded": "2024-03-29T20:15:00Z"
+    },
+    {
+      "id": "16",
+      "title": "Honey Garlic Chicken with Broccoli",
+      "description": "A fast weeknight skillet with a sticky honey-garlic glaze",
+      "servings": 4,
+      "prepTime": "10 minutes",
+      "cookTime": "20 minutes",
+      "difficulty": "easy",
+      "ingredients": [
+        {
+          "ingredientId": "chicken_breast",
+          "amount": "1.5",
+          "unit": "lb"
+        },
+        {
+          "ingredientId": "broccoli",
+          "amount": "3",
+          "unit": "cups"
+        },
+        {
+          "ingredientId": "garlic",
+          "amount": "3",
+          "unit": "cloves"
+        },
+        {
+          "ingredientId": "honey",
+          "amount": "3",
+          "unit": "tbsp"
+        },
+        {
+          "ingredientId": "soy_sauce",
+          "amount": "3",
+          "unit": "tbsp"
+        },
+        {
+          "ingredientId": "ginger",
+          "amount": "1",
+          "unit": "tbsp"
+        },
+        {
+          "ingredientId": "black_pepper",
+          "amount": "0.5",
+          "unit": "tsp"
+        }
+      ],
+      "instructions": [
+        "Cut chicken into bite-size pieces and season with black pepper",
+        "Sear chicken in a hot skillet until golden and cooked through, then remove",
+        "Steam or blanch broccoli until bright green and tender-crisp",
+        "Whisk together honey, soy sauce, minced garlic, and ginger",
+        "Return chicken to the skillet with the broccoli, pour in the sauce, and toss until glazed"
+      ],
+      "tags": [
+        "asian",
+        "dinner",
+        "family",
+        "quick"
+      ],
+      "dateAdded": "2026-07-01T09:00:00Z"
+    },
+    {
+      "id": "17",
+      "title": "Sheet-Pan Honey Garlic Salmon",
+      "description": "Oven-roasted salmon glazed with honey, garlic, and ginger",
+      "servings": 4,
+      "prepTime": "10 minutes",
+      "cookTime": "15 minutes",
+      "difficulty": "easy",
+      "ingredients": [
+        {
+          "ingredientId": "salmon_fillet",
+          "amount": "1.5",
+          "unit": "lb"
+        },
+        {
+          "ingredientId": "honey",
+          "amount": "3",
+          "unit": "tbsp"
+        },
+        {
+          "ingredientId": "soy_sauce",
+          "amount": "2",
+          "unit": "tbsp"
+        },
+        {
+          "ingredientId": "garlic",
+          "amount": "3",
+          "unit": "cloves"
+        },
+        {
+          "ingredientId": "ginger",
+          "amount": "1",
+          "unit": "tbsp"
+        },
+        {
+          "ingredientId": "lemon",
+          "amount": "1",
+          "unit": "whole"
+        }
+      ],
+      "instructions": [
+        "Preheat oven to 400\u00b0F and line a sheet pan with foil",
+        "Whisk honey, soy sauce, minced garlic, and ginger together",
+        "Place salmon skin-side down on the pan and brush generously with the glaze",
+        "Roast until the salmon flakes easily, about 12-15 minutes",
+        "Squeeze fresh lemon juice over the top before serving"
+      ],
+      "tags": [
+        "seafood",
+        "dinner",
+        "quick",
+        "high-protein"
+      ],
+      "dateAdded": "2026-07-02T09:00:00Z"
+    },
+    {
+      "id": "18",
+      "title": "Weeknight Egg Fried Rice",
+      "description": "A quick fried rice built around scrambled eggs and pantry vegetables",
+      "servings": 4,
+      "prepTime": "10 minutes",
+      "cookTime": "15 minutes",
+      "difficulty": "easy",
+      "ingredients": [
+        {
+          "ingredientId": "sushi_rice",
+          "amount": "3",
+          "unit": "cups"
+        },
+        {
+          "ingredientId": "eggs",
+          "amount": "3",
+          "unit": "large"
+        },
+        {
+          "ingredientId": "carrot",
+          "amount": "1",
+          "unit": "medium"
+        },
+        {
+          "ingredientId": "onion",
+          "amount": "1",
+          "unit": "medium"
+        },
+        {
+          "ingredientId": "soy_sauce",
+          "amount": "3",
+          "unit": "tbsp"
+        },
+        {
+          "ingredientId": "ginger",
+          "amount": "1",
+          "unit": "tbsp"
+        },
+        {
+          "ingredientId": "black_pepper",
+          "amount": "0.5",
+          "unit": "tsp"
+        }
+      ],
+      "instructions": [
+        "Cook rice according to package directions and let cool (day-old rice works best)",
+        "Dice the carrot and onion",
+        "Scramble the eggs in a hot wok or large skillet, then remove and set aside",
+        "Saut\u00e9 carrot and onion until softened",
+        "Add the cooled rice, breaking up clumps, then stir in soy sauce, ginger, and black pepper",
+        "Fold the scrambled eggs back in and toss until evenly combined"
+      ],
+      "tags": [
+        "asian",
+        "dinner",
+        "family",
+        "quick",
+        "vegetarian"
+      ],
+      "dateAdded": "2026-07-03T09:00:00Z"
+    },
+    {
+      "id": "19",
+      "title": "Family-Style Shrimp Tacos",
+      "description": "Seared shrimp tacos with avocado, red onion, and lime",
+      "servings": 4,
+      "prepTime": "15 minutes",
+      "cookTime": "10 minutes",
+      "difficulty": "easy",
+      "ingredients": [
+        {
+          "ingredientId": "shrimp",
+          "amount": "1.5",
+          "unit": "lb"
+        },
+        {
+          "ingredientId": "corn_tortillas",
+          "amount": "8",
+          "unit": "pieces"
+        },
+        {
+          "ingredientId": "avocado",
+          "amount": "1",
+          "unit": "whole"
+        },
+        {
+          "ingredientId": "red_onion",
+          "amount": "1",
+          "unit": "small"
+        },
+        {
+          "ingredientId": "cilantro",
+          "amount": "0.25",
+          "unit": "cup"
+        },
+        {
+          "ingredientId": "lime",
+          "amount": "2",
+          "unit": "whole"
+        },
+        {
+          "ingredientId": "black_pepper",
+          "amount": "0.5",
+          "unit": "tsp"
+        }
+      ],
+      "instructions": [
+        "Season shrimp with black pepper",
+        "Sear in a hot skillet for 2-3 minutes per side until pink and opaque",
+        "Warm the corn tortillas",
+        "Slice the avocado and finely dice the red onion",
+        "Assemble tacos with shrimp, avocado, red onion, and cilantro",
+        "Finish with a generous squeeze of lime"
+      ],
+      "tags": [
+        "seafood",
+        "mexican",
+        "family",
+        "quick"
+      ],
+      "dateAdded": "2026-07-04T09:00:00Z"
+    },
+    {
+      "id": "20",
+      "title": "Greek Yogurt Tandoori Chicken",
+      "description": "Yogurt-marinated chicken with curry spices, grilled or roasted",
+      "servings": 4,
+      "prepTime": "15 minutes",
+      "cookTime": "25 minutes",
+      "difficulty": "medium",
+      "ingredients": [
+        {
+          "ingredientId": "chicken_breast",
+          "amount": "1.5",
+          "unit": "lb"
+        },
+        {
+          "ingredientId": "greek_yogurt",
+          "amount": "1",
+          "unit": "cup"
+        },
+        {
+          "ingredientId": "curry_powder",
+          "amount": "2",
+          "unit": "tbsp"
+        },
+        {
+          "ingredientId": "lemon",
+          "amount": "1",
+          "unit": "whole"
+        },
+        {
+          "ingredientId": "garlic",
+          "amount": "3",
+          "unit": "cloves"
+        },
+        {
+          "ingredientId": "ginger",
+          "amount": "1",
+          "unit": "tbsp"
+        }
+      ],
+      "instructions": [
+        "Whisk together greek yogurt, curry powder, minced garlic, ginger, and lemon juice",
+        "Add chicken and coat thoroughly, then marinate for at least 30 minutes",
+        "Grill or bake at 425\u00b0F until cooked through and lightly charred, about 20-25 minutes",
+        "Let rest for a few minutes before slicing"
+      ],
+      "tags": [
+        "indian",
+        "dinner",
+        "high-protein"
+      ],
+      "dateAdded": "2026-07-05T09:00:00Z"
+    },
+    {
+      "id": "21",
+      "title": "Sweet Potato & Beef Skillet",
+      "description": "A one-pan comfort dinner of ground beef and caramelized sweet potato",
+      "servings": 4,
+      "prepTime": "15 minutes",
+      "cookTime": "20 minutes",
+      "difficulty": "easy",
+      "ingredients": [
+        {
+          "ingredientId": "ground_beef",
+          "amount": "1",
+          "unit": "lb"
+        },
+        {
+          "ingredientId": "sweet_potato",
+          "amount": "2",
+          "unit": "large"
+        },
+        {
+          "ingredientId": "onion",
+          "amount": "1",
+          "unit": "medium"
+        },
+        {
+          "ingredientId": "garlic",
+          "amount": "3",
+          "unit": "cloves"
+        },
+        {
+          "ingredientId": "black_pepper",
+          "amount": "0.5",
+          "unit": "tsp"
+        },
+        {
+          "ingredientId": "olive_oil",
+          "amount": "1",
+          "unit": "tbsp"
+        }
+      ],
+      "instructions": [
+        "Dice the sweet potatoes into small cubes",
+        "Heat olive oil in a large skillet and cook the sweet potato until tender, about 8-10 minutes",
+        "Push to one side, add the ground beef and diced onion, and cook until browned",
+        "Stir in minced garlic and black pepper",
+        "Combine everything in the skillet and cook for another 2-3 minutes"
+      ],
+      "tags": [
+        "dinner",
+        "family",
+        "comfort"
+      ],
+      "dateAdded": "2026-07-06T09:00:00Z"
+    },
+    {
+      "id": "22",
+      "title": "Crispy Peanut Tofu with Quinoa",
+      "description": "Pan-fried tofu in a peanut-garlic sauce over quinoa",
+      "servings": 4,
+      "prepTime": "15 minutes",
+      "cookTime": "20 minutes",
+      "difficulty": "medium",
+      "ingredients": [
+        {
+          "ingredientId": "tofu",
+          "amount": "14",
+          "unit": "oz"
+        },
+        {
+          "ingredientId": "quinoa",
+          "amount": "1",
+          "unit": "cup"
+        },
+        {
+          "ingredientId": "peanut_butter",
+          "amount": "3",
+          "unit": "tbsp"
+        },
+        {
+          "ingredientId": "soy_sauce",
+          "amount": "2",
+          "unit": "tbsp"
+        },
+        {
+          "ingredientId": "garlic",
+          "amount": "2",
+          "unit": "cloves"
+        },
+        {
+          "ingredientId": "ginger",
+          "amount": "1",
+          "unit": "tbsp"
+        },
+        {
+          "ingredientId": "carrot",
+          "amount": "1",
+          "unit": "medium"
+        }
+      ],
+      "instructions": [
+        "Cook quinoa according to package directions",
+        "Press and cube the tofu, then pan-fry in a hot skillet until golden and crisp",
+        "Whisk together peanut butter, soy sauce, minced garlic, and ginger with a splash of water",
+        "Shred the carrot",
+        "Toss the crispy tofu in the peanut sauce and serve over quinoa topped with shredded carrot"
+      ],
+      "tags": [
+        "vegan",
+        "dinner",
+        "quick"
+      ],
+      "dateAdded": "2026-07-07T09:00:00Z"
+    },
+    {
+      "id": "23",
+      "title": "Spanish-Style Potato & Egg Skillet",
+      "description": "A rustic skillet of tender potatoes and eggs, tortilla espa\u00f1ola-style",
+      "servings": 4,
+      "prepTime": "15 minutes",
+      "cookTime": "25 minutes",
+      "difficulty": "medium",
+      "ingredients": [
+        {
+          "ingredientId": "potato",
+          "amount": "3",
+          "unit": "medium"
+        },
+        {
+          "ingredientId": "eggs",
+          "amount": "6",
+          "unit": "large"
+        },
+        {
+          "ingredientId": "onion",
+          "amount": "1",
+          "unit": "medium"
+        },
+        {
+          "ingredientId": "olive_oil",
+          "amount": "3",
+          "unit": "tbsp"
+        },
+        {
+          "ingredientId": "black_pepper",
+          "amount": "0.5",
+          "unit": "tsp"
+        }
+      ],
+      "instructions": [
+        "Thinly slice the potatoes and onion",
+        "Heat olive oil in a nonstick skillet and cook the potatoes and onion over low heat until tender, about 15 minutes",
+        "Whisk the eggs with black pepper",
+        "Pour the eggs over the potatoes and onion",
+        "Cook over low heat until mostly set, then finish under a broiler until fully cooked",
+        "Slice into wedges to serve"
+      ],
+      "tags": [
+        "vegetarian",
+        "dinner",
+        "family",
+        "comfort",
+        "gluten-free"
+      ],
+      "dateAdded": "2026-07-08T09:00:00Z"
+    },
+    {
+      "id": "24",
+      "title": "Pan-Seared Crab Cakes",
+      "description": "Golden, pan-fried crab cakes with lemon and garlic",
+      "servings": 4,
+      "prepTime": "15 minutes",
+      "cookTime": "10 minutes",
+      "difficulty": "medium",
+      "ingredients": [
+        {
+          "ingredientId": "crab_meat",
+          "amount": "1",
+          "unit": "lb"
+        },
+        {
+          "ingredientId": "eggs",
+          "amount": "1",
+          "unit": "large"
+        },
+        {
+          "ingredientId": "flour",
+          "amount": "0.25",
+          "unit": "cup"
+        },
+        {
+          "ingredientId": "lemon",
+          "amount": "1",
+          "unit": "whole"
+        },
+        {
+          "ingredientId": "garlic",
+          "amount": "2",
+          "unit": "cloves"
+        },
+        {
+          "ingredientId": "black_pepper",
+          "amount": "0.5",
+          "unit": "tsp"
+        }
+      ],
+      "instructions": [
+        "Combine crab meat, beaten egg, flour, minced garlic, black pepper, and a squeeze of lemon juice",
+        "Form into patties",
+        "Pan-sear in a hot, lightly oiled skillet for 3-4 minutes per side until golden brown",
+        "Serve with extra lemon wedges"
+      ],
+      "tags": [
+        "seafood",
+        "dinner",
+        "family",
+        "quick"
+      ],
+      "dateAdded": "2026-07-09T09:00:00Z"
     }
   ],
   "ingredients": [
@@ -381,7 +1235,10 @@
         "fat": 0.2
       },
       "commonAllergens": [],
-      "dietary": ["vegan", "gluten-free"]
+      "dietary": [
+        "vegan",
+        "gluten-free"
+      ]
     },
     {
       "id": "mozzarella",
@@ -393,8 +1250,12 @@
         "carbs": 2,
         "fat": 21
       },
-      "commonAllergens": ["dairy"],
-      "dietary": ["vegetarian"]
+      "commonAllergens": [
+        "dairy"
+      ],
+      "dietary": [
+        "vegetarian"
+      ]
     },
     {
       "id": "flour",
@@ -406,8 +1267,13 @@
         "carbs": 95,
         "fat": 1.2
       },
-      "commonAllergens": ["gluten", "wheat"],
-      "dietary": ["vegan"]
+      "commonAllergens": [
+        "gluten",
+        "wheat"
+      ],
+      "dietary": [
+        "vegan"
+      ]
     },
     {
       "id": "chicken_breast",
@@ -420,7 +1286,10 @@
         "fat": 3.6
       },
       "commonAllergens": [],
-      "dietary": ["keto", "high-protein"]
+      "dietary": [
+        "keto",
+        "high-protein"
+      ]
     },
     {
       "id": "chocolate_chips",
@@ -432,182 +1301,357 @@
         "carbs": 35,
         "fat": 18
       },
-      "commonAllergens": ["dairy", "soy"],
+      "commonAllergens": [
+        "dairy",
+        "soy"
+      ],
       "dietary": []
     },
     {
       "id": "ground_beef",
       "name": "Ground Beef",
       "category": "protein",
-      "nutrition": {"calories": 250, "protein": 26, "carbs": 0, "fat": 17},
+      "nutrition": {
+        "calories": 250,
+        "protein": 26,
+        "carbs": 0,
+        "fat": 17
+      },
       "commonAllergens": [],
-      "dietary": ["keto", "high-protein"]
+      "dietary": [
+        "keto",
+        "high-protein"
+      ]
     },
     {
       "id": "corn_tortillas",
       "name": "Corn Tortillas",
       "category": "grain",
-      "nutrition": {"calories": 120, "protein": 2, "carbs": 23, "fat": 1},
+      "nutrition": {
+        "calories": 120,
+        "protein": 2,
+        "carbs": 23,
+        "fat": 1
+      },
       "commonAllergens": [],
-      "dietary": ["gluten-free"]
+      "dietary": [
+        "gluten-free"
+      ]
     },
     {
       "id": "onion",
       "name": "Yellow Onion",
       "category": "vegetable",
-      "nutrition": {"calories": 40, "protein": 1, "carbs": 9, "fat": 0},
+      "nutrition": {
+        "calories": 40,
+        "protein": 1,
+        "carbs": 9,
+        "fat": 0
+      },
       "commonAllergens": [],
-      "dietary": ["vegan", "gluten-free"]
+      "dietary": [
+        "vegan",
+        "gluten-free"
+      ]
     },
     {
       "id": "cilantro",
       "name": "Fresh Cilantro",
       "category": "herb",
-      "nutrition": {"calories": 5, "protein": 0.5, "carbs": 1, "fat": 0},
+      "nutrition": {
+        "calories": 5,
+        "protein": 0.5,
+        "carbs": 1,
+        "fat": 0
+      },
       "commonAllergens": [],
-      "dietary": ["vegan", "gluten-free"]
+      "dietary": [
+        "vegan",
+        "gluten-free"
+      ]
     },
     {
       "id": "lime",
       "name": "Fresh Lime",
       "category": "fruit",
-      "nutrition": {"calories": 20, "protein": 0, "carbs": 7, "fat": 0},
+      "nutrition": {
+        "calories": 20,
+        "protein": 0,
+        "carbs": 7,
+        "fat": 0
+      },
       "commonAllergens": [],
-      "dietary": ["vegan", "gluten-free"]
+      "dietary": [
+        "vegan",
+        "gluten-free"
+      ]
     },
     {
       "id": "cucumber",
       "name": "Cucumber",
       "category": "vegetable",
-      "nutrition": {"calories": 8, "protein": 0.5, "carbs": 2, "fat": 0},
+      "nutrition": {
+        "calories": 8,
+        "protein": 0.5,
+        "carbs": 2,
+        "fat": 0
+      },
       "commonAllergens": [],
-      "dietary": ["vegan", "gluten-free"]
+      "dietary": [
+        "vegan",
+        "gluten-free"
+      ]
     },
     {
       "id": "feta_cheese",
       "name": "Feta Cheese",
       "category": "dairy",
-      "nutrition": {"calories": 264, "protein": 14, "carbs": 4, "fat": 21},
-      "commonAllergens": ["dairy"],
-      "dietary": ["vegetarian"]
+      "nutrition": {
+        "calories": 264,
+        "protein": 14,
+        "carbs": 4,
+        "fat": 21
+      },
+      "commonAllergens": [
+        "dairy"
+      ],
+      "dietary": [
+        "vegetarian"
+      ]
     },
     {
       "id": "red_onion",
       "name": "Red Onion",
       "category": "vegetable",
-      "nutrition": {"calories": 40, "protein": 1, "carbs": 9, "fat": 0},
+      "nutrition": {
+        "calories": 40,
+        "protein": 1,
+        "carbs": 9,
+        "fat": 0
+      },
       "commonAllergens": [],
-      "dietary": ["vegan", "gluten-free"]
+      "dietary": [
+        "vegan",
+        "gluten-free"
+      ]
     },
     {
       "id": "olive_oil",
       "name": "Extra Virgin Olive Oil",
       "category": "oil",
-      "nutrition": {"calories": 120, "protein": 0, "carbs": 0, "fat": 14},
+      "nutrition": {
+        "calories": 120,
+        "protein": 0,
+        "carbs": 0,
+        "fat": 14
+      },
       "commonAllergens": [],
-      "dietary": ["vegan", "gluten-free"]
+      "dietary": [
+        "vegan",
+        "gluten-free"
+      ]
     },
     {
       "id": "sushi_rice",
       "name": "Sushi Rice",
       "category": "grain",
-      "nutrition": {"calories": 130, "protein": 2, "carbs": 28, "fat": 0},
+      "nutrition": {
+        "calories": 130,
+        "protein": 2,
+        "carbs": 28,
+        "fat": 0
+      },
       "commonAllergens": [],
-      "dietary": ["vegan"]
+      "dietary": [
+        "vegan"
+      ]
     },
     {
       "id": "nori",
       "name": "Nori Sheets",
       "category": "seaweed",
-      "nutrition": {"calories": 10, "protein": 1, "carbs": 2, "fat": 0},
+      "nutrition": {
+        "calories": 10,
+        "protein": 1,
+        "carbs": 2,
+        "fat": 0
+      },
       "commonAllergens": [],
-      "dietary": ["vegan", "gluten-free"]
+      "dietary": [
+        "vegan",
+        "gluten-free"
+      ]
     },
     {
       "id": "avocado",
       "name": "Avocado",
       "category": "fruit",
-      "nutrition": {"calories": 160, "protein": 2, "carbs": 9, "fat": 15},
+      "nutrition": {
+        "calories": 160,
+        "protein": 2,
+        "carbs": 9,
+        "fat": 15
+      },
       "commonAllergens": [],
-      "dietary": ["vegan", "gluten-free"]
+      "dietary": [
+        "vegan",
+        "gluten-free"
+      ]
     },
     {
       "id": "crab_meat",
       "name": "Imitation Crab Meat",
       "category": "seafood",
-      "nutrition": {"calories": 80, "protein": 6, "carbs": 13, "fat": 0.5},
-      "commonAllergens": ["shellfish"],
+      "nutrition": {
+        "calories": 80,
+        "protein": 6,
+        "carbs": 13,
+        "fat": 0.5
+      },
+      "commonAllergens": [
+        "shellfish"
+      ],
       "dietary": []
     },
     {
       "id": "potato",
       "name": "Potato",
       "category": "vegetable",
-      "nutrition": {"calories": 110, "protein": 3, "carbs": 26, "fat": 0},
+      "nutrition": {
+        "calories": 110,
+        "protein": 3,
+        "carbs": 26,
+        "fat": 0
+      },
       "commonAllergens": [],
-      "dietary": ["vegan", "gluten-free"]
+      "dietary": [
+        "vegan",
+        "gluten-free"
+      ]
     },
     {
       "id": "cauliflower",
       "name": "Cauliflower",
       "category": "vegetable",
-      "nutrition": {"calories": 25, "protein": 2, "carbs": 5, "fat": 0},
+      "nutrition": {
+        "calories": 25,
+        "protein": 2,
+        "carbs": 5,
+        "fat": 0
+      },
       "commonAllergens": [],
-      "dietary": ["vegan", "gluten-free"]
+      "dietary": [
+        "vegan",
+        "gluten-free"
+      ]
     },
     {
       "id": "coconut_milk",
       "name": "Coconut Milk",
       "category": "dairy-alternative",
-      "nutrition": {"calories": 120, "protein": 1, "carbs": 1, "fat": 12},
+      "nutrition": {
+        "calories": 120,
+        "protein": 1,
+        "carbs": 1,
+        "fat": 12
+      },
       "commonAllergens": [],
-      "dietary": ["vegan", "gluten-free"]
+      "dietary": [
+        "vegan",
+        "gluten-free"
+      ]
     },
     {
       "id": "curry_powder",
       "name": "Curry Powder",
       "category": "spice",
-      "nutrition": {"calories": 20, "protein": 1, "carbs": 4, "fat": 0},
+      "nutrition": {
+        "calories": 20,
+        "protein": 1,
+        "carbs": 4,
+        "fat": 0
+      },
       "commonAllergens": [],
-      "dietary": ["vegan", "gluten-free"]
+      "dietary": [
+        "vegan",
+        "gluten-free"
+      ]
     },
     {
       "id": "chickpeas",
       "name": "Chickpeas",
       "category": "legume",
-      "nutrition": {"calories": 120, "protein": 6, "carbs": 22, "fat": 2},
+      "nutrition": {
+        "calories": 120,
+        "protein": 6,
+        "carbs": 22,
+        "fat": 2
+      },
       "commonAllergens": [],
-      "dietary": ["vegan", "gluten-free"]
+      "dietary": [
+        "vegan",
+        "gluten-free"
+      ]
     },
     {
       "id": "mixed_berries",
       "name": "Mixed Berries",
       "category": "fruit",
-      "nutrition": {"calories": 70, "protein": 1, "carbs": 17, "fat": 0},
+      "nutrition": {
+        "calories": 70,
+        "protein": 1,
+        "carbs": 17,
+        "fat": 0
+      },
       "commonAllergens": [],
-      "dietary": ["vegan", "gluten-free"]
+      "dietary": [
+        "vegan",
+        "gluten-free"
+      ]
     },
     {
       "id": "banana",
       "name": "Banana",
       "category": "fruit",
-      "nutrition": {"calories": 105, "protein": 1, "carbs": 27, "fat": 0},
+      "nutrition": {
+        "calories": 105,
+        "protein": 1,
+        "carbs": 27,
+        "fat": 0
+      },
       "commonAllergens": [],
-      "dietary": ["vegan", "gluten-free"]
+      "dietary": [
+        "vegan",
+        "gluten-free"
+      ]
     },
     {
       "id": "greek_yogurt",
       "name": "Greek Yogurt",
       "category": "dairy",
-      "nutrition": {"calories": 130, "protein": 12, "carbs": 9, "fat": 4},
-      "commonAllergens": ["dairy"],
-      "dietary": ["vegetarian"]
+      "nutrition": {
+        "calories": 130,
+        "protein": 12,
+        "carbs": 9,
+        "fat": 4
+      },
+      "commonAllergens": [
+        "dairy"
+      ],
+      "dietary": [
+        "vegetarian"
+      ]
     },
     {
       "id": "honey",
       "name": "Honey",
       "category": "sweetener",
-      "nutrition": {"calories": 60, "protein": 0, "carbs": 17, "fat": 0},
+      "nutrition": {
+        "calories": 60,
+        "protein": 0,
+        "carbs": 17,
+        "fat": 0
+      },
       "commonAllergens": [],
       "dietary": []
     },
@@ -615,217 +1659,455 @@
       "id": "granola",
       "name": "Granola",
       "category": "cereal",
-      "nutrition": {"calories": 120, "protein": 3, "carbs": 24, "fat": 6},
-      "commonAllergens": ["nuts"],
-      "dietary": ["vegetarian"]
+      "nutrition": {
+        "calories": 120,
+        "protein": 3,
+        "carbs": 24,
+        "fat": 6
+      },
+      "commonAllergens": [
+        "nuts"
+      ],
+      "dietary": [
+        "vegetarian"
+      ]
     },
     {
       "id": "spaghetti",
       "name": "Spaghetti",
       "category": "pasta",
-      "nutrition": {"calories": 200, "protein": 7, "carbs": 42, "fat": 1},
-      "commonAllergens": ["gluten", "wheat"],
-      "dietary": ["vegan"]
+      "nutrition": {
+        "calories": 200,
+        "protein": 7,
+        "carbs": 42,
+        "fat": 1
+      },
+      "commonAllergens": [
+        "gluten",
+        "wheat"
+      ],
+      "dietary": [
+        "vegan"
+      ]
     },
     {
       "id": "pancetta",
       "name": "Pancetta",
       "category": "meat",
-      "nutrition": {"calories": 194, "protein": 13, "carbs": 0, "fat": 15},
+      "nutrition": {
+        "calories": 194,
+        "protein": 13,
+        "carbs": 0,
+        "fat": 15
+      },
       "commonAllergens": [],
-      "dietary": ["keto"]
+      "dietary": [
+        "keto"
+      ]
     },
     {
       "id": "eggs",
       "name": "Large Eggs",
       "category": "protein",
-      "nutrition": {"calories": 70, "protein": 6, "carbs": 0, "fat": 5},
-      "commonAllergens": ["eggs"],
-      "dietary": ["vegetarian", "gluten-free"]
+      "nutrition": {
+        "calories": 70,
+        "protein": 6,
+        "carbs": 0,
+        "fat": 5
+      },
+      "commonAllergens": [
+        "eggs"
+      ],
+      "dietary": [
+        "vegetarian",
+        "gluten-free"
+      ]
     },
     {
       "id": "parmesan",
       "name": "Parmesan Cheese",
       "category": "dairy",
-      "nutrition": {"calories": 110, "protein": 10, "carbs": 0, "fat": 7},
-      "commonAllergens": ["dairy"],
-      "dietary": ["vegetarian", "gluten-free"]
+      "nutrition": {
+        "calories": 110,
+        "protein": 10,
+        "carbs": 0,
+        "fat": 7
+      },
+      "commonAllergens": [
+        "dairy"
+      ],
+      "dietary": [
+        "vegetarian",
+        "gluten-free"
+      ]
     },
     {
       "id": "black_pepper",
       "name": "Black Pepper",
       "category": "spice",
-      "nutrition": {"calories": 5, "protein": 0, "carbs": 1, "fat": 0},
+      "nutrition": {
+        "calories": 5,
+        "protein": 0,
+        "carbs": 1,
+        "fat": 0
+      },
       "commonAllergens": [],
-      "dietary": ["vegan", "gluten-free"]
+      "dietary": [
+        "vegan",
+        "gluten-free"
+      ]
     },
     {
       "id": "quinoa",
       "name": "Quinoa",
       "category": "grain",
-      "nutrition": {"calories": 120, "protein": 4, "carbs": 21, "fat": 2},
+      "nutrition": {
+        "calories": 120,
+        "protein": 4,
+        "carbs": 21,
+        "fat": 2
+      },
       "commonAllergens": [],
-      "dietary": ["vegan", "gluten-free"]
+      "dietary": [
+        "vegan",
+        "gluten-free"
+      ]
     },
     {
       "id": "sweet_potato",
       "name": "Sweet Potato",
       "category": "vegetable",
-      "nutrition": {"calories": 103, "protein": 2, "carbs": 24, "fat": 0},
+      "nutrition": {
+        "calories": 103,
+        "protein": 2,
+        "carbs": 24,
+        "fat": 0
+      },
       "commonAllergens": [],
-      "dietary": ["vegan", "gluten-free"]
+      "dietary": [
+        "vegan",
+        "gluten-free"
+      ]
     },
     {
       "id": "kale",
       "name": "Kale",
       "category": "vegetable",
-      "nutrition": {"calories": 33, "protein": 3, "carbs": 6, "fat": 0},
+      "nutrition": {
+        "calories": 33,
+        "protein": 3,
+        "carbs": 6,
+        "fat": 0
+      },
       "commonAllergens": [],
-      "dietary": ["vegan", "gluten-free"]
+      "dietary": [
+        "vegan",
+        "gluten-free"
+      ]
     },
     {
       "id": "tahini",
       "name": "Tahini",
       "category": "condiment",
-      "nutrition": {"calories": 89, "protein": 3, "carbs": 3, "fat": 8},
-      "commonAllergens": ["sesame"],
-      "dietary": ["vegan", "gluten-free"]
+      "nutrition": {
+        "calories": 89,
+        "protein": 3,
+        "carbs": 3,
+        "fat": 8
+      },
+      "commonAllergens": [
+        "sesame"
+      ],
+      "dietary": [
+        "vegan",
+        "gluten-free"
+      ]
     },
     {
       "id": "shrimp",
       "name": "Raw Shrimp",
       "category": "seafood",
-      "nutrition": {"calories": 85, "protein": 20, "carbs": 0, "fat": 1},
-      "commonAllergens": ["shellfish"],
-      "dietary": ["keto", "high-protein"]
+      "nutrition": {
+        "calories": 85,
+        "protein": 20,
+        "carbs": 0,
+        "fat": 1
+      },
+      "commonAllergens": [
+        "shellfish"
+      ],
+      "dietary": [
+        "keto",
+        "high-protein"
+      ]
     },
     {
       "id": "bell_pepper",
       "name": "Bell Pepper",
       "category": "vegetable",
-      "nutrition": {"calories": 30, "protein": 1, "carbs": 7, "fat": 0},
+      "nutrition": {
+        "calories": 30,
+        "protein": 1,
+        "carbs": 7,
+        "fat": 0
+      },
       "commonAllergens": [],
-      "dietary": ["vegan", "gluten-free"]
+      "dietary": [
+        "vegan",
+        "gluten-free"
+      ]
     },
     {
       "id": "peanut_butter",
       "name": "Peanut Butter",
       "category": "spread",
-      "nutrition": {"calories": 190, "protein": 7, "carbs": 7, "fat": 16},
-      "commonAllergens": ["peanuts"],
-      "dietary": ["vegan", "gluten-free"]
+      "nutrition": {
+        "calories": 190,
+        "protein": 7,
+        "carbs": 7,
+        "fat": 16
+      },
+      "commonAllergens": [
+        "peanuts"
+      ],
+      "dietary": [
+        "vegan",
+        "gluten-free"
+      ]
     },
     {
       "id": "tofu",
       "name": "Firm Tofu",
       "category": "protein",
-      "nutrition": {"calories": 70, "protein": 8, "carbs": 2, "fat": 4},
-      "commonAllergens": ["soy"],
-      "dietary": ["vegan", "gluten-free"]
+      "nutrition": {
+        "calories": 70,
+        "protein": 8,
+        "carbs": 2,
+        "fat": 4
+      },
+      "commonAllergens": [
+        "soy"
+      ],
+      "dietary": [
+        "vegan",
+        "gluten-free"
+      ]
     },
     {
       "id": "salmon_fillet",
       "name": "Fresh Salmon Fillet",
       "category": "protein",
-      "nutrition": {"calories": 208, "protein": 22, "carbs": 0, "fat": 13},
-      "commonAllergens": ["fish"],
-      "dietary": ["keto", "high-protein"]
+      "nutrition": {
+        "calories": 208,
+        "protein": 22,
+        "carbs": 0,
+        "fat": 13
+      },
+      "commonAllergens": [
+        "fish"
+      ],
+      "dietary": [
+        "keto",
+        "high-protein"
+      ]
     },
     {
       "id": "asparagus",
       "name": "Fresh Asparagus",
       "category": "vegetable",
-      "nutrition": {"calories": 20, "protein": 2.2, "carbs": 3.9, "fat": 0.2},
+      "nutrition": {
+        "calories": 20,
+        "protein": 2.2,
+        "carbs": 3.9,
+        "fat": 0.2
+      },
       "commonAllergens": [],
-      "dietary": ["vegan", "gluten-free"]
+      "dietary": [
+        "vegan",
+        "gluten-free"
+      ]
     },
     {
       "id": "almonds",
       "name": "Raw Almonds",
       "category": "nuts",
-      "nutrition": {"calories": 164, "protein": 6, "carbs": 6, "fat": 14},
-      "commonAllergens": ["tree nuts"],
-      "dietary": ["vegan", "gluten-free"]
+      "nutrition": {
+        "calories": 164,
+        "protein": 6,
+        "carbs": 6,
+        "fat": 14
+      },
+      "commonAllergens": [
+        "tree nuts"
+      ],
+      "dietary": [
+        "vegan",
+        "gluten-free"
+      ]
     },
     {
       "id": "lemon",
       "name": "Fresh Lemon",
       "category": "fruit",
-      "nutrition": {"calories": 17, "protein": 0.6, "carbs": 5.4, "fat": 0.2},
+      "nutrition": {
+        "calories": 17,
+        "protein": 0.6,
+        "carbs": 5.4,
+        "fat": 0.2
+      },
       "commonAllergens": [],
-      "dietary": ["vegan", "gluten-free"]
+      "dietary": [
+        "vegan",
+        "gluten-free"
+      ]
     },
     {
       "id": "garlic",
       "name": "Fresh Garlic",
       "category": "vegetable",
-      "nutrition": {"calories": 4, "protein": 0.2, "carbs": 1, "fat": 0},
+      "nutrition": {
+        "calories": 4,
+        "protein": 0.2,
+        "carbs": 1,
+        "fat": 0
+      },
       "commonAllergens": [],
-      "dietary": ["vegan", "gluten-free"]
+      "dietary": [
+        "vegan",
+        "gluten-free"
+      ]
     },
     {
       "id": "basil",
       "name": "Fresh Basil",
       "category": "herb",
-      "nutrition": {"calories": 23, "protein": 3.2, "carbs": 2.7, "fat": 0.6},
+      "nutrition": {
+        "calories": 23,
+        "protein": 3.2,
+        "carbs": 2.7,
+        "fat": 0.6
+      },
       "commonAllergens": [],
-      "dietary": ["vegan", "gluten-free"]
+      "dietary": [
+        "vegan",
+        "gluten-free"
+      ]
     },
     {
       "id": "broccoli",
       "name": "Broccoli",
       "category": "vegetable",
-      "nutrition": {"calories": 34, "protein": 2.8, "carbs": 7, "fat": 0.4},
+      "nutrition": {
+        "calories": 34,
+        "protein": 2.8,
+        "carbs": 7,
+        "fat": 0.4
+      },
       "commonAllergens": [],
-      "dietary": ["vegan", "gluten-free"]
+      "dietary": [
+        "vegan",
+        "gluten-free"
+      ]
     },
     {
       "id": "carrot",
       "name": "Carrot",
       "category": "vegetable",
-      "nutrition": {"calories": 41, "protein": 0.9, "carbs": 10, "fat": 0.2},
+      "nutrition": {
+        "calories": 41,
+        "protein": 0.9,
+        "carbs": 10,
+        "fat": 0.2
+      },
       "commonAllergens": [],
-      "dietary": ["vegan", "gluten-free"]
+      "dietary": [
+        "vegan",
+        "gluten-free"
+      ]
     },
     {
       "id": "ginger",
       "name": "Fresh Ginger",
       "category": "spice",
-      "nutrition": {"calories": 80, "protein": 1.8, "carbs": 18, "fat": 0.8},
+      "nutrition": {
+        "calories": 80,
+        "protein": 1.8,
+        "carbs": 18,
+        "fat": 0.8
+      },
       "commonAllergens": [],
-      "dietary": ["vegan", "gluten-free"]
+      "dietary": [
+        "vegan",
+        "gluten-free"
+      ]
     },
     {
       "id": "soy_sauce",
       "name": "Soy Sauce",
       "category": "condiment",
-      "nutrition": {"calories": 53, "protein": 8, "carbs": 4.9, "fat": 0.6},
-      "commonAllergens": ["soy", "gluten"],
-      "dietary": ["vegan"]
+      "nutrition": {
+        "calories": 53,
+        "protein": 8,
+        "carbs": 4.9,
+        "fat": 0.6
+      },
+      "commonAllergens": [
+        "soy",
+        "gluten"
+      ],
+      "dietary": [
+        "vegan"
+      ]
     },
     {
       "id": "brown_sugar",
       "name": "Brown Sugar",
       "category": "baking",
-      "nutrition": {"calories": 380, "protein": 0, "carbs": 98, "fat": 0},
+      "nutrition": {
+        "calories": 380,
+        "protein": 0,
+        "carbs": 98,
+        "fat": 0
+      },
       "commonAllergens": [],
-      "dietary": ["vegan", "gluten-free"]
+      "dietary": [
+        "vegan",
+        "gluten-free"
+      ]
     },
     {
       "id": "butter",
       "name": "Unsalted Butter",
       "category": "dairy",
-      "nutrition": {"calories": 717, "protein": 0.9, "carbs": 0.1, "fat": 81},
-      "commonAllergens": ["dairy"],
-      "dietary": ["vegetarian", "gluten-free"]
+      "nutrition": {
+        "calories": 717,
+        "protein": 0.9,
+        "carbs": 0.1,
+        "fat": 81
+      },
+      "commonAllergens": [
+        "dairy"
+      ],
+      "dietary": [
+        "vegetarian",
+        "gluten-free"
+      ]
     },
     {
       "id": "white_sugar",
       "name": "White Granulated Sugar",
       "category": "baking",
-      "nutrition": {"calories": 387, "protein": 0, "carbs": 100, "fat": 0},
+      "nutrition": {
+        "calories": 387,
+        "protein": 0,
+        "carbs": 100,
+        "fat": 0
+      },
       "commonAllergens": [],
-      "dietary": ["vegan", "gluten-free"]
+      "dietary": [
+        "vegan",
+        "gluten-free"
+      ]
     }
   ]
 }

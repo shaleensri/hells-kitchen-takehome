@@ -60,7 +60,8 @@ const VOLUME_UNIT_TO_ML: Record<string, number> = {
 };
 
 /** grams per US cup, per ingredientId. Covers every ingredient that appears
- * under a volume unit in the seed data (24 ingredients, §3.9). */
+ * under a volume unit in the seed data (24 ingredients, §3.9); one more
+ * added in Iteration 10 (§3.31) — see that entry's inline comment. */
 export const INGREDIENT_GRAMS_PER_CUP: Record<string, number> = {
   almonds: 143,
   brown_sugar: 220,
@@ -86,6 +87,13 @@ export const INGREDIENT_GRAMS_PER_CUP: Record<string, number> = {
   tahini: 240,
   black_pepper: 110,
   coconut_milk: 227,
+  // Iteration 10 (§3.31): peanut_butter existed in the ingredient table
+  // already but had never been used with a resolvable unit in the original
+  // 15 recipes, so it had no density entry — not a new ingredient, just an
+  // existing one gaining real coverage. USDA-ish approximation like every
+  // other value in this table (§3.9's existing "good enough for a take-home,
+  // not lab-precise" standard), not a new precision claim.
+  peanut_butter: 258,
 };
 
 // ---------------------------------------------------------------------------

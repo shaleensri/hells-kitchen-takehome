@@ -11,8 +11,8 @@ import {
 describe("loadAppData against the real backend-app/db/data.json", () => {
   const appData = loadAppData(DEFAULT_DATA_PATH);
 
-  it("loads all 15 recipes and finds zero seed-validation issues post-fix (§3.4)", () => {
-    expect(appData.recipes).toHaveLength(15);
+  it("loads all 24 recipes (15 original + 9 from Iteration 10 Batch 1, §3.31) and finds zero seed-validation issues", () => {
+    expect(appData.recipes).toHaveLength(24);
     expect(appData.seedValidationIssues).toEqual([]);
   });
 

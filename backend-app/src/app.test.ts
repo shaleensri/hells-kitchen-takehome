@@ -11,10 +11,10 @@ import { RATE_LIMIT_MAX_REQUESTS, resetRateLimiter } from "./rateLimit";
 const app = createApp(loadAppData(DEFAULT_DATA_PATH));
 
 describe("GET /api/recipes", () => {
-  it("returns all 15 recipes with the lightweight list shape (§3.10)", async () => {
+  it("returns all 24 recipes with the lightweight list shape (§3.10)", async () => {
     const res = await request(app).get("/api/recipes");
     expect(res.status).toBe(200);
-    expect(res.body).toHaveLength(15);
+    expect(res.body).toHaveLength(24);
     const item = res.body[0];
     expect(Object.keys(item).sort()).toEqual(
       [

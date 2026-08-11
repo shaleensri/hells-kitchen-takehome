@@ -1,0 +1,512 @@
+[
+  {
+    "id": "16",
+    "title": "Honey Garlic Chicken with Broccoli",
+    "description": "A fast weeknight skillet with a sticky honey-garlic glaze",
+    "servings": 4,
+    "prepTime": "10 minutes",
+    "cookTime": "20 minutes",
+    "difficulty": "easy",
+    "ingredients": [
+      {
+        "ingredientId": "chicken_breast",
+        "amount": "1.5",
+        "unit": "lb"
+      },
+      {
+        "ingredientId": "broccoli",
+        "amount": "3",
+        "unit": "cups"
+      },
+      {
+        "ingredientId": "garlic",
+        "amount": "3",
+        "unit": "cloves"
+      },
+      {
+        "ingredientId": "honey",
+        "amount": "3",
+        "unit": "tbsp"
+      },
+      {
+        "ingredientId": "soy_sauce",
+        "amount": "3",
+        "unit": "tbsp"
+      },
+      {
+        "ingredientId": "ginger",
+        "amount": "1",
+        "unit": "tbsp"
+      },
+      {
+        "ingredientId": "black_pepper",
+        "amount": "0.5",
+        "unit": "tsp"
+      }
+    ],
+    "instructions": [
+      "Cut chicken into bite-size pieces and season with black pepper",
+      "Sear chicken in a hot skillet until golden and cooked through, then remove",
+      "Steam or blanch broccoli until bright green and tender-crisp",
+      "Whisk together honey, soy sauce, minced garlic, and ginger",
+      "Return chicken to the skillet with the broccoli, pour in the sauce, and toss until glazed"
+    ],
+    "tags": [
+      "asian",
+      "dinner",
+      "family",
+      "quick"
+    ],
+    "dateAdded": "2026-07-01T09:00:00Z"
+  },
+  {
+    "id": "17",
+    "title": "Sheet-Pan Honey Garlic Salmon",
+    "description": "Oven-roasted salmon glazed with honey, garlic, and ginger",
+    "servings": 4,
+    "prepTime": "10 minutes",
+    "cookTime": "15 minutes",
+    "difficulty": "easy",
+    "ingredients": [
+      {
+        "ingredientId": "salmon_fillet",
+        "amount": "1.5",
+        "unit": "lb"
+      },
+      {
+        "ingredientId": "honey",
+        "amount": "3",
+        "unit": "tbsp"
+      },
+      {
+        "ingredientId": "soy_sauce",
+        "amount": "2",
+        "unit": "tbsp"
+      },
+      {
+        "ingredientId": "garlic",
+        "amount": "3",
+        "unit": "cloves"
+      },
+      {
+        "ingredientId": "ginger",
+        "amount": "1",
+        "unit": "tbsp"
+      },
+      {
+        "ingredientId": "lemon",
+        "amount": "1",
+        "unit": "whole"
+      }
+    ],
+    "instructions": [
+      "Preheat oven to 400\u00b0F and line a sheet pan with foil",
+      "Whisk honey, soy sauce, minced garlic, and ginger together",
+      "Place salmon skin-side down on the pan and brush generously with the glaze",
+      "Roast until the salmon flakes easily, about 12-15 minutes",
+      "Squeeze fresh lemon juice over the top before serving"
+    ],
+    "tags": [
+      "seafood",
+      "dinner",
+      "quick",
+      "high-protein"
+    ],
+    "dateAdded": "2026-07-02T09:00:00Z"
+  },
+  {
+    "id": "18",
+    "title": "Weeknight Egg Fried Rice",
+    "description": "A quick fried rice built around scrambled eggs and pantry vegetables",
+    "servings": 4,
+    "prepTime": "10 minutes",
+    "cookTime": "15 minutes",
+    "difficulty": "easy",
+    "ingredients": [
+      {
+        "ingredientId": "sushi_rice",
+        "amount": "3",
+        "unit": "cups"
+      },
+      {
+        "ingredientId": "eggs",
+        "amount": "3",
+        "unit": "large"
+      },
+      {
+        "ingredientId": "carrot",
+        "amount": "1",
+        "unit": "medium"
+      },
+      {
+        "ingredientId": "onion",
+        "amount": "1",
+        "unit": "medium"
+      },
+      {
+        "ingredientId": "soy_sauce",
+        "amount": "3",
+        "unit": "tbsp"
+      },
+      {
+        "ingredientId": "ginger",
+        "amount": "1",
+        "unit": "tbsp"
+      },
+      {
+        "ingredientId": "black_pepper",
+        "amount": "0.5",
+        "unit": "tsp"
+      }
+    ],
+    "instructions": [
+      "Cook rice according to package directions and let cool (day-old rice works best)",
+      "Dice the carrot and onion",
+      "Scramble the eggs in a hot wok or large skillet, then remove and set aside",
+      "Saut\u00e9 carrot and onion until softened",
+      "Add the cooled rice, breaking up clumps, then stir in soy sauce, ginger, and black pepper",
+      "Fold the scrambled eggs back in and toss until evenly combined"
+    ],
+    "tags": [
+      "asian",
+      "dinner",
+      "family",
+      "quick",
+      "vegetarian"
+    ],
+    "dateAdded": "2026-07-03T09:00:00Z"
+  },
+  {
+    "id": "19",
+    "title": "Family-Style Shrimp Tacos",
+    "description": "Seared shrimp tacos with avocado, red onion, and lime",
+    "servings": 4,
+    "prepTime": "15 minutes",
+    "cookTime": "10 minutes",
+    "difficulty": "easy",
+    "ingredients": [
+      {
+        "ingredientId": "shrimp",
+        "amount": "1.5",
+        "unit": "lb"
+      },
+      {
+        "ingredientId": "corn_tortillas",
+        "amount": "8",
+        "unit": "pieces"
+      },
+      {
+        "ingredientId": "avocado",
+        "amount": "1",
+        "unit": "whole"
+      },
+      {
+        "ingredientId": "red_onion",
+        "amount": "1",
+        "unit": "small"
+      },
+      {
+        "ingredientId": "cilantro",
+        "amount": "0.25",
+        "unit": "cup"
+      },
+      {
+        "ingredientId": "lime",
+        "amount": "2",
+        "unit": "whole"
+      },
+      {
+        "ingredientId": "black_pepper",
+        "amount": "0.5",
+        "unit": "tsp"
+      }
+    ],
+    "instructions": [
+      "Season shrimp with black pepper",
+      "Sear in a hot skillet for 2-3 minutes per side until pink and opaque",
+      "Warm the corn tortillas",
+      "Slice the avocado and finely dice the red onion",
+      "Assemble tacos with shrimp, avocado, red onion, and cilantro",
+      "Finish with a generous squeeze of lime"
+    ],
+    "tags": [
+      "seafood",
+      "mexican",
+      "family",
+      "quick"
+    ],
+    "dateAdded": "2026-07-04T09:00:00Z"
+  },
+  {
+    "id": "20",
+    "title": "Greek Yogurt Tandoori Chicken",
+    "description": "Yogurt-marinated chicken with curry spices, grilled or roasted",
+    "servings": 4,
+    "prepTime": "15 minutes",
+    "cookTime": "25 minutes",
+    "difficulty": "medium",
+    "ingredients": [
+      {
+        "ingredientId": "chicken_breast",
+        "amount": "1.5",
+        "unit": "lb"
+      },
+      {
+        "ingredientId": "greek_yogurt",
+        "amount": "1",
+        "unit": "cup"
+      },
+      {
+        "ingredientId": "curry_powder",
+        "amount": "2",
+        "unit": "tbsp"
+      },
+      {
+        "ingredientId": "lemon",
+        "amount": "1",
+        "unit": "whole"
+      },
+      {
+        "ingredientId": "garlic",
+        "amount": "3",
+        "unit": "cloves"
+      },
+      {
+        "ingredientId": "ginger",
+        "amount": "1",
+        "unit": "tbsp"
+      }
+    ],
+    "instructions": [
+      "Whisk together greek yogurt, curry powder, minced garlic, ginger, and lemon juice",
+      "Add chicken and coat thoroughly, then marinate for at least 30 minutes",
+      "Grill or bake at 425\u00b0F until cooked through and lightly charred, about 20-25 minutes",
+      "Let rest for a few minutes before slicing"
+    ],
+    "tags": [
+      "indian",
+      "dinner",
+      "high-protein"
+    ],
+    "dateAdded": "2026-07-05T09:00:00Z"
+  },
+  {
+    "id": "21",
+    "title": "Sweet Potato & Beef Skillet",
+    "description": "A one-pan comfort dinner of ground beef and caramelized sweet potato",
+    "servings": 4,
+    "prepTime": "15 minutes",
+    "cookTime": "20 minutes",
+    "difficulty": "easy",
+    "ingredients": [
+      {
+        "ingredientId": "ground_beef",
+        "amount": "1",
+        "unit": "lb"
+      },
+      {
+        "ingredientId": "sweet_potato",
+        "amount": "2",
+        "unit": "large"
+      },
+      {
+        "ingredientId": "onion",
+        "amount": "1",
+        "unit": "medium"
+      },
+      {
+        "ingredientId": "garlic",
+        "amount": "3",
+        "unit": "cloves"
+      },
+      {
+        "ingredientId": "black_pepper",
+        "amount": "0.5",
+        "unit": "tsp"
+      },
+      {
+        "ingredientId": "olive_oil",
+        "amount": "1",
+        "unit": "tbsp"
+      }
+    ],
+    "instructions": [
+      "Dice the sweet potatoes into small cubes",
+      "Heat olive oil in a large skillet and cook the sweet potato until tender, about 8-10 minutes",
+      "Push to one side, add the ground beef and diced onion, and cook until browned",
+      "Stir in minced garlic and black pepper",
+      "Combine everything in the skillet and cook for another 2-3 minutes"
+    ],
+    "tags": [
+      "dinner",
+      "family",
+      "comfort"
+    ],
+    "dateAdded": "2026-07-06T09:00:00Z"
+  },
+  {
+    "id": "22",
+    "title": "Crispy Peanut Tofu with Quinoa",
+    "description": "Pan-fried tofu in a peanut-garlic sauce over quinoa",
+    "servings": 4,
+    "prepTime": "15 minutes",
+    "cookTime": "20 minutes",
+    "difficulty": "medium",
+    "ingredients": [
+      {
+        "ingredientId": "tofu",
+        "amount": "14",
+        "unit": "oz"
+      },
+      {
+        "ingredientId": "quinoa",
+        "amount": "1",
+        "unit": "cup"
+      },
+      {
+        "ingredientId": "peanut_butter",
+        "amount": "3",
+        "unit": "tbsp"
+      },
+      {
+        "ingredientId": "soy_sauce",
+        "amount": "2",
+        "unit": "tbsp"
+      },
+      {
+        "ingredientId": "garlic",
+        "amount": "2",
+        "unit": "cloves"
+      },
+      {
+        "ingredientId": "ginger",
+        "amount": "1",
+        "unit": "tbsp"
+      },
+      {
+        "ingredientId": "carrot",
+        "amount": "1",
+        "unit": "medium"
+      }
+    ],
+    "instructions": [
+      "Cook quinoa according to package directions",
+      "Press and cube the tofu, then pan-fry in a hot skillet until golden and crisp",
+      "Whisk together peanut butter, soy sauce, minced garlic, and ginger with a splash of water",
+      "Shred the carrot",
+      "Toss the crispy tofu in the peanut sauce and serve over quinoa topped with shredded carrot"
+    ],
+    "tags": [
+      "vegan",
+      "dinner",
+      "quick"
+    ],
+    "dateAdded": "2026-07-07T09:00:00Z"
+  },
+  {
+    "id": "23",
+    "title": "Spanish-Style Potato & Egg Skillet",
+    "description": "A rustic skillet of tender potatoes and eggs, tortilla espa\u00f1ola-style",
+    "servings": 4,
+    "prepTime": "15 minutes",
+    "cookTime": "25 minutes",
+    "difficulty": "medium",
+    "ingredients": [
+      {
+        "ingredientId": "potato",
+        "amount": "3",
+        "unit": "medium"
+      },
+      {
+        "ingredientId": "eggs",
+        "amount": "6",
+        "unit": "large"
+      },
+      {
+        "ingredientId": "onion",
+        "amount": "1",
+        "unit": "medium"
+      },
+      {
+        "ingredientId": "olive_oil",
+        "amount": "3",
+        "unit": "tbsp"
+      },
+      {
+        "ingredientId": "black_pepper",
+        "amount": "0.5",
+        "unit": "tsp"
+      }
+    ],
+    "instructions": [
+      "Thinly slice the potatoes and onion",
+      "Heat olive oil in a nonstick skillet and cook the potatoes and onion over low heat until tender, about 15 minutes",
+      "Whisk the eggs with black pepper",
+      "Pour the eggs over the potatoes and onion",
+      "Cook over low heat until mostly set, then finish under a broiler until fully cooked",
+      "Slice into wedges to serve"
+    ],
+    "tags": [
+      "vegetarian",
+      "dinner",
+      "family",
+      "comfort",
+      "gluten-free"
+    ],
+    "dateAdded": "2026-07-08T09:00:00Z"
+  },
+  {
+    "id": "24",
+    "title": "Pan-Seared Crab Cakes",
+    "description": "Golden, pan-fried crab cakes with lemon and garlic",
+    "servings": 4,
+    "prepTime": "15 minutes",
+    "cookTime": "10 minutes",
+    "difficulty": "medium",
+    "ingredients": [
+      {
+        "ingredientId": "crab_meat",
+        "amount": "1",
+        "unit": "lb"
+      },
+      {
+        "ingredientId": "eggs",
+        "amount": "1",
+        "unit": "large"
+      },
+      {
+        "ingredientId": "flour",
+        "amount": "0.25",
+        "unit": "cup"
+      },
+      {
+        "ingredientId": "lemon",
+        "amount": "1",
+        "unit": "whole"
+      },
+      {
+        "ingredientId": "garlic",
+        "amount": "2",
+        "unit": "cloves"
+      },
+      {
+        "ingredientId": "black_pepper",
+        "amount": "0.5",
+        "unit": "tsp"
+      }
+    ],
+    "instructions": [
+      "Combine crab meat, beaten egg, flour, minced garlic, black pepper, and a squeeze of lemon juice",
+      "Form into patties",
+      "Pan-sear in a hot, lightly oiled skillet for 3-4 minutes per side until golden brown",
+      "Serve with extra lemon wedges"
+    ],
+    "tags": [
+      "seafood",
+      "dinner",
+      "family",
+      "quick"
+    ],
+    "dateAdded": "2026-07-09T09:00:00Z"
+  }
+]
