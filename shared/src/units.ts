@@ -38,10 +38,11 @@ const MASS_UNIT_TO_GRAMS: Record<string, number> = {
 
 // ---------------------------------------------------------------------------
 // Tier 2: volume units — universal volume→ml factor, then an ingredient
-// density (grams per cup) is required to reach grams. 24 ingredients in the
-// current dataset need one (PLAN.md §3.9); values are USDA-ish approximations,
-// documented as such (open item in PLAN.md §8 — good enough for a take-home,
-// not claimed to be lab-precise).
+// density (grams per cup) is required to reach grams. 25 ingredients in the
+// current dataset need one (24 from the original seed data, §3.9, plus
+// peanut_butter added in Iteration 10, §3.31); values are USDA-ish
+// approximations, documented as such (open item in PLAN.md §8 — good enough
+// for a take-home, not claimed to be lab-precise).
 // ---------------------------------------------------------------------------
 
 // tbsp/tsp are derived as exact fractions of a cup (1 cup = 16 tbsp = 48 tsp,
@@ -60,8 +61,9 @@ const VOLUME_UNIT_TO_ML: Record<string, number> = {
 };
 
 /** grams per US cup, per ingredientId. Covers every ingredient that appears
- * under a volume unit in the seed data (24 ingredients, §3.9); one more
- * added in Iteration 10 (§3.31) — see that entry's inline comment. */
+ * under a volume unit across the dataset — 25 entries: the original seed
+ * data's 24 (§3.9) plus `peanut_butter`, added in Iteration 10 (§3.31) when
+ * a new recipe needed it and no earlier recipe ever had. */
 export const INGREDIENT_GRAMS_PER_CUP: Record<string, number> = {
   almonds: 143,
   brown_sugar: 220,
