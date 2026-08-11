@@ -91,6 +91,10 @@ describe("parseRecipeQuery", () => {
     expect(parsed.order).toBe("desc");
   });
 
+  it("parses and lowercases difficulty", () => {
+    expect(parseRecipeQuery({ difficulty: "Hard" }).difficulty).toBe("hard");
+  });
+
   it("defaults order to asc when omitted", () => {
     expect(parseRecipeQuery({}).order).toBe("asc");
   });
@@ -154,6 +158,18 @@ describe("filterRecipes", () => {
     const recipes = fixtureRecipes();
     const result = filterRecipes(recipes, { tags: ["healthy"], dietary: ["vegan"], order: "asc" });
     expect(result.map((r) => r.raw.id)).toEqual(["fast-easy"]);
+  });
+
+  it("difficulty filters by exact match (distinct from sort=difficulty)", () => {
+    const recipes = fixtureRecipes();
+    const result = filterRecipes(recipes, { difficulty: "hard", order: "asc" });
+    expect(result.map((r) => r.raw.id)).toEqual(["hard-cheese"]);
+  });
+
+  it("difficulty is lenient like other filters — an unrecognized value yields zero results, not a throw", () => {
+    const recipes = fixtureRecipes();
+    // @ts-expect-error deliberately passing a bogus value to check runtime leniency
+    expect(filterRecipes(recipes, { difficulty: "extreme", order: "asc" })).toEqual([]);
   });
 
   it("returns everything when no filters are given", () => {

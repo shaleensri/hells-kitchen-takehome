@@ -1,34 +1,61 @@
 .header {
-  position: sticky;
-  top: 0;
-  z-index: 10;
   border-bottom: 1px solid var(--surface-border);
-  background: var(--surface);
-  backdrop-filter: blur(8px);
+  background: var(--background);
 }
 
 .headerInner {
   display: flex;
-  align-items: center;
-  height: 68px;
+  align-items: baseline;
+  gap: 9px;
+  height: 56px;
+  flex-wrap: wrap;
 }
 
 .brand {
-  display: flex;
-  align-items: center;
-  gap: 10px;
   font-family: var(--font-display);
-  font-size: 1.3rem;
   font-weight: 600;
-  letter-spacing: -0.01em;
-  transition: opacity var(--transition);
+  font-size: 20px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  transition: color var(--transition);
 }
 
 .brand:hover {
-  opacity: 0.75;
+  color: var(--accent);
 }
 
-.brandMark {
-  font-size: 1.2rem;
-  line-height: 1;
+.brandSub {
+  font-size: 10px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--faint);
+  margin-right: auto;
+}
+
+.nav {
+  display: flex;
+  gap: 20px;
+}
+
+.nav a {
+  font-size: 13px;
+  color: var(--muted);
+  transition: color var(--transition);
+}
+
+.nav a:hover {
+  color: var(--foreground);
+}
+
+@media (max-width: 480px) {
+  .headerInner {
+    height: auto;
+    padding: 12px 0;
+  }
+
+  /* Decorative, not load-bearing — drops first to give the wordmark and
+   * nav room to breathe rather than crowding onto one cramped line. */
+  .brandSub {
+    display: none;
+  }
 }

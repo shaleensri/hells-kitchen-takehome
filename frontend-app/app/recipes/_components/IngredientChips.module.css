@@ -1,0 +1,45 @@
+.heading {
+  font-size: 10px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--faint);
+  margin-bottom: 10px;
+}
+
+.chipRow {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 5px;
+}
+
+.chip {
+  font-size: 11px;
+  padding: 3px 9px;
+  border: 1px solid var(--accent);
+  color: var(--accent);
+  background: transparent;
+  cursor: pointer;
+  transition: background var(--transition);
+}
+
+.chip:hover {
+  background: var(--accent-soft);
+}
+
+.input {
+  font-size: 11px;
+  padding: 3px 9px;
+  border: 1px dashed var(--surface-border);
+  background: var(--surface);
+  color: var(--foreground);
+  width: 90px;
+}
+
+.input:focus-visible {
+  outline: none;
+  border-color: var(--accent);
+}
+
+.input::placeholder {
+  color: var(--faint);
+}

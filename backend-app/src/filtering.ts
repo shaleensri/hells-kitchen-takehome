@@ -4,7 +4,7 @@
  * PrecomputedRecipe[] (no Express types) so the semantics are testable in
  * isolation, per §3.13.
  */
-import type { DietaryTag, SortField, SortOrder } from "@hells-kitchen/shared";
+import type { Difficulty, DietaryTag, SortField, SortOrder } from "@hells-kitchen/shared";
 import type { PrecomputedRecipe } from "./data";
 import { toRecipeListItem } from "./data";
 import { BadRequestError } from "./errors";
@@ -14,6 +14,10 @@ export interface RecipeQuery {
   tags?: string[];
   ingredients?: string[];
   dietary?: DietaryTag[];
+  /** Exact-match filter, distinct from `sort=difficulty` — added for the
+   * design-pass filter rail's difficulty toggle (§3.20). Lenient like the
+   * other filters: an unrecognized value just matches nothing, not a 400. */
+  difficulty?: Difficulty;
   sort?: SortField;
   order: SortOrder;
 }
@@ -64,6 +68,7 @@ export function parseRecipeQuery(query: Record<string, unknown>): RecipeQuery {
     tags: parseCommaList(query.tags)?.map((t) => t.toLowerCase()),
     ingredients: parseCommaList(query.ingredients)?.map((i) => i.toLowerCase()),
     dietary: parseCommaList(query.dietary)?.map((d) => d.toLowerCase()) as DietaryTag[] | undefined,
+    difficulty: typeof query.difficulty === "string" ? (query.difficulty.toLowerCase() as Difficulty) : undefined,
     sort,
     order,
   };
@@ -98,6 +103,10 @@ export function filterRecipes(recipes: PrecomputedRecipe[], params: RecipeQuery)
     if (params.dietary && params.dietary.length > 0) {
       const recipeDietary = recipe.dietary.map((d) => d.toLowerCase());
       if (!params.dietary.every((d) => recipeDietary.includes(d))) return false;
+    }
+
+    if (params.difficulty && recipe.raw.difficulty.toLowerCase() !== params.difficulty) {
+      return false;
     }
 
     return true;

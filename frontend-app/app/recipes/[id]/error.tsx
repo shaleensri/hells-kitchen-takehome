@@ -11,16 +11,24 @@ export default function RecipeDetailError({ error, reset }: { error: Error; rese
 
   return (
     <div className={`container ${styles.wrapper}`}>
-      <span className={styles.icon} aria-hidden="true">
-        🔥
-      </span>
-      <h1>Something went wrong loading this recipe</h1>
-      <p>{error.message || "The recipe server didn't respond. It may be starting up or temporarily unavailable."}</p>
-      <div className={styles.actions}>
-        <button type="button" onClick={() => reset()} className={styles.retryButton}>
-          Try again
-        </button>
-        <Link href="/recipes">Back to recipes</Link>
+      <div className={`blueprint ${styles.panel}`}>
+        <i className="corner tl" />
+        <i className="corner tr" />
+        <i className="corner bl" />
+        <i className="corner br" />
+        <div className="eyebrow">Error — sheet failed to load</div>
+        <h1 className={styles.heading}>Something went wrong</h1>
+        <p className={styles.message}>
+          {error.message || "The recipe server didn't respond. It may be starting up or temporarily unavailable."}
+        </p>
+        <div className={styles.actions}>
+          <button type="button" onClick={() => reset()} className="btn btn-primary">
+            Try again
+          </button>
+          <Link href="/recipes" className={styles.link}>
+            Back to index
+          </Link>
+        </div>
       </div>
     </div>
   );

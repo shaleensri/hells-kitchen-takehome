@@ -3,51 +3,67 @@
 }
 
 @keyframes shimmer {
-  0% {
-    background-position: -200% 0;
-  }
+  0%,
   100% {
-    background-position: 200% 0;
+    opacity: 0.35;
+  }
+  50% {
+    opacity: 0.8;
   }
 }
 
-.backSkeleton,
-.titleSkeleton,
-.metaSkeleton,
-.blockSkeleton {
-  background: linear-gradient(90deg, var(--surface-border) 25%, var(--surface) 37%, var(--surface-border) 63%);
-  background-size: 400% 100%;
+.sk {
+  background: var(--surface-border);
   animation: shimmer 1.6s ease-in-out infinite;
-  border-radius: var(--radius-sm);
 }
 
-.backSkeleton {
-  width: 110px;
+.backSk {
+  width: 100px;
+  height: 14px;
+  margin-top: var(--space-5);
+}
+
+.eyebrowSk {
+  width: 160px;
+  height: 10px;
+  margin-top: var(--space-5);
+}
+
+.titleSk {
+  width: 55%;
+  height: 44px;
+  margin-top: var(--space-3);
+}
+
+.descSk {
+  width: 40%;
   height: 16px;
-  margin-top: var(--space-5);
+  margin-top: var(--space-3);
 }
 
-.titleSkeleton {
-  width: 60%;
-  height: 36px;
-  margin-top: var(--space-5);
+.statsStripSk {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: var(--space-3);
+  margin-top: var(--space-6);
+  padding: var(--space-4) 0;
+  border-top: 1px solid var(--surface-border);
+  border-bottom: 1px solid var(--surface-border);
 }
 
-.metaSkeleton {
-  width: 100%;
-  height: 60px;
-  margin: var(--space-4) 0 var(--space-6);
+.statSk {
+  height: 30px;
 }
 
 .columns {
   display: grid;
-  grid-template-columns: 1fr 1.4fr;
+  grid-template-columns: 1fr 1.25fr;
   gap: var(--space-7);
+  margin-top: var(--space-6);
 }
 
-.blockSkeleton {
-  height: 260px;
-  border-radius: var(--radius-md);
+.block {
+  height: 320px;
 }
 
 @media (max-width: 720px) {

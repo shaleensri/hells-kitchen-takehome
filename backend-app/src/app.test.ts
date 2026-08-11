@@ -74,6 +74,15 @@ describe("GET /api/recipes", () => {
     expect(nonNull).toEqual([...nonNull].sort((a, b) => b - a));
   });
 
+  it("filters by difficulty exact match", async () => {
+    const res = await request(app).get("/api/recipes").query({ difficulty: "hard" });
+    expect(res.status).toBe(200);
+    expect(res.body.length).toBeGreaterThan(0);
+    for (const recipe of res.body) {
+      expect(recipe.difficulty).toBe("hard");
+    }
+  });
+
   it("returns 400 with the error envelope for an invalid sort value", async () => {
     const res = await request(app).get("/api/recipes").query({ sort: "popularity" });
     expect(res.status).toBe(400);

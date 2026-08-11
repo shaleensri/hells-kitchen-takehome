@@ -1,37 +1,20 @@
 .wrapper {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  gap: var(--space-3);
-  padding: var(--space-8) var(--space-4);
-  max-width: 520px;
-  margin: 0;
+  padding: var(--space-7) 0;
+  max-width: 560px;
 }
 
-.icon {
-  font-size: 2.2rem;
+.panel {
+  padding: var(--space-6) var(--space-5);
+  background-image: repeating-linear-gradient(135deg, var(--accent-soft) 0 8px, transparent 8px 16px);
 }
 
-.wrapper h1 {
-  font-size: 1.3rem;
+.heading {
+  font-size: 34px;
+  margin-top: 6px;
 }
 
-.wrapper p {
+.message {
   color: var(--muted);
   line-height: 1.5;
-}
-
-.retryButton {
-  padding: 10px 20px;
-  background: var(--accent);
-  color: var(--accent-foreground);
-  border: none;
-  border-radius: var(--radius-sm);
-  font-weight: 600;
-  cursor: pointer;
-  transition: background var(--transition);
-}
-
-.retryButton:hover {
-  background: var(--accent-hover);
+  margin: var(--space-3) 0 var(--space-5);
 }

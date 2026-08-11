@@ -3,9 +3,11 @@
 }
 
 .backLink {
-  display: inline-block;
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
   margin-top: var(--space-5);
-  font-size: 0.85rem;
+  font-size: 12px;
   color: var(--muted);
   transition: color var(--transition);
 }
@@ -14,178 +16,209 @@
   color: var(--accent);
 }
 
-.header {
-  margin: var(--space-4) 0 var(--space-6);
-  display: flex;
-  flex-direction: column;
-  gap: var(--space-3);
-}
-
-.header h1 {
-  font-size: 2.1rem;
+.title {
+  font-size: 52px;
+  max-width: 14ch;
+  margin-top: var(--space-3);
 }
 
 .description {
+  font-size: 16px;
   color: var(--muted);
-  line-height: 1.55;
-  font-size: 1.02rem;
   max-width: 60ch;
-}
-
-.meta {
-  display: flex;
-  flex-wrap: wrap;
-  gap: var(--space-6);
-  margin-top: var(--space-2);
-}
-
-.meta dt {
-  font-size: 0.7rem;
-  text-transform: uppercase;
-  letter-spacing: 0.03em;
-  color: var(--muted);
-  margin-bottom: 3px;
-}
-
-.meta dd {
-  font-weight: 700;
-  font-variant-numeric: tabular-nums;
-}
-
-.difficulty {
-  display: inline-block;
-  font-size: 0.7rem;
-  font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: 0.03em;
-  padding: 3px 10px;
-  border-radius: 999px;
-}
-
-.difficulty-easy {
-  background: var(--success-bg);
-  color: var(--success-foreground);
-}
-
-.difficulty-medium {
-  background: var(--warning-bg);
-  color: var(--warning-foreground);
-}
-
-.difficulty-hard {
-  background: var(--danger-bg);
-  color: var(--danger);
+  margin-top: var(--space-3);
 }
 
 .tagList {
   display: flex;
   flex-wrap: wrap;
-  gap: 6px;
+  gap: 8px;
+  margin-top: var(--space-4);
+}
+
+.dietaryTag {
+  font-size: 11px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  padding: 3px 10px;
+  border: 1px solid var(--success);
+  color: var(--success);
 }
 
 .tag {
-  font-size: 0.75rem;
-  padding: 4px 11px;
-  border-radius: 999px;
+  font-size: 11px;
+  padding: 3px 10px;
   background: var(--tag-bg);
   color: var(--tag-foreground);
 }
 
-.dietaryTag {
-  background: var(--accent);
-  color: var(--accent-foreground);
+.actions {
+  display: flex;
+  gap: 10px;
+  margin-top: var(--space-5);
+}
+
+.statsStrip {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  border-top: 1px solid var(--surface-border);
+  border-bottom: 1px solid var(--surface-border);
+  margin-top: var(--space-6);
+}
+
+.statsStrip > div {
+  padding: var(--space-4) var(--space-5);
+  border-right: 1px solid var(--surface-border);
+}
+
+.statsStrip > div:last-child {
+  border-right: none;
+}
+
+.statValue {
+  font-family: var(--font-display), "Arial Narrow", sans-serif;
+  font-size: 26px;
   font-weight: 600;
+  text-transform: capitalize;
+  margin-top: 4px;
 }
 
 .columns {
   display: grid;
-  grid-template-columns: 1fr 1.4fr;
+  grid-template-columns: 1fr 1.25fr;
   gap: var(--space-7);
-  margin-bottom: var(--space-7);
+  padding-top: var(--space-6);
 }
 
 .columns h2 {
-  font-size: 1.2rem;
-  margin-bottom: var(--space-4);
+  font-size: 22px;
+}
+
+.sectionHeader {
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: var(--space-3);
+  margin-bottom: var(--space-4);
+}
+
+.stepper {
+  margin-left: auto;
+  display: flex;
+  align-items: center;
+  border: 1px solid var(--surface-border);
+}
+
+.stepper button {
+  width: 28px;
+  height: 28px;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  font-size: 16px;
+  line-height: 1;
+  color: var(--foreground);
+}
+
+.stepper button:disabled {
+  opacity: 0.35;
+  cursor: not-allowed;
+}
+
+.stepper button:hover:not(:disabled) {
+  background: var(--accent-soft);
+}
+
+.stepperValue {
+  min-width: 74px;
+  text-align: center;
+  font-family: var(--font-display), "Arial Narrow", sans-serif;
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.03em;
+  border-left: 1px solid var(--surface-border);
+  border-right: 1px solid var(--surface-border);
+  padding: 5px 0;
 }
 
 .ingredientList {
   display: flex;
   flex-direction: column;
-  gap: var(--space-2);
+  gap: 0;
 }
 
 .ingredientRow {
   display: flex;
   gap: var(--space-3);
-  font-size: 0.94rem;
-  padding-bottom: var(--space-2);
-  border-bottom: 1px solid var(--surface-border);
+  align-items: baseline;
+  padding: 9px 0;
+  border-bottom: 1px dotted var(--surface-border);
+  font-size: 15px;
 }
 
 .amount {
-  flex-shrink: 0;
   min-width: 84px;
-  color: var(--muted);
+  flex-shrink: 0;
+  font-family: var(--font-display), "Arial Narrow", sans-serif;
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--accent);
   font-variant-numeric: tabular-nums;
 }
 
 .approxBadge,
 .unresolvedBadge {
   margin-left: 6px;
-  font-size: 0.65rem;
+  font-size: 9.5px;
+  letter-spacing: 0.08em;
   text-transform: uppercase;
-  letter-spacing: 0.02em;
-  color: var(--muted);
-  border: 1px solid var(--surface-border);
-  border-radius: 4px;
-  padding: 1px 5px;
+  color: var(--faint);
 }
 
 .unresolvedBadge {
   color: var(--danger);
-  border-color: var(--danger);
+}
+
+.scaleNote {
+  font-size: 12px;
+  color: var(--faint);
+  margin-top: var(--space-3);
 }
 
 .instructionList {
   display: flex;
   flex-direction: column;
-  gap: var(--space-4);
-  counter-reset: step;
+  gap: 0;
 }
 
 .instructionList li {
   display: flex;
-  gap: var(--space-3);
-  line-height: 1.55;
-  padding-top: 2px;
+  gap: var(--space-4);
+  padding: 13px 0;
+  border-bottom: 1px dotted var(--surface-border);
+  font-size: 15.5px;
+  line-height: 1.5;
 }
 
-.instructionList li::before {
-  counter-increment: step;
-  content: counter(step);
+.stepNo {
   flex-shrink: 0;
-  width: 26px;
-  height: 26px;
-  border-radius: 50%;
-  background: var(--accent);
-  color: var(--accent-foreground);
-  font-size: 0.75rem;
-  font-weight: 700;
+  width: 27px;
+  height: 27px;
+  border: 1px solid var(--accent);
+  color: var(--accent);
   display: flex;
   align-items: center;
   justify-content: center;
+  font-family: var(--font-display), "Arial Narrow", sans-serif;
+  font-size: 13px;
+  font-weight: 600;
 }
 
-.nutritionSection {
-  background: var(--surface);
-  border: 1px solid var(--surface-border);
-  border-radius: var(--radius-md);
-  padding: var(--space-5);
-  margin-bottom: var(--space-7);
+.nutritionHeading {
+  margin: var(--space-6) 0 var(--space-4);
+}
+
+.nutritionCard {
+  padding: var(--space-4) var(--space-5);
 }
 
 .partialNote {
@@ -194,46 +227,64 @@
   margin-bottom: var(--space-3);
 }
 
-.nutritionTable {
-  border-collapse: separate;
-  border-spacing: 0;
-  width: 100%;
-  max-width: 480px;
-  margin-bottom: var(--space-3);
-  border: 1px solid var(--surface-border);
-  border-radius: var(--radius-sm);
-  overflow: hidden;
-  background: var(--surface-raised);
+.nutritionGrid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: var(--space-3);
 }
 
-.nutritionTable th,
-.nutritionTable td {
-  text-align: left;
-  padding: var(--space-3) var(--space-4);
-}
-
-.nutritionTable th {
-  background: var(--surface);
-  font-size: 0.72rem;
-  text-transform: uppercase;
-  letter-spacing: 0.03em;
-  color: var(--muted);
-  border-bottom: 1px solid var(--surface-border);
-}
-
-.nutritionTable td {
-  font-variant-numeric: tabular-nums;
+.nutritionValue {
+  font-family: var(--font-display), "Arial Narrow", sans-serif;
+  font-size: 24px;
   font-weight: 600;
+  margin-top: 2px;
+  font-variant-numeric: tabular-nums;
+}
+
+.bar {
+  height: 3px;
+  background: var(--accent);
+  opacity: 0.45;
+  margin-top: 6px;
+  width: 60%;
+}
+
+.barPrimary {
+  opacity: 1;
+  width: 100%;
 }
 
 .totalNote {
-  font-size: 0.82rem;
-  color: var(--muted);
+  font-size: 12px;
+  color: var(--faint);
+  margin-top: var(--space-4);
 }
 
 @media (max-width: 720px) {
+  .title {
+    font-size: 38px;
+  }
+
+  .statsStrip {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .statsStrip > div:nth-child(2) {
+    border-right: none;
+  }
+
+  .statsStrip > div:nth-child(3),
+  .statsStrip > div:nth-child(4) {
+    border-top: 1px solid var(--surface-border);
+  }
+
   .columns {
     grid-template-columns: 1fr;
     gap: var(--space-6);
+  }
+
+  .nutritionGrid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: var(--space-4);
   }
 }

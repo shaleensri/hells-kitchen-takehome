@@ -1,29 +1,44 @@
+/**
+ * Design system pass v2 — matches the "Industry" spec-sheet mockup the user
+ * provided (PLAN.md §3.20): recipes as engineering/blueprint spec sheets,
+ * not a food-editorial site. Sharp edges throughout (zero border-radius —
+ * a deliberate departure from §3.19's rounded-card pass), corner-bracket
+ * framing instead of shadows, dotted "rule" dividers, uppercase tracked
+ * condensed headings, a cool steel-blue accent instead of warm terracotta.
+ */
 :root {
-  /* Color — warm, food-forward palette (not a generic default-blue SaaS look) */
-  --background: #fdfbf6;
-  --foreground: #221b12;
-  --surface: #f7f1e6;
-  --surface-raised: #ffffff;
-  --surface-border: #e8dfcc;
-  --muted: #7c7261;
-  --accent: #b5471b;
-  --accent-hover: #973a15;
-  --accent-foreground: #ffffff;
-  --accent-soft: #f6e2d4;
-  --tag-bg: #ecf0e2;
-  --tag-foreground: #3f4a33;
-  --success-bg: #dff3df;
-  --success-foreground: #1e5c1e;
-  --warning-bg: #fdeecb;
-  --warning-foreground: #7a4e05;
+  --background: #f2f2f3;
+  --foreground: #1d1f20;
+  --surface: #e8e8ea;
+  --surface-border: rgba(29, 31, 32, 0.16);
+  --muted: rgba(29, 31, 32, 0.6);
+  --faint: rgba(29, 31, 32, 0.5);
+  --accent: #5980a6;
+  --accent-hover: #416180;
+  --accent-foreground: #f2f2f3;
+  --accent-soft: rgba(89, 128, 166, 0.1);
+  --tag-bg: #e7e7ea;
+  --tag-foreground: #424244;
+  --success: #2f7d32;
+  --warning: #9a6b00;
   --danger: #b3261e;
-  --danger-bg: #fbdada;
 
-  /* Typography */
-  --font-display: var(--font-display), "Iowan Old Style", Georgia, serif;
-  --font-body: var(--font-body), -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  /* NOT redefining --font-display/--font-body here: next/font already sets
+   * both as working CSS custom properties via the .variable className
+   * applied to <html> in layout.tsx (containing the real resolved font
+   * stack). Redefining them here as `var(--font-display), ...` would be a
+   * SELF-REFERENCE — CSS custom properties that reference themselves become
+   * "guaranteed-invalid" at computed-value time, silently breaking the
+   * property entirely (not falling back to next/font's value, just gone).
+   * Caught via screenshot review: headings were rendering in the browser's
+   * generic serif fallback instead of Barlow Condensed, and it turns out
+   * this exact bug was already present in §3.19's Fraunces pass too — just
+   * invisible there because the accidental fallback (browser default serif)
+   * happened to look similar enough to the intended serif to not be obviously
+   * wrong. Fixed properly this time: reference var(--font-display)/
+   * var(--font-body) directly at each use site with an inline fallback,
+   * never redeclare the custom property itself. */
 
-  /* Spacing scale (4px base) */
   --space-1: 4px;
   --space-2: 8px;
   --space-3: 12px;
@@ -33,41 +48,27 @@
   --space-7: 48px;
   --space-8: 64px;
 
-  /* Radius + elevation */
-  --radius-sm: 8px;
-  --radius-md: 14px;
-  --radius-lg: 22px;
-  --shadow-sm: 0 1px 2px rgba(34, 27, 18, 0.06);
-  --shadow-md: 0 8px 24px -8px rgba(34, 27, 18, 0.18);
-  --shadow-lg: 0 20px 48px -16px rgba(34, 27, 18, 0.28);
-
-  --max-width: 1120px;
-  --transition: 160ms cubic-bezier(0.4, 0, 0.2, 1);
+  --max-width: 1200px;
+  --transition: 140ms ease;
 }
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --background: #17130d;
-    --foreground: #f3ece0;
-    --surface: #201a12;
-    --surface-raised: #241d14;
-    --surface-border: #3a2f20;
-    --muted: #a99d89;
-    --accent: #e2823f;
-    --accent-hover: #ee9a5c;
-    --accent-foreground: #1a1006;
-    --accent-soft: #3a2513;
-    --tag-bg: #29301f;
-    --tag-foreground: #cdd9b8;
-    --success-bg: #1c3320;
-    --success-foreground: #9fe3a4;
-    --warning-bg: #3a2c10;
-    --warning-foreground: #f0c988;
+    --background: #17181a;
+    --foreground: #f0f0f1;
+    --surface: #1f2123;
+    --surface-border: rgba(240, 240, 241, 0.16);
+    --muted: rgba(240, 240, 241, 0.6);
+    --faint: rgba(240, 240, 241, 0.48);
+    --accent: #8bb2d9;
+    --accent-hover: #a9c7e6;
+    --accent-foreground: #14181c;
+    --accent-soft: rgba(139, 178, 217, 0.14);
+    --tag-bg: #26282b;
+    --tag-foreground: #c7cace;
+    --success: #6bc06f;
+    --warning: #e0ac4a;
     --danger: #ff6a5f;
-    --danger-bg: #3a1919;
-    --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.3);
-    --shadow-md: 0 8px 24px -8px rgba(0, 0, 0, 0.5);
-    --shadow-lg: 0 20px 48px -16px rgba(0, 0, 0, 0.6);
   }
 
   html {
@@ -84,7 +85,8 @@ body {
 body {
   color: var(--foreground);
   background: var(--background);
-  font-family: var(--font-body);
+  font-family: var(--font-body), -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  font-size: 15px;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
@@ -110,12 +112,15 @@ figure {
 h1,
 h2,
 h3 {
-  font-family: var(--font-display);
+  font-family: var(--font-display), "Arial Narrow", sans-serif;
   font-weight: 600;
-  letter-spacing: -0.01em;
+  line-height: 1.08;
+  letter-spacing: -0.015em;
+  text-transform: uppercase;
 }
 
-ul {
+ul,
+ol {
   list-style: none;
 }
 
@@ -139,7 +144,114 @@ img {
 .container {
   max-width: var(--max-width);
   margin: 0 auto;
-  padding: 0 20px;
+  padding: 0 32px;
+}
+
+.eyebrow {
+  font-size: 10px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--accent);
+}
+
+.label {
+  font-size: 10px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--faint);
+}
+
+/* Dotted horizontal divider — matches the mockup's .rule. Uses a plain
+ * mid-gray rather than deriving from --foreground via CSS relative-color
+ * syntax (rgb(from ...)) — not universally supported yet, not worth the risk
+ * for a 1px divider. */
+.rule {
+  background-image: repeating-linear-gradient(90deg, rgba(128, 128, 128, 0.35) 0 1px, transparent 1px 6px);
+  height: 1px;
+}
+
+/* Blueprint corner-bracket framing — no fill, no continuous border, just
+ * four L-shaped registration marks at each corner (spec-sheet convention). */
+.blueprint {
+  position: relative;
+}
+
+.corner {
+  position: absolute;
+  width: 11px;
+  height: 11px;
+  pointer-events: none;
+}
+
+.corner.tl {
+  top: 0;
+  left: 0;
+  border-top: 1.5px solid var(--accent);
+  border-left: 1.5px solid var(--accent);
+}
+
+.corner.tr {
+  top: 0;
+  right: 0;
+  border-top: 1.5px solid var(--accent);
+  border-right: 1.5px solid var(--accent);
+}
+
+.corner.bl {
+  bottom: 0;
+  left: 0;
+  border-bottom: 1.5px solid var(--accent);
+  border-left: 1.5px solid var(--accent);
+}
+
+.corner.br {
+  bottom: 0;
+  right: 0;
+  border-bottom: 1.5px solid var(--accent);
+  border-right: 1.5px solid var(--accent);
+}
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 9px 18px;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  border: 1px solid transparent;
+  transition: background var(--transition), border-color var(--transition), opacity var(--transition);
+}
+
+.btn-primary {
+  background: var(--accent);
+  color: var(--accent-foreground);
+}
+
+.btn-primary:hover {
+  background: var(--accent-hover);
+}
+
+.btn-secondary {
+  background: transparent;
+  border-color: var(--surface-border);
+  color: var(--foreground);
+}
+
+.btn-secondary:hover {
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
+.btn:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+
+.btn:disabled:hover {
+  background: var(--accent);
+  border-color: var(--surface-border);
+  color: var(--accent-foreground);
 }
 
 .visually-hidden {

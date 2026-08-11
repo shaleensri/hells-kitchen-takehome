@@ -5,6 +5,7 @@
  */
 import type {
   ApiErrorBody,
+  Difficulty,
   IngredientListItem,
   RecipeDetail,
   RecipeListItem,
@@ -67,6 +68,7 @@ export interface RecipeListParams {
   tags?: string[];
   ingredients?: string[];
   dietary?: string[];
+  difficulty?: Difficulty;
   sort?: SortField;
   order?: SortOrder;
 }
@@ -82,6 +84,7 @@ export function fetchRecipes(params: RecipeListParams = {}): Promise<RecipeListI
     tags: joinList(params.tags),
     ingredients: joinList(params.ingredients),
     dietary: joinList(params.dietary),
+    difficulty: params.difficulty,
     sort: params.sort,
     order: params.order,
   });
