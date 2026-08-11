@@ -3,6 +3,16 @@
   flex-direction: column;
   gap: 10px;
   padding: 16px 15px 14px;
+  /* The corner brackets alone read as too sparse across a dense grid —
+   * a faint dotted line ties the four corners together into a visible
+   * box without competing with them for attention (they stay the accent
+   * color; this stays a quiet, low-contrast surface-border). */
+  border: 1px dotted var(--surface-border);
+  transition: border-color var(--transition);
+}
+
+.card:hover {
+  border-color: var(--accent);
 }
 
 .cardHeader {
