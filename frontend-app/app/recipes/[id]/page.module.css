@@ -37,6 +37,7 @@
   text-transform: uppercase;
   letter-spacing: 0.02em;
   color: var(--muted);
+  margin-bottom: 2px;
 }
 
 .meta dd {
