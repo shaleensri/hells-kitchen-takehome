@@ -230,7 +230,7 @@ describe("POST /api/recipes/:id/ask", () => {
     expect(body.messages[0].content).toContain("Classic Margherita Pizza");
   });
 
-  it("forwards a well-formed history array to the provider as prior conversation turns (§3.29)", async () => {
+  it("forwards a well-formed history array to the provider as a labeled user-role context block, not fake assistant messages (§3.29, §3.30)", async () => {
     process.env.OPENAI_API_KEY = "sk-test";
     const mockFetch = vi.fn().mockResolvedValue({
       ok: true,
@@ -249,8 +249,8 @@ describe("POST /api/recipes/:id/ask", () => {
     expect(res.status).toBe(200);
     const [, requestInit] = mockFetch.mock.calls[0];
     const body = JSON.parse(requestInit.body);
-    expect(body.messages.map((m: { role: string }) => m.role)).toEqual(["system", "user", "assistant", "user"]);
-    expect(body.messages[1].content).toBe("Can I use butter or oil?");
+    expect(body.messages.map((m: { role: string }) => m.role)).toEqual(["system", "user", "user"]);
+    expect(body.messages[1].content).toContain("Can I use butter or oil?");
   });
 
   it("drops malformed history entries and truncates an oversized array instead of erroring (§3.29)", async () => {
@@ -275,11 +275,13 @@ describe("POST /api/recipes/:id/ask", () => {
     expect(res.status).toBe(200);
     const [, requestInit] = mockFetch.mock.calls[0];
     const body = JSON.parse(requestInit.body);
-    // system + (5 capped exchanges × 2 messages) + the final question = 12.
-    expect(body.messages).toHaveLength(12);
+    // system + one folded context block + the final question = 3, regardless
+    // of how many exchanges are folded into that one block (§3.30).
+    expect(body.messages).toHaveLength(3);
     // The malformed/non-object entries never made it in, and only the *last*
     // 5 of the 20 valid ones survived the cap.
-    expect(body.messages[1].content).toBe("q15");
+    expect(body.messages[1].content).toContain("q15");
+    expect(body.messages[1].content).not.toContain("q14");
   });
 
   it("returns 502 when the provider errors", async () => {
