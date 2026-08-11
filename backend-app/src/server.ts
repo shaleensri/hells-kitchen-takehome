@@ -2,6 +2,7 @@
  * Entry point. Boots the app-data layer (§5.4) and the Express app (§3.10's
  * full route contract, wired in app.ts as of Iteration 2).
  */
+import "dotenv/config"; // loads backend-app/.env (OPENAI_API_KEY, §3.3) — no-op if the file doesn't exist
 import { createApp } from "./app";
 import { loadAppData } from "./data";
 

@@ -18,6 +18,13 @@ export function createApp(appData: AppData): Express {
   app.use("/api/recipes", createRecipesRouter(appData));
   app.use("/api/ingredients", createIngredientsRouter(appData));
 
+  // Lets the frontend show the "Ask about this recipe" panel as disabled
+  // up front (§3.3's fail-soft requirement) instead of only finding out the
+  // key is missing after a user types a question and submits it.
+  app.get("/api/llm-status", (_req, res) => {
+    res.json({ available: Boolean(process.env.OPENAI_API_KEY) });
+  });
+
   // Unmatched routes get the same error envelope as everything else (§3.10),
   // not Express's default HTML 404 page.
   app.use((req, _res, next) => {

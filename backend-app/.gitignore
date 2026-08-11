@@ -16,5 +16,9 @@ pids
 # Optional eslint cache
 .eslintcache
 
-# env files (can opt-in for committing if needed)
-.env*
+# env files — real secrets only. Precise (not a blanket .env*) so
+# .env.example stays trackable — it documents required vars, not a secret
+# itself (§3.3). Matches the root .gitignore's pattern.
+.env
+.env.local
+.env*.local

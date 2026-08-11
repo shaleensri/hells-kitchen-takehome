@@ -1,7 +1,8 @@
-import { describe, expect, it } from "vitest";
+import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import request from "supertest";
 import { createApp } from "./app";
 import { DEFAULT_DATA_PATH, loadAppData } from "./data";
+import { resetRateLimiter } from "./rateLimit";
 
 // HTTP-level integration tests against the real backend-app/db/data.json,
 // through the actual Express app (no mocking) — this is what verifies the
@@ -143,5 +144,120 @@ describe("unmatched routes", () => {
     const res = await request(app).get("/api/nonexistent-route");
     expect(res.status).toBe(404);
     expect(res.body).toMatchObject({ error: { code: "NOT_FOUND" } });
+  });
+});
+
+describe("GET /api/llm-status", () => {
+  const originalKey = process.env.OPENAI_API_KEY;
+  afterEach(() => {
+    if (originalKey === undefined) delete process.env.OPENAI_API_KEY;
+    else process.env.OPENAI_API_KEY = originalKey;
+  });
+
+  it("reports available: false when OPENAI_API_KEY isn't set (§3.3 fail-soft)", async () => {
+    delete process.env.OPENAI_API_KEY;
+    const res = await request(app).get("/api/llm-status");
+    expect(res.status).toBe(200);
+    expect(res.body).toEqual({ available: false });
+  });
+
+  it("reports available: true when OPENAI_API_KEY is set", async () => {
+    process.env.OPENAI_API_KEY = "sk-test";
+    const res = await request(app).get("/api/llm-status");
+    expect(res.body).toEqual({ available: true });
+  });
+});
+
+describe("POST /api/recipes/:id/ask", () => {
+  const originalKey = process.env.OPENAI_API_KEY;
+
+  beforeEach(() => {
+    resetRateLimiter();
+  });
+
+  afterEach(() => {
+    if (originalKey === undefined) delete process.env.OPENAI_API_KEY;
+    else process.env.OPENAI_API_KEY = originalKey;
+    vi.unstubAllGlobals();
+  });
+
+  it("returns 404 with the standard envelope for an unknown recipe id", async () => {
+    process.env.OPENAI_API_KEY = "sk-test";
+    const res = await request(app).post("/api/recipes/does-not-exist/ask").send({ question: "How long?" });
+    expect(res.status).toBe(404);
+    expect(res.body).toMatchObject({ error: { code: "NOT_FOUND" } });
+  });
+
+  it("returns 400 for a missing/empty question", async () => {
+    process.env.OPENAI_API_KEY = "sk-test";
+    const res = await request(app).post("/api/recipes/1/ask").send({ question: "   " });
+    expect(res.status).toBe(400);
+    expect(res.body).toMatchObject({ error: { code: "BAD_REQUEST" } });
+  });
+
+  it("returns 400 for a question over the length cap (§3.11)", async () => {
+    process.env.OPENAI_API_KEY = "sk-test";
+    const res = await request(app)
+      .post("/api/recipes/1/ask")
+      .send({ question: "a".repeat(501) });
+    expect(res.status).toBe(400);
+    expect(res.body).toMatchObject({ error: { code: "BAD_REQUEST" } });
+  });
+
+  it("returns 503 (not 500, not a crash) when OPENAI_API_KEY is absent — the fail-soft contract", async () => {
+    delete process.env.OPENAI_API_KEY;
+    const res = await request(app).post("/api/recipes/1/ask").send({ question: "How long does this take?" });
+    expect(res.status).toBe(503);
+    expect(res.body).toMatchObject({ error: { code: "SERVICE_UNAVAILABLE" } });
+  });
+
+  it("returns 200 with an answer on a successful (mocked) provider call, grounded in the real recipe", async () => {
+    process.env.OPENAI_API_KEY = "sk-test";
+    const mockFetch = vi.fn().mockResolvedValue({
+      ok: true,
+      status: 200,
+      json: async () => ({ choices: [{ message: { content: "You can substitute olive oil with butter." } }] }),
+    });
+    vi.stubGlobal("fetch", mockFetch);
+
+    const res = await request(app).post("/api/recipes/1/ask").send({ question: "Can I swap the oil?" });
+
+    expect(res.status).toBe(200);
+    expect(res.body).toEqual({ answer: "You can substitute olive oil with butter." });
+    // Confirms the real recipe (not a stub) was actually loaded and grounded into the prompt.
+    const [, requestInit] = mockFetch.mock.calls[0];
+    const body = JSON.parse(requestInit.body);
+    expect(body.messages[0].content).toContain("Classic Margherita Pizza");
+  });
+
+  it("returns 502 when the provider errors", async () => {
+    process.env.OPENAI_API_KEY = "sk-test";
+    vi.stubGlobal(
+      "fetch",
+      vi.fn().mockResolvedValue({ ok: false, status: 500, json: async () => ({}) })
+    );
+
+    const res = await request(app).post("/api/recipes/1/ask").send({ question: "How long does this take?" });
+    expect(res.status).toBe(502);
+    expect(res.body).toMatchObject({ error: { code: "UPSTREAM_ERROR" } });
+  });
+
+  it("returns 429 once a single client exceeds the rate limit", async () => {
+    process.env.OPENAI_API_KEY = "sk-test";
+    vi.stubGlobal(
+      "fetch",
+      vi.fn().mockResolvedValue({
+        ok: true,
+        status: 200,
+        json: async () => ({ choices: [{ message: { content: "ok" } }] }),
+      })
+    );
+
+    let lastStatus = 0;
+    for (let i = 0; i < 11; i++) {
+      const res = await request(app).post("/api/recipes/1/ask").send({ question: `Question number ${i}` });
+      lastStatus = res.status;
+    }
+    expect(lastStatus).toBe(429);
   });
 });

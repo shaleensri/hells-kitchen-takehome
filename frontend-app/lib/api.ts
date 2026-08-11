@@ -63,6 +63,32 @@ async function apiFetch<T>(path: string, params?: Record<string, string | undefi
   return res.json() as Promise<T>;
 }
 
+async function apiPost<T>(path: string, body: unknown): Promise<T> {
+  const url = new URL(path, API_BASE_URL);
+
+  let res: Response;
+  try {
+    res = await fetch(url, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(body),
+    });
+  } catch {
+    throw new ApiRequestError(0, "NETWORK_ERROR", "Could not reach the recipe server.");
+  }
+
+  if (!res.ok) {
+    const errBody = (await res.json().catch(() => null)) as ApiErrorBody | null;
+    throw new ApiRequestError(
+      res.status,
+      errBody?.error?.code ?? "UNKNOWN_ERROR",
+      errBody?.error?.message ?? `Request failed with status ${res.status}.`
+    );
+  }
+
+  return res.json() as Promise<T>;
+}
+
 export interface RecipeListParams {
   q?: string;
   tags?: string[];
@@ -96,4 +122,17 @@ export function fetchRecipe(id: string): Promise<RecipeDetail> {
 
 export function fetchIngredients(params: { q?: string } = {}): Promise<IngredientListItem[]> {
   return apiFetch<IngredientListItem[]>("/api/ingredients", { q: params.q });
+}
+
+/** §3.3/§6 — lets the panel show a disabled state up front instead of only
+ * discovering the key is missing after a user types a question and submits. */
+export function fetchLlmStatus(): Promise<{ available: boolean }> {
+  return apiFetch<{ available: boolean }>("/api/llm-status");
+}
+
+export function askAboutRecipe(recipeId: string, question: string, dietaryProfile?: string[]): Promise<{ answer: string }> {
+  return apiPost<{ answer: string }>(`/api/recipes/${encodeURIComponent(recipeId)}/ask`, {
+    question,
+    dietaryProfile,
+  });
 }

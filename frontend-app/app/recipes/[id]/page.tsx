@@ -6,6 +6,7 @@ import { dedupeTagsAgainstDietary } from "@/lib/tags";
 import { FavoriteButton } from "@/app/_components/FavoriteButton";
 import { AddToListButton } from "@/app/_components/AddToListButton";
 import { ScalableRecipeBody } from "./ScalableRecipeBody";
+import { AskAboutRecipe } from "./AskAboutRecipe";
 import styles from "./page.module.css";
 
 interface RecipeDetailPageProps {
@@ -99,6 +100,7 @@ export default async function RecipeDetailPage({ params }: RecipeDetailPageProps
       </div>
 
       <ScalableRecipeBody recipe={recipe} />
+      <AskAboutRecipe recipe={recipe} />
     </div>
   );
 }

@@ -1,5 +1,5 @@
 import { afterEach, describe, expect, it, vi } from "vitest";
-import { ApiRequestError, fetchIngredients, fetchRecipe, fetchRecipes } from "./api";
+import { ApiRequestError, askAboutRecipe, fetchIngredients, fetchLlmStatus, fetchRecipe, fetchRecipes } from "./api";
 
 function mockFetchOnce(response: { status: number; body: unknown }) {
   const fetchMock = vi.fn().mockResolvedValue({
@@ -92,6 +92,34 @@ describe("fetchIngredients", () => {
     const calledUrl = new URL(fetchMock.mock.calls[0][0] as string);
     expect(calledUrl.pathname).toBe("/api/ingredients");
     expect(calledUrl.searchParams.get("q")).toBe("garlic");
+  });
+});
+
+describe("fetchLlmStatus", () => {
+  it("hits GET /api/llm-status and returns the availability flag", async () => {
+    const fetchMock = mockFetchOnce({ status: 200, body: { available: true } });
+    const result = await fetchLlmStatus();
+    const calledUrl = new URL(fetchMock.mock.calls[0][0] as string);
+    expect(calledUrl.pathname).toBe("/api/llm-status");
+    expect(result).toEqual({ available: true });
+  });
+});
+
+describe("askAboutRecipe", () => {
+  it("POSTs the question and dietary profile to /api/recipes/:id/ask", async () => {
+    const fetchMock = mockFetchOnce({ status: 200, body: { answer: "Yes, that works." } });
+    const result = await askAboutRecipe("1", "Can I use butter?", ["vegan"]);
+
+    const [calledUrl, init] = fetchMock.mock.calls[0] as [string, RequestInit];
+    expect(new URL(calledUrl).pathname).toBe("/api/recipes/1/ask");
+    expect(init.method).toBe("POST");
+    expect(JSON.parse(init.body as string)).toEqual({ question: "Can I use butter?", dietaryProfile: ["vegan"] });
+    expect(result).toEqual({ answer: "Yes, that works." });
+  });
+
+  it("surfaces a 503 (feature disabled) as an ApiRequestError", async () => {
+    mockFetchOnce({ status: 503, body: { error: { code: "SERVICE_UNAVAILABLE", message: "Not configured." } } });
+    await expect(askAboutRecipe("1", "q")).rejects.toMatchObject({ status: 503, code: "SERVICE_UNAVAILABLE" });
   });
 });
 

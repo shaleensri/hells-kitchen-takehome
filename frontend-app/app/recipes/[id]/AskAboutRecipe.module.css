@@ -1,0 +1,107 @@
+.section {
+  margin-top: var(--space-7);
+  max-width: 720px;
+}
+
+.heading {
+  font-size: 24px;
+  margin-bottom: var(--space-4);
+}
+
+.conflictBanner {
+  padding: var(--space-3) var(--space-4);
+  margin-bottom: var(--space-4);
+  border: 1px solid var(--warning);
+  color: var(--warning);
+  font-size: 13px;
+  line-height: 1.5;
+}
+
+.panel {
+  padding: var(--space-5);
+}
+
+.note {
+  font-size: 13px;
+  color: var(--muted);
+  line-height: 1.5;
+}
+
+.exchangeList {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+  margin-bottom: var(--space-4);
+}
+
+.exchange {
+  padding-bottom: var(--space-4);
+  border-bottom: 1px dotted var(--surface-border);
+}
+
+.exchange:last-child {
+  border-bottom: none;
+  padding-bottom: 0;
+}
+
+.question,
+.answer {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+.question {
+  color: var(--muted);
+  margin-bottom: 8px;
+}
+
+.answer {
+  color: var(--foreground);
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+
+.textarea {
+  width: 100%;
+  resize: vertical;
+  padding: 10px 12px;
+  border: 1px solid var(--surface-border);
+  background: var(--surface);
+  color: var(--foreground);
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+.textarea:focus-visible {
+  outline: none;
+  border-color: var(--accent);
+}
+
+.textarea::placeholder {
+  color: var(--faint);
+}
+
+.formFooter {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.counter {
+  font-size: 11px;
+  color: var(--faint);
+  font-variant-numeric: tabular-nums;
+}
+
+.error {
+  margin-top: var(--space-3);
+  font-size: 13px;
+  color: var(--danger);
+}

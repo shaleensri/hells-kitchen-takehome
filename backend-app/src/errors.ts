@@ -35,6 +35,35 @@ export class NotFoundError extends ApiError {
   }
 }
 
+/** 429 — per-IP rate limit exceeded on the LLM endpoint (§3.11). */
+export class TooManyRequestsError extends ApiError {
+  constructor(message: string) {
+    super(429, "RATE_LIMITED", message);
+  }
+}
+
+/** 503 — feature intentionally disabled (e.g. OPENAI_API_KEY not configured,
+ * §3.3). Distinct from a 500: this is an expected, fail-soft state, not a bug. */
+export class ServiceUnavailableError extends ApiError {
+  constructor(message: string) {
+    super(503, "SERVICE_UNAVAILABLE", message);
+  }
+}
+
+/** 502 — the upstream LLM provider errored or returned something unusable. */
+export class BadGatewayError extends ApiError {
+  constructor(message: string) {
+    super(502, "UPSTREAM_ERROR", message);
+  }
+}
+
+/** 504 — the upstream LLM provider didn't respond within the timeout (§3.11). */
+export class GatewayTimeoutError extends ApiError {
+  constructor(message: string) {
+    super(504, "UPSTREAM_TIMEOUT", message);
+  }
+}
+
 /**
  * Express error-handling middleware (4-arg signature required — that's how
  * Express identifies it as an error handler, not a regular middleware).
