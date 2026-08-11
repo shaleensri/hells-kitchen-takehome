@@ -3,11 +3,19 @@
 import { useRouter, useSearchParams } from "next/navigation";
 import styles from "./SortControl.module.css";
 
+// Every field gets both directions — the backend supports order=desc on all
+// four (verified directly against the API), so the UI should too. Missed
+// initially: only calories had a low/high pair, prep/cook/difficulty each
+// only exposed one direction, an inconsistency caught when the user asked
+// whether Iteration 4 was really complete.
 const OPTIONS: { value: string; label: string }[] = [
   { value: "", label: "Default" },
-  { value: "prepTime:asc", label: "Prep time" },
-  { value: "cookTime:asc", label: "Cook time" },
-  { value: "difficulty:asc", label: "Difficulty" },
+  { value: "prepTime:asc", label: "Prep time (fastest first)" },
+  { value: "prepTime:desc", label: "Prep time (slowest first)" },
+  { value: "cookTime:asc", label: "Cook time (fastest first)" },
+  { value: "cookTime:desc", label: "Cook time (slowest first)" },
+  { value: "difficulty:asc", label: "Difficulty (easiest first)" },
+  { value: "difficulty:desc", label: "Difficulty (hardest first)" },
   { value: "calories:asc", label: "Calories (low first)" },
   { value: "calories:desc", label: "Calories (high first)" },
 ];
