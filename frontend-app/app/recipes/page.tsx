@@ -87,16 +87,9 @@ export default async function RecipesPage({ searchParams }: RecipesPageProps) {
           className={styles.searchInput}
         />
         {/* One hidden input per filter, comma-joined — must match the
-            convention every other filter control uses (lib/filterUrl.ts,
-            IngredientChips, the backend's own parseCommaList). Emitting one
-            input per value with a shared `name` used repeated-key form
-            semantics instead, which the app doesn't parse that way anywhere
-            (searchParams.ts's firstValue() takes only the first of an
-            array) — submitting search with 2+ active tags/ingredients/
-            dietary filters silently dropped all but the first. Caught on
-            review, not by any test — an actual gap in verification, since
-            every filter had been tested individually or combined with a
-            *different* filter type, never two values of the *same* one. */}
+            parser convention (firstValue/splitList) and every other filter
+            control, not one input per value (that's repeated-key form
+            semantics, which nothing here parses). See PLAN.md §3.22. */}
         {tags && tags.length > 0 && <input type="hidden" name="tags" value={tags.join(",")} />}
         {ingredients && ingredients.length > 0 && (
           <input type="hidden" name="ingredients" value={ingredients.join(",")} />
