@@ -6,6 +6,7 @@ import { firstValue, splitList } from "@/lib/searchParams";
 import { FilterRail } from "./_components/FilterRail";
 import { SortControl } from "./_components/SortControl";
 import { RecipeCard } from "./_components/RecipeCard";
+import { ProfileAutoApply } from "./_components/ProfileAutoApply";
 import styles from "./page.module.css";
 
 export const metadata: Metadata = {
@@ -55,6 +56,7 @@ export default async function RecipesPage({ searchParams }: RecipesPageProps) {
 
   return (
     <div className={`container ${styles.page}`}>
+      <ProfileAutoApply />
       <div className={styles.titleRow}>
         <div>
           <div className="eyebrow">Sheet 01 — All entries</div>

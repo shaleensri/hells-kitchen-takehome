@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Barlow, Barlow_Condensed } from "next/font/google";
 import Link from "next/link";
 import "./globals.css";
+import { NavLinks } from "./_components/NavLinks";
 import styles from "./layout.module.css";
 
 // Design system pass v2 (PLAN.md §3.20) — replaces §3.19's warm/serif
@@ -40,9 +41,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
               Hell&rsquo;s Kitchen
             </Link>
             <span className={styles.brandSub}>Recipe Index / Rev. 2</span>
-            <nav className={styles.nav}>
-              <Link href="/recipes">Recipes</Link>
-            </nav>
+            <NavLinks />
           </div>
         </header>
         <main>{children}</main>

@@ -15,10 +15,28 @@
   border-color: var(--accent);
 }
 
+/* Stretched-link overlay — see the comment in RecipeCard.tsx. Sits above the
+ * card's own background but below the action buttons, so it catches clicks
+ * everywhere except where a button is. */
+.cardLink {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+}
+
 .cardHeader {
   display: flex;
   align-items: flex-start;
   gap: 10px;
+}
+
+.cardActions {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  flex-shrink: 0;
 }
 
 .no {
@@ -36,10 +54,11 @@
   flex: 1;
 }
 
+/* Just alignment — color/hover/active states live in the buttons' own
+ * FavoriteButton.module.css / AddToListButton.module.css to avoid two
+ * separate CSS modules fighting over the same property. */
 .saveIcon {
-  flex-shrink: 0;
   margin-top: 3px;
-  color: var(--faint);
 }
 
 .description {

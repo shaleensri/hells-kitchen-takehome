@@ -1,0 +1,26 @@
+.iconBtn {
+  flex-shrink: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 22px;
+  height: 22px;
+  padding: 0;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  color: var(--faint);
+  transition: color var(--transition), transform var(--transition);
+}
+
+.iconBtn:hover {
+  color: var(--accent);
+}
+
+.iconBtn.active {
+  color: var(--accent);
+}
+
+.iconBtn:active {
+  transform: scale(0.9);
+}

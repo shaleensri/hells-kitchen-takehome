@@ -3,6 +3,8 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { ApiRequestError, fetchRecipe } from "@/lib/api";
 import { dedupeTagsAgainstDietary } from "@/lib/tags";
+import { FavoriteButton } from "@/app/_components/FavoriteButton";
+import { AddToListButton } from "@/app/_components/AddToListButton";
 import { ScalableRecipeBody } from "./ScalableRecipeBody";
 import styles from "./page.module.css";
 
@@ -71,12 +73,10 @@ export default async function RecipeDetailPage({ params }: RecipeDetailPageProps
       )}
 
       <div className={styles.actions}>
-        <button type="button" className="btn btn-primary" disabled title="Coming in a future update">
-          Add to shopping list
-        </button>
-        <button type="button" className="btn btn-secondary" disabled title="Coming in a future update">
-          Save recipe
-        </button>
+        {/* Adds at the recipe's base servings (not the live-scaled count
+            below) — see lib/shoppingList.ts's file header for why. */}
+        <AddToListButton recipeId={recipe.id} servings={recipe.servings} variant="button" />
+        <FavoriteButton recipeId={recipe.id} variant="button" />
       </div>
 
       <div className={styles.statsStrip}>

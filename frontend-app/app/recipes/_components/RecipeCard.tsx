@@ -1,6 +1,8 @@
 import Link from "next/link";
 import type { RecipeListItem } from "@hells-kitchen/shared";
 import { dedupeTagsAgainstDietary } from "@/lib/tags";
+import { FavoriteButton } from "@/app/_components/FavoriteButton";
+import { AddToListButton } from "@/app/_components/AddToListButton";
 import styles from "./RecipeCard.module.css";
 
 export function RecipeCard({ recipe }: { recipe: RecipeListItem }) {
@@ -12,27 +14,28 @@ export function RecipeCard({ recipe }: { recipe: RecipeListItem }) {
   const no = /^\d+$/.test(recipe.id) ? recipe.id.padStart(2, "0") : recipe.id;
 
   return (
-    <Link href={`/recipes/${recipe.id}`} className={`blueprint ${styles.card}`}>
+    // Was a single <Link> wrapping the whole card; now a plain element with
+    // a "stretched link" overlay instead (PLAN.md §Iteration 5). Nesting the
+    // new interactive favorite/list buttons inside an <a> would be invalid
+    // HTML (interactive content inside interactive content) and made click
+    // targets fight each other. The overlay Link covers the full card at a
+    // low z-index; the two icon buttons sit above it at a higher z-index, so
+    // clicking them never reaches the link underneath — no
+    // preventDefault/stopPropagation juggling needed.
+    <article className={`blueprint ${styles.card}`}>
       <i className="corner tl" />
       <i className="corner tr" />
       <i className="corner bl" />
       <i className="corner br" />
+      <Link href={`/recipes/${recipe.id}`} className={styles.cardLink} aria-label={recipe.title} />
 
       <div className={styles.cardHeader}>
         <span className={styles.no}>{no}</span>
         <h3 className={styles.title}>{recipe.title}</h3>
-        <svg
-          width="16"
-          height="16"
-          viewBox="0 0 24 24"
-          fill="none"
-          stroke="currentColor"
-          strokeWidth="1.5"
-          className={styles.saveIcon}
-          aria-label="Save recipe (coming in a future update)"
-        >
-          <path d="M12 17.3l-6.16 3.24 1.18-6.88L2 8.76l6.9-1L12 1.5l3.1 6.26 6.9 1-5.02 4.9 1.18 6.88z" />
-        </svg>
+        <div className={styles.cardActions}>
+          <AddToListButton recipeId={recipe.id} servings={recipe.servings} className={styles.saveIcon} />
+          <FavoriteButton recipeId={recipe.id} className={styles.saveIcon} />
+        </div>
       </div>
 
       <p className={styles.description}>{recipe.description}</p>
@@ -83,6 +86,6 @@ export function RecipeCard({ recipe }: { recipe: RecipeListItem }) {
           </span>
         ))}
       </div>
-    </Link>
+    </article>
   );
 }

@@ -1,0 +1,161 @@
+.page {
+  padding: var(--space-6) 0 var(--space-8);
+  max-width: 680px;
+}
+
+.heading {
+  font-size: 40px;
+  margin-top: var(--space-2);
+}
+
+.description {
+  font-size: 14px;
+  color: var(--muted);
+  margin-top: var(--space-2);
+  max-width: 60ch;
+}
+
+.note {
+  color: var(--faint);
+  font-size: 13px;
+}
+
+.emptyState {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--space-3);
+  padding: var(--space-7) 0;
+  color: var(--muted);
+}
+
+.emptyState a {
+  color: var(--accent);
+  text-decoration: underline;
+  font-weight: 600;
+}
+
+.sectionHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: var(--space-4);
+}
+
+.sectionHeading {
+  font-size: 16px;
+}
+
+.recipeList {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+
+.recipeRow {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  padding: 8px 0;
+  border-bottom: 1px dotted var(--surface-border);
+  font-size: 14px;
+}
+
+.recipeLink {
+  font-weight: 600;
+  transition: color var(--transition);
+}
+
+.recipeLink:hover {
+  color: var(--accent);
+}
+
+.staleEntry {
+  color: var(--danger);
+  font-size: 13px;
+}
+
+.recipeServings {
+  margin-left: auto;
+  font-size: 12px;
+  color: var(--faint);
+}
+
+.removeBtn {
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  color: var(--faint);
+  font-size: 12px;
+  text-decoration: underline;
+}
+
+.removeBtn:hover {
+  color: var(--danger);
+}
+
+.ingredientList {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+
+.ingredientRow {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  padding: 9px 0;
+  border-bottom: 1px dotted var(--surface-border);
+  font-size: 15px;
+}
+
+.checkLabel {
+  display: flex;
+  align-items: baseline;
+  gap: var(--space-3);
+  cursor: pointer;
+  flex: 1;
+}
+
+.checkLabel input[type="checkbox"] {
+  flex-shrink: 0;
+  width: 15px;
+  height: 15px;
+  accent-color: var(--accent);
+}
+
+.amount {
+  min-width: 78px;
+  flex-shrink: 0;
+  font-family: var(--font-display), "Arial Narrow", sans-serif;
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--accent);
+  font-variant-numeric: tabular-nums;
+}
+
+.ingredientName {
+  text-transform: capitalize;
+}
+
+.checkedText {
+  text-decoration: line-through;
+  color: var(--faint);
+}
+
+.sources {
+  margin-left: auto;
+  flex-shrink: 0;
+  font-size: 11px;
+  color: var(--faint);
+}
+
+.unmergedSection {
+  margin-top: var(--space-6);
+}
+
+.unmergedNote {
+  font-size: 12px;
+  color: var(--faint);
+  margin-bottom: var(--space-3);
+}

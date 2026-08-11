@@ -1,6 +1,6 @@
 # Recipe Manager — Project Plan & Decision Log
 
-**Status as of 2026-08-10:** Planning complete, plan externally reviewed (Codex, 3 rounds). **Iterations 1-4 complete** (§6) — full backend (§3.14-§3.16) plus the frontend core (§3.17); Iteration 4 (dietary/sort/scale) was completed as part of §3.20's redesign rather than as its own separate pass. **Checkpoint 1 (§3.12) reached** after Iteration 3. Since then, two design passes: §3.19's warm/serif direction was superseded entirely by **§3.20 — a full redesign matching a user-supplied UI mockup**, an "engineering spec sheet" aesthetic (Barlow Condensed, steel-blue accent, corner-bracket cards, sharp edges, dotted rules). That pass also pulled forward real functionality: a **working recipe-scaling servings stepper** (Iteration 4 feature, verified with exact math), fully wired dietary/tag/difficulty/ingredient filters with live counts, and a new backend `difficulty` filter param. **100 passing tests**, typecheck/build clean, verified via Playwright across light/dark × desktop/tablet/mobile with zero console errors, plus genuinely-triggered (not just code-reviewed) loading and 404 states. `npm run dev` in both `backend-app` and `frontend-app`, then `localhost:3000/recipes` (or whatever port Next.js falls back to if 3000 is taken). New: **Iteration 10 (§3.21, §6) — an expanded dataset beyond the 15 seed recipes** is now on the plan as a stretch item, genuinely undecided between LLM-generated vs. real-API-sourced recipes. **§3.20's redesign then got its own review pass (§3.22)** — 4 real gaps found and fixed (a genuine multi-select-filter bug in the search form, an overpromising placeholder, an incomplete scaled-nutrition display, and PLAN.md itself having drifted) — all reproduced and re-verified live before being called fixed, not just patched and trusted. **Then the user directly asked whether Iteration 4 was really complete (§3.23)** — it wasn't quite: a fresh audit (not a re-read of the checklist) found the sort dropdown only exposed one direction for 3 of its 4 fields despite the backend fully supporting both; fixed and verified against all 8 real combinations. **A follow-up audit of Iterations 3+4 together (§3.24)** — including genuinely killing the backend to trigger both error states for real, not just throttling — came back clean, no new gaps.
+**Status as of 2026-08-11:** Planning complete, plan externally reviewed (Codex, 3 rounds). **Iterations 1-5 complete** (§6) — full backend (§3.14-§3.16) plus the frontend core (§3.17); Iteration 4 (dietary/sort/scale) was completed as part of §3.20's redesign rather than as its own separate pass. **Checkpoint 1 (§3.12) reached** after Iteration 3. Since then, two design passes: §3.19's warm/serif direction was superseded entirely by **§3.20 — a full redesign matching a user-supplied UI mockup**, an "engineering spec sheet" aesthetic (Barlow Condensed, steel-blue accent, corner-bracket cards, sharp edges, dotted rules). That pass also pulled forward real functionality: a **working recipe-scaling servings stepper** (Iteration 4 feature, verified with exact math), fully wired dietary/tag/difficulty/ingredient filters with live counts, and a new backend `difficulty` filter param. **100 passing tests**, typecheck/build clean, verified via Playwright across light/dark × desktop/tablet/mobile with zero console errors, plus genuinely-triggered (not just code-reviewed) loading and 404 states. `npm run dev` in both `backend-app` and `frontend-app`, then `localhost:3000/recipes` (or whatever port Next.js falls back to if 3000 is taken). New: **Iteration 10 (§3.21, §6) — an expanded dataset beyond the 15 seed recipes** is now on the plan as a stretch item, genuinely undecided between LLM-generated vs. real-API-sourced recipes. **§3.20's redesign then got its own review pass (§3.22)** — 4 real gaps found and fixed (a genuine multi-select-filter bug in the search form, an overpromising placeholder, an incomplete scaled-nutrition display, and PLAN.md itself having drifted) — all reproduced and re-verified live before being called fixed, not just patched and trusted. **Then the user directly asked whether Iteration 4 was really complete (§3.23)** — it wasn't quite: a fresh audit (not a re-read of the checklist) found the sort dropdown only exposed one direction for 3 of its 4 fields despite the backend fully supporting both; fixed and verified against all 8 real combinations. **A follow-up audit of Iterations 3+4 together (§3.24)** — including genuinely killing the backend to trigger both error states for real, not just throttling — came back clean, no new gaps. **Iteration 5 (§3.25) is now built** — localStorage favoriting (`/saved`), a dietary/interest profile (`/preferences`) that auto-applies as the default filter on a fresh `/recipes` landing, and a shopping-list generator (`/shopping-list`) that merges ingredients by `ingredientId` across selected recipes, reusing the backend's already-computed gram conversions rather than duplicating unit-conversion logic client-side. **114 passing tests**, typecheck/build clean, verified live against the real running app and real backend data (merge math checked against an independently-computed expected total, not just fixtures).
 
 This file is the single source of truth for *why* the project is being built the way it is, not just *what* to build. If you are a new agent (or a human) picking this up cold, read this whole file before touching code — it captures decisions already made and the reasoning behind them, so you don't re-litigate settled questions or repeat analysis already done.
 
@@ -99,30 +99,50 @@ hells-kitchen/
     │   ├── tags.ts             # dedupes a raw tag against a dietary badge showing the same word (§3.17 bugfix) + its test
     │   ├── tags.test.ts
     │   ├── filterUrl.ts        # NEW (§3.20) — computes filter-rail toggle hrefs server-side, comma-joined multi-value convention + its test
-    │   └── filterUrl.test.ts
+    │   ├── filterUrl.test.ts
+    │   ├── storage.ts          # NEW (§3.25) — SSR-safe localStorage read/write, shared by favorites/profile/shoppingList
+    │   ├── favorites.ts        # NEW (§3.25) — favorite-id store + useFavorites hook + its test (pure toggle logic)
+    │   ├── favorites.test.ts
+    │   ├── profile.ts          # NEW (§3.25) — dietary/interest profile store + useProfile hook
+    │   ├── shoppingList.ts     # NEW (§3.25) — shopping-list store + pure buildShoppingList() merge logic + its test
+    │   └── shoppingList.test.ts
     └── app/
-        ├── layout.tsx          # site header/nav, Barlow Condensed + Barlow via next/font (§3.20)
+        ├── layout.tsx          # site header/nav, Barlow Condensed + Barlow via next/font (§3.20); nav now renders NavLinks (§3.25)
         ├── page.tsx            # redirects to /recipes
         ├── not-found.tsx       # global 404 (unmatched routes)
         ├── globals.css         # spec-sheet design tokens (§3.20) — Barlow fonts, steel-blue accent, zero radius, corner-bracket/rule utilities
+        ├── _components/                    # NEW (§3.25) — cross-page components (used by recipes/saved/preferences/shopping-list)
+        │   ├── FavoriteButton.tsx          # icon variant (cards) + button variant (detail page), toggles localStorage favorites
+        │   ├── AddToListButton.tsx         # icon/button variants, toggles a recipe onto the shopping list at its base servings
+        │   └── NavLinks.tsx                # client component — header nav incl. live Saved/Shopping List counts
+        ├── preferences/                    # NEW (§3.25) — /preferences: dietary profile editor
+        │   ├── page.tsx                    # server wrapper (for <title>), renders PreferencesPanel
+        │   └── PreferencesPanel.tsx
+        ├── saved/                          # NEW (§3.25) — /saved: favorited recipes
+        │   ├── page.tsx
+        │   └── SavedRecipes.tsx            # client — fetches /api/recipes, filters to favorited ids
+        ├── shopping-list/                  # NEW (§3.25) — /shopping-list: merged ingredient list
+        │   ├── page.tsx
+        │   └── ShoppingListPanel.tsx       # client — fetches each listed recipe's detail, merges via lib/shoppingList.ts, checkboxes
         └── recipes/
-            ├── page.tsx        # list: fetches unfiltered (for stats/counts) + filtered lists, search form, stats header, rail + grid layout
+            ├── page.tsx        # list: fetches unfiltered (for stats/counts) + filtered lists, search form, stats header, rail + grid layout; mounts ProfileAutoApply (§3.25)
             ├── loading.tsx     # skeleton grid w/ blueprint corners (Next Suspense convention)
             ├── error.tsx       # retry button, client component (Next error-boundary requirement)
             ├── _components/
             │   ├── FilterRail.tsx        # NEW (§3.20) — dietary/tags checkboxes + difficulty toggle, server-computed links via lib/filterUrl.ts, no client JS
             │   ├── IngredientChips.tsx   # NEW (§3.20) — the one real client component in the rail (free-text add/remove isn't a fixed set)
             │   ├── SortControl.tsx       # NEW (§3.20) — sort/order <select>, client component (needs onChange navigation)
-            │   └── RecipeCard.tsx        # numbered spec-sheet card, corner brackets + dotted outline (§3.20 + its follow-up fix)
+            │   ├── ProfileAutoApply.tsx  # NEW (§3.25) — redirects a fresh, param-less /recipes landing to the saved profile's dietary filter
+            │   └── RecipeCard.tsx        # numbered spec-sheet card, corner brackets + dotted outline (§3.20 + its follow-up fix); restructured to a "stretched link" in §3.25 so the favorite/add-to-list icon buttons can be real interactive elements without nesting inside the card's <Link>
             └── [id]/
-                ├── page.tsx               # detail: header/stats strip, delegates ingredients/method/nutrition to ScalableRecipeBody
+                ├── page.tsx               # detail: header/stats strip, real Favorite/AddToList buttons (§3.25, previously disabled placeholders), delegates ingredients/method/nutrition to ScalableRecipeBody
                 ├── ScalableRecipeBody.tsx # NEW (§3.20) — real servings scaler, client component, pure math against data already in the response
                 ├── loading.tsx
                 ├── error.tsx
                 └── not-found.tsx          # route-specific 404, fetches real suggested recipes (§3.20)
 ```
 
-**100/100 tests passing** (`npm test` from root or any workspace): 58 backend + 10 shared + 32 frontend (incl. 14 in `filterUrl.test.ts`, covering the rail's toggle-link logic). The search form's own hidden-input rendering (the bug in §3.22) isn't Vitest-covered, verified via Playwright instead, consistent with how every other UI-interaction concern in this project has been checked (§3.17, §3.19, §3.20). `npm run dev` in both `backend-app` and `frontend-app` now serves a real, working website at `localhost:3000/recipes`. Full detail: §3.14 (Iteration 1's architecture snag), §3.15-§3.16 (backend review passes), §3.17 (Iteration 3's build), §3.20 (the spec-sheet redesign), §3.22 (this review's fixes).
+**114/114 tests passing** (`npm test` from root or any workspace): 58 backend + 10 shared + 46 frontend (32 from Iterations 1-4 + 5 `favorites.test.ts` + 9 `shoppingList.test.ts`, added in §3.25). The search form's own hidden-input rendering (the bug in §3.22), the stretched-link card restructure, and every Iteration 5 flow aren't Vitest-covered where they're pure UI wiring — verified via Playwright instead, consistent with how every other UI-interaction concern in this project has been checked (§3.17, §3.19, §3.20, §3.25). `npm run dev` in both `backend-app` and `frontend-app` now serves a real, working website at `localhost:3000/recipes`. Full detail: §3.14 (Iteration 1's architecture snag), §3.15-§3.16 (backend review passes), §3.17 (Iteration 3's build), §3.20 (the spec-sheet redesign), §3.22 (this review's fixes), §3.25 (Iteration 5).
 
 ---
 
@@ -379,6 +399,31 @@ Confirmed via `grep` (not assumption) that the README says nothing about a live 
 
 **Result: everything audited came back genuinely clean this time** — no new gaps found in Iteration 3 or the rest of Iteration 4 beyond the sort fix already made in §3.23. 100/100 tests, no code changes from this pass (verification only).
 
+### 3.25 — Iteration 5 built: localStorage profile, favoriting, shopping-list generator
+
+**What shipped** (all localStorage-only, no accounts — §3.1):
+- **Favoriting** — a `FavoriteButton` (icon variant on cards, button variant on the detail page) toggles a recipe id in `localStorage["hk:favorites"]`. New `/saved` page lists them (client-rendered, fetches `/api/recipes` and filters by the saved ids — no new backend endpoint needed for what's a purely client-side concern).
+- **Dietary/interest profile** — a new `/preferences` page with the same checkbox styling as the filter rail, saved instantly (no separate "Save" step) to `localStorage["hk:profile"]`. A `ProfileAutoApply` client component, mounted on `/recipes`, auto-redirects a **fresh, param-less** landing to `?dietary=<saved tags>` — but only if literally zero search params are present, so it never fights a user who explicitly cleared or changed filters. This is exactly §3.1's stated reason for building this iteration right after Iteration 4's dietary filters: the whole value is auto-applying as default state, not the panel itself.
+- **Shopping list** — `AddToListButton` (icon on cards, button on detail page) adds/removes a recipe at its **base servings** into `localStorage["hk:shopping-list"]` as `{recipeId, servings}[]`. The `/shopping-list` page fetches each listed recipe's full detail and merges ingredients via a pure, fully-unit-tested `buildShoppingList()` (`lib/shoppingList.ts`).
+
+**The shopping-list merge insight worth recording:** §3.9 already established that turning a volume/count unit into grams needs ingredient-specific reference data, and that the backend's `/api/recipes/:id` response already does exactly that per line (`ResolvedIngredientLine.grams`). Rather than re-implementing unit conversion on the frontend, the merge logic just reuses that precomputed `grams` field directly: two lines with the same `ingredientId` merge (summing grams) whenever **both** already resolved to a gram figure; a line that didn't (unresolved ingredient, or a unit with no reference weight for that ingredient — e.g. "a pinch") is never dropped, it lists as its own clearly-attributed unmerged line, per §3.9's shopping-list correction. One consequence worth flagging honestly: the current 15-recipe seed dataset has **zero** lines that fail to resolve to grams (confirmed by walking every recipe's ingredients against the live backend), so the unmerged-section UI is real, wired, and covered by unit tests (`shoppingList.test.ts`) with synthetic fixtures — but has no live example to demonstrate against today's data. Not a gap in this iteration; a note for whoever looks at Iteration 10's expanded dataset.
+
+**Scope choice, not an oversight:** shopping-list quantities are added at each recipe's **base servings**, not whatever serving count is currently selected on its detail page (`ScalableRecipeBody`'s stepper is separate, unpersisted client state). Wiring them together would mean lifting servings state out of `ScalableRecipeBody` or duplicating it, for a scenario (scale a recipe, then remember to add it to the list at that scale) that's a real but secondary use case. Deliberately deferred — documented here rather than silently narrowed, per the project's standing practice of calling out scope decisions explicitly.
+
+**Two other UI decisions:**
+- `RecipeCard` was previously a single `<Link>` wrapping the whole card (a static, non-interactive save icon lived inside it). Adding two *real* interactive buttons (favorite, add-to-list) inside that anchor would be invalid HTML (interactive content nested in interactive content) and would need `preventDefault`/`stopPropagation` gymnastics to stop clicks from double-firing navigation. Restructured to the standard "stretched link" pattern instead: the card is a plain `<article>`, a full-cover `<Link>` sits at `z-index: 1` for click-to-open, and the two icon buttons sit at `z-index: 2` above it — clicking a button never reaches the link underneath, no event-handling tricks needed.
+- The header nav now shows `Saved`/`Shopping List` with live counts (a small client `NavLinks` component). These were deliberately left out during §3.20's redesign because the features didn't exist yet (documented there at the time) — now they do.
+
+**Verified live, not just typechecked/built** (100/114 → see below for the new total; Playwright against the real running app + real backend data, matching this project's standing verification discipline):
+- Favoriting from a card, un-favoriting from the detail page, and `/saved` reflecting both — round-tripped through actual `localStorage` reads, not assumed from the code.
+- Card click still navigates correctly after the stretched-link restructure (clicked at a point away from the icons, asserted the URL actually changed).
+- **Shopping-list merge math checked against real numbers**, not fixtures: found two real seed recipes sharing a mergeable ingredient (flour, in Margherita Pizza + Chocolate Chip Cookies) by querying the live backend, computed the expected merged total independently in the test script (594g), and confirmed the rendered page showed exactly that — then removed one recipe and confirmed the total correctly dropped to the other recipe's solo amount (re-merge, not just row deletion).
+- Checked-off state on the shopping-list page persists across a full page reload.
+- Profile auto-apply: set a preference via the real `/preferences` UI, confirmed a fresh `/recipes` visit redirected to `?dietary=vegan`, confirmed the rendered card count matched a direct `?dietary=vegan` API call (not just that the URL changed), and confirmed a visit with a different explicit param (`?tags=italian`) was **not** overridden by the saved profile.
+- Zero console errors across all of the above.
+
+**New tests:** `favorites.test.ts` (5, pure toggle logic) + `shoppingList.test.ts` (9, the merge/format logic — same-ingredientId merging, servings-ratio scaling, unmerged-line preservation for both unresolved-ingredient and unmappable-unit cases, never merging different ingredientIds that happen to share a display name, alphabetical sort, gram/kilogram formatting). **114 tests passing** (100 from Iterations 1-4 + 14 new), typecheck clean, clean production build.
+
 ---
 
 ## 4. Final feature scope
@@ -423,8 +468,14 @@ The *what* was decided here (§4.3); the *how* was **npm workspaces**, confirmed
 ### 5.2 TypeScript migration
 Both apps started as plain JS (§2). Since shared types and "TypeScript/JavaScript best practices" are both explicit evaluation/above-and-beyond items, both get converted — not optional, it's load-bearing for §5.1. **Corrected on external review (this section previously said both apps convert in Iteration 1 — inconsistent with §6, which always scoped it as backend-app in Iteration 1, frontend-app in Iteration 3):** `backend-app` was converted in Iteration 1, running under `tsx` in both dev and production with no compiled build step (§3.14 — not "`ts-node`/`tsx` + build step" as this section previously and inaccurately said). `frontend-app`'s conversion is Iteration 3's job (Next.js has first-class TS support, low-friction migration expected).
 
-### 5.3 Shopping list aggregation: client or backend? — open, lean client-side
+### 5.3 Shopping list aggregation: client or backend? — RESOLVED in Iteration 5 (§3.25): client-side
+Built client-side as leaned: `lib/shoppingList.ts`'s `buildShoppingList()` merges already-fetched `RecipeDetail` payloads (each recipe's ingredients already carry a precomputed `grams` per line from the backend's own unit-conversion pass, §3.9) — no new backend endpoint was needed, confirming the original reasoning below held.
+
+<details><summary>Original reasoning (kept for history)</summary>
+
 The shared unit-conversion module (§5.1) is importable from both sides, so shopping-list ingredient aggregation doesn't strictly need a backend round-trip — it can happen client-side once the relevant recipes' full ingredient data is fetched. Leaning **client-side** for simplicity (no new backend endpoint required, `/shopping-list` page just merges already-fetched recipe data). Revisit only if the aggregation logic turns out to need data the client wouldn't otherwise fetch (unlikely, given recipes already carry full ingredient lists).
+
+</details>
 
 ### 5.4 Data layer
 `data.json` stays the mock DB (per README — no real database in scope). Backend will read it once at boot into memory, and at that same boot step: run the seed-validation pass (§3.4), and **precompute per-recipe derived fields** that Iteration 4's filters/sorting depend on — the normalized `dietary[]` array (§3.2) and the base-servings `caloriesPerServing`/`nutritionPartial` summary (§3.9, §3.10) — so list requests never recompute them per call. **This is a planned change, not existing behavior** — the current placeholder `server.js` re-reads and re-parses the file on every request (§2). No write endpoints are in scope (recipes/ingredients are read-only from the frontend's perspective; favorites/profile/shopping-list-selections are client-only via localStorage, §3.1/§4.3).
@@ -435,7 +486,7 @@ The shared unit-conversion module (§5.1) is importable from both sides, so shop
 
 Ordering is dependency-driven: shared foundation before anything consumes it, backend before frontend, filters before the dietary-derivation layer that extends them, cross-cutting bonus features after the modules they reuse exist, LLM after the profile exists (so it can be grounded in it), polish before deploy.
 
-**Legend:** ✅ done · 🔲 not started. Iteration 1 is done (see below); Iterations 2-9 are still 🔲.
+**Legend:** ✅ done · 🔲 not started. Iterations 1-5 are done; Iterations 6-8 are next, 9-10 are stretch.
 
 ### Iteration 0 — Planning (this document) — ✅ done
 Scope agreed, seed data audited, provider choices made, decision log written.
@@ -482,10 +533,10 @@ Scope agreed, seed data audited, provider choices made, decision log written.
 
 > **🛑 Checkpoint 2 (§3.12):** assess pace again. If behind, skip to Iteration 8. If on pace, continue to Iteration 5+.
 
-### Iteration 5 — Lightweight profile + cross-cutting bonus batch 2 — 🔲
-- Lightweight dietary/interest profile (localStorage) — build this *right after* Iteration 4's dietary filters, since its whole value is auto-applying as their default state (§3.1) — don't let it drift to being bundled arbitrarily with unrelated features
-- Shopping list generator — multi-recipe select / per-recipe "add to list," merge by `ingredientId` with compatible-unit-only summing (§3.9), `/shopping-list` page with checkboxes (leaning client-side aggregation, §5.3)
-- Favoriting via localStorage
+### Iteration 5 — Lightweight profile + cross-cutting bonus batch 2 — ✅ done (§3.25)
+- [x] Lightweight dietary/interest profile (localStorage) — `/preferences` page, auto-applied as the default `dietary` filter on a fresh `/recipes` landing via `ProfileAutoApply`
+- [x] Shopping list generator — `AddToListButton` per recipe (card + detail), merge by `ingredientId` reusing the backend's already-computed `grams` per line (compatible-unit-only summing, §3.9), `/shopping-list` page with checkboxes (client-side aggregation, §5.3 — confirmed, no backend change needed)
+- [x] Favoriting via localStorage — `FavoriteButton` per recipe (card + detail), new `/saved` page
 
 ### Iteration 6 — LLM feature — 🔲
 - Backend proxy endpoint to OpenAI, API key server-side only (§3.3)
@@ -537,7 +588,7 @@ Track these here as they get resolved — update this section, don't just delete
 
 - [x] ~~**Shared-types mechanism** (§5.1): npm workspaces vs. manual duplication~~ **Resolved in Iteration 1 (§3.14):** npm workspaces, confirmed working end-to-end for dev/test/start. No fallback to duplication needed.
 - [x] ~~**Nutrition basis** (§3.5)~~ **Resolved in Iteration 1 (§3.14):** implemented as per-100g in `backend-app/src/nutrition.ts`, documented inline at the top of that file.
-- [ ] **Shopping list aggregation location** (§5.3): leaning client-side; revisit only if a concrete reason to move it server-side surfaces. Still open — Iteration 5.
+- [x] ~~**Shopping list aggregation location** (§5.3)~~ **Resolved in Iteration 5 (§3.25):** client-side, as leaned — no backend change needed.
 - [x] ~~**Git repo**: not yet initialized.~~ **Resolved (§3.8, §2):** repo already exists at the project root, on `main`, tracking `origin/main`. Iteration 1's work is committed on top of it locally (`bdc957a`, `5ec320a` — not yet pushed to `origin`).
 - [ ] **Deploy target confirmation**: Vercel + Render/Railway assumed (§3.6); not yet actually provisioned/confirmed available. Still open — Iteration 8.
 - [ ] **OpenAI model choice** (§3.3, §3.11): "a cheap/fast model" — pin the exact model string when Iteration 6 starts, based on whatever's current/available at build time. Must be a hard-pinned constant, not resolved dynamically per request.
