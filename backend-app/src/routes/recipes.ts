@@ -89,7 +89,11 @@ export function createRecipesRouter(appData: AppData): Router {
         // deploy's reverse proxy (Iteration 8) — falls back to a shared
         // bucket key if unavailable rather than throwing, since a slightly
         // coarser rate limit is a fine degradation, an unhandled crash isn't.
-        const clientKey = req.ip ?? "unknown";
+        // Namespaced with an "ask:" prefix (Iteration 11, §3.33) so heavy use
+        // of the Smart Recipe Finder (routes/assistant.ts, its own "find:"
+        // prefix) can never consume this endpoint's quota, or vice versa —
+        // they're the same rate limiter module but genuinely separate buckets.
+        const clientKey = `ask:${req.ip ?? "unknown"}`;
         if (isRateLimited(clientKey)) {
           throw new TooManyRequestsError("Too many questions — please wait a bit before asking again.");
         }

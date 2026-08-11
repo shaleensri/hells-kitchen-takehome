@@ -8,6 +8,7 @@ import express, { type Express } from "express";
 import type { AppData } from "./data";
 import { createRecipesRouter } from "./routes/recipes";
 import { createIngredientsRouter } from "./routes/ingredients";
+import { createAssistantRouter } from "./routes/assistant";
 import { errorHandler, NotFoundError } from "./errors";
 
 export function createApp(appData: AppData): Express {
@@ -28,6 +29,7 @@ export function createApp(appData: AppData): Express {
 
   app.use("/api/recipes", createRecipesRouter(appData));
   app.use("/api/ingredients", createIngredientsRouter(appData));
+  app.use("/api/assistant", createAssistantRouter(appData));
 
   // Lets the frontend show the "Ask about this recipe" panel as disabled
   // up front (§3.3's fail-soft requirement) instead of only finding out the

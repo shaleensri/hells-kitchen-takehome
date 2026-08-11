@@ -347,3 +347,193 @@ describe("POST /api/recipes/:id/ask", () => {
     expect(otherClient.status).toBe(200);
   });
 });
+
+describe("POST /api/assistant/find-recipes (§3.33, Iteration 11)", () => {
+  const originalKey = process.env.OPENAI_API_KEY;
+
+  beforeEach(() => {
+    resetRateLimiter();
+  });
+
+  afterEach(() => {
+    if (originalKey === undefined) delete process.env.OPENAI_API_KEY;
+    else process.env.OPENAI_API_KEY = originalKey;
+    vi.unstubAllGlobals();
+  });
+
+  it("returns 400 for a missing/empty query", async () => {
+    process.env.OPENAI_API_KEY = "sk-test";
+    const res = await request(app).post("/api/assistant/find-recipes").send({ query: "   " });
+    expect(res.status).toBe(400);
+    expect(res.body).toMatchObject({ error: { code: "BAD_REQUEST" } });
+  });
+
+  it("returns 400 for a query over the length cap", async () => {
+    process.env.OPENAI_API_KEY = "sk-test";
+    const res = await request(app)
+      .post("/api/assistant/find-recipes")
+      .send({ query: "a".repeat(501) });
+    expect(res.status).toBe(400);
+    expect(res.body).toMatchObject({ error: { code: "BAD_REQUEST" } });
+  });
+
+  it("returns 503 (fail-soft) when OPENAI_API_KEY is absent", async () => {
+    delete process.env.OPENAI_API_KEY;
+    const res = await request(app).post("/api/assistant/find-recipes").send({ query: "quick vegan dinner" });
+    expect(res.status).toBe(503);
+    expect(res.body).toMatchObject({ error: { code: "SERVICE_UNAVAILABLE" } });
+  });
+
+  it("returns 200 with real joined recipe data on a successful (mocked) provider call", async () => {
+    process.env.OPENAI_API_KEY = "sk-test";
+    vi.stubGlobal(
+      "fetch",
+      vi.fn().mockResolvedValue({
+        ok: true,
+        status: 200,
+        json: async () => ({
+          choices: [
+            {
+              message: {
+                content: JSON.stringify({
+                  summary: "Here's a quick vegetarian option.",
+                  matches: [{ recipeId: "1", reason: "Ready in well under 30 minutes." }],
+                }),
+              },
+            },
+          ],
+        }),
+      })
+    );
+
+    const res = await request(app).post("/api/assistant/find-recipes").send({ query: "quick vegetarian dinner" });
+
+    expect(res.status).toBe(200);
+    expect(res.body.summary).toBe("Here's a quick vegetarian option.");
+    expect(res.body.matches).toHaveLength(1);
+    // Real data.json data, not anything the model supplied directly.
+    expect(res.body.matches[0].recipe.title).toBe("Classic Margherita Pizza");
+    expect(res.body.matches[0].reason).toBe("Ready in well under 30 minutes.");
+  });
+
+  it("discards a recipe ID the model invented, never joining/returning it", async () => {
+    process.env.OPENAI_API_KEY = "sk-test";
+    vi.stubGlobal(
+      "fetch",
+      vi.fn().mockResolvedValue({
+        ok: true,
+        status: 200,
+        json: async () => ({
+          choices: [
+            {
+              message: {
+                content: JSON.stringify({
+                  summary: "Found some matches.",
+                  matches: [
+                    { recipeId: "1", reason: "real" },
+                    { recipeId: "recipe-that-does-not-exist", reason: "hallucinated" },
+                  ],
+                }),
+              },
+            },
+          ],
+        }),
+      })
+    );
+
+    const res = await request(app).post("/api/assistant/find-recipes").send({ query: "anything" });
+
+    expect(res.status).toBe(200);
+    expect(res.body.matches).toHaveLength(1);
+    expect(res.body.matches[0].recipe.id).toBe("1");
+  });
+
+  it("includes the dietary profile in the prompt when provided", async () => {
+    process.env.OPENAI_API_KEY = "sk-test";
+    const mockFetch = vi.fn().mockResolvedValue({
+      ok: true,
+      status: 200,
+      json: async () => ({ choices: [{ message: { content: '{"summary":"ok","matches":[]}' } }] }),
+    });
+    vi.stubGlobal("fetch", mockFetch);
+
+    await request(app)
+      .post("/api/assistant/find-recipes")
+      .send({ query: "dinner", dietaryProfile: ["vegan", "gluten-free"] });
+
+    const [, requestInit] = mockFetch.mock.calls[0];
+    const body = JSON.parse(requestInit.body);
+    expect(body.messages[0].content).toContain("vegan, gluten-free");
+  });
+
+  it("requests OpenAI JSON mode", async () => {
+    process.env.OPENAI_API_KEY = "sk-test";
+    const mockFetch = vi.fn().mockResolvedValue({
+      ok: true,
+      status: 200,
+      json: async () => ({ choices: [{ message: { content: '{"summary":"ok","matches":[]}' } }] }),
+    });
+    vi.stubGlobal("fetch", mockFetch);
+
+    await request(app).post("/api/assistant/find-recipes").send({ query: "dinner" });
+
+    const [, requestInit] = mockFetch.mock.calls[0];
+    expect(JSON.parse(requestInit.body).response_format).toEqual({ type: "json_object" });
+  });
+
+  it("returns 502 when the provider errors", async () => {
+    process.env.OPENAI_API_KEY = "sk-test";
+    vi.stubGlobal("fetch", vi.fn().mockResolvedValue({ ok: false, status: 500, json: async () => ({}) }));
+
+    const res = await request(app).post("/api/assistant/find-recipes").send({ query: "dinner" });
+    expect(res.status).toBe(502);
+    expect(res.body).toMatchObject({ error: { code: "UPSTREAM_ERROR" } });
+  });
+
+  it("returns 429 once a single client exceeds the rate limit", async () => {
+    process.env.OPENAI_API_KEY = "sk-test";
+    vi.stubGlobal(
+      "fetch",
+      vi.fn().mockResolvedValue({
+        ok: true,
+        status: 200,
+        json: async () => ({ choices: [{ message: { content: '{"summary":"ok","matches":[]}' } }] }),
+      })
+    );
+
+    let lastStatus = 0;
+    for (let i = 0; i < 11; i++) {
+      const res = await request(app).post("/api/assistant/find-recipes").send({ query: `query ${i}` });
+      lastStatus = res.status;
+    }
+    expect(lastStatus).toBe(429);
+  });
+
+  // The whole point of correction #1 on the Iteration 11 plan: find-recipes
+  // and /ask must never share a rate-limit bucket, or heavy use of one
+  // silently locks out the other for the same visitor.
+  it("has a rate-limit bucket completely separate from POST /api/recipes/:id/ask", async () => {
+    process.env.OPENAI_API_KEY = "sk-test";
+    vi.stubGlobal(
+      "fetch",
+      vi.fn().mockResolvedValue({
+        ok: true,
+        status: 200,
+        json: async () => ({ choices: [{ message: { content: '{"summary":"ok","matches":[]}' } }] }),
+      })
+    );
+
+    // Exhaust find-recipes' limit for this client.
+    for (let i = 0; i < RATE_LIMIT_MAX_REQUESTS; i++) {
+      await request(app).post("/api/assistant/find-recipes").send({ query: `query ${i}` });
+    }
+    const findExhausted = await request(app).post("/api/assistant/find-recipes").send({ query: "one too many" });
+    expect(findExhausted.status).toBe(429);
+
+    // The SAME client (no X-Forwarded-For set, so both requests share
+    // supertest's identical default req.ip) must still be able to use
+    // /ask — proving the buckets are genuinely namespaced, not shared.
+    const askStillWorks = await request(app).post("/api/recipes/1/ask").send({ question: "still works?" });
+    expect(askStillWorks.status).toBe(200);
+  });
+});

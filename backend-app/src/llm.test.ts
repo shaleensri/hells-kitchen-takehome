@@ -1,6 +1,6 @@
 import { describe, expect, it, vi } from "vitest";
 import type { RecipeDetail } from "@hells-kitchen/shared";
-import { askAboutRecipe, LlmProviderError, LlmTimeoutError } from "./llm";
+import { askAboutRecipe, callOpenAiChat, LlmProviderError, LlmTimeoutError } from "./llm";
 
 function fakeRecipe(overrides: Partial<RecipeDetail> = {}): RecipeDetail {
   return {
@@ -190,5 +190,28 @@ describe("askAboutRecipe", () => {
     await expect(askAboutRecipe({ recipe: fakeRecipe(), question: "q", apiKey: "test-key", fetchImpl })).rejects.toThrow(
       LlmProviderError
     );
+  });
+});
+
+describe("callOpenAiChat (§3.33 — extracted so both askAboutRecipe and the Smart Finder share it)", () => {
+  it("omits response_format entirely when jsonMode isn't requested (askAboutRecipe's case)", async () => {
+    const fetchImpl = fakeFetch({ jsonBody: { choices: [{ message: { content: "plain prose answer" } }] } });
+    await callOpenAiChat({ messages: [{ role: "user", content: "hi" }], apiKey: "test-key", fetchImpl });
+    const [, requestInit] = (fetchImpl as ReturnType<typeof vi.fn>).mock.calls[0];
+    expect(JSON.parse(requestInit.body as string).response_format).toBeUndefined();
+  });
+
+  it("sets response_format: json_object when jsonMode is requested (the Smart Finder's case)", async () => {
+    const fetchImpl = fakeFetch({ jsonBody: { choices: [{ message: { content: "{}" } }] } });
+    await callOpenAiChat({ messages: [{ role: "user", content: "hi" }], apiKey: "test-key", jsonMode: true, fetchImpl });
+    const [, requestInit] = (fetchImpl as ReturnType<typeof vi.fn>).mock.calls[0];
+    expect(JSON.parse(requestInit.body as string).response_format).toEqual({ type: "json_object" });
+  });
+
+  it("still uses the pinned default model regardless of jsonMode", async () => {
+    const fetchImpl = fakeFetch({ jsonBody: { choices: [{ message: { content: "{}" } }] } });
+    await callOpenAiChat({ messages: [{ role: "user", content: "hi" }], apiKey: "test-key", jsonMode: true, fetchImpl });
+    const [, requestInit] = (fetchImpl as ReturnType<typeof vi.fn>).mock.calls[0];
+    expect(JSON.parse(requestInit.body as string).model).toBe("gpt-4o-mini");
   });
 });

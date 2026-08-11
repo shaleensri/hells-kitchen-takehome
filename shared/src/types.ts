@@ -165,3 +165,20 @@ export interface ApiErrorBody {
 
 export type SortField = "prepTime" | "cookTime" | "difficulty" | "calories";
 export type SortOrder = "asc" | "desc";
+
+// ---------------------------------------------------------------------------
+// Smart Recipe Finder — PLAN.md §3.33 (Iteration 11). POST /api/assistant/
+// find-recipes response shape. The backend joins every model-selected
+// recipe ID back to real `RecipeListItem` data before this ever reaches the
+// frontend — nothing here is model-supplied except `summary`/`reason` text.
+// ---------------------------------------------------------------------------
+
+export interface SmartFinderMatch {
+  recipe: RecipeListItem;
+  reason: string;
+}
+
+export interface SmartFinderResponse {
+  summary: string;
+  matches: SmartFinderMatch[];
+}

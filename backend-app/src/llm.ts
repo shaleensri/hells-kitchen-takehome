@@ -1,12 +1,14 @@
 /**
  * OpenAI proxy — PLAN.md §3.3, §3.11. The API key never leaves the backend;
- * the frontend only ever talks to POST /api/recipes/:id/ask (routes/recipes.ts),
- * never to OpenAI directly.
+ * the frontend only ever talks to backend endpoints (routes/recipes.ts,
+ * routes/assistant.ts), never to OpenAI directly.
  *
- * The system prompt is grounded in the recipe's actual ingredients/
- * instructions/nutrition — nothing else — with an explicit instruction not
- * to invent details or answer unrelated questions, so this reads as "ask
- * about this specific recipe," not a generic chatbot bolted onto the page.
+ * `callOpenAiChat` is the one low-level call site — extracted in Iteration 11
+ * (PLAN.md §3.33) so the Smart Recipe Finder (recipeFinder.ts) could reuse
+ * the exact same timeout/error-handling/model-pinning behavior as the
+ * recipe-page assistant below, rather than a second copy of this
+ * boilerplate. `askAboutRecipe`'s own external behavior (what it accepts,
+ * what it throws) is unchanged by this refactor.
  */
 import type { RecipeDetail } from "@hells-kitchen/shared";
 
@@ -25,6 +27,76 @@ export class LlmTimeoutError extends Error {}
 
 interface OpenAiChatResponse {
   choices?: { message?: { content?: string } }[];
+}
+
+export interface ChatMessage {
+  role: "system" | "user" | "assistant";
+  content: string;
+}
+
+export interface CallOpenAiChatParams {
+  messages: ChatMessage[];
+  apiKey: string;
+  model?: string;
+  maxTokens?: number;
+  temperature?: number;
+  /** OpenAI's structured JSON mode (`response_format: {type:"json_object"}`)
+   * — used by the Smart Finder (recipeFinder.ts) so the model is
+   * structurally constrained to emit JSON, rather than relying on prompt
+   * wording alone ("return strict JSON") which models don't always obey
+   * (a stray sentence, a ```json fence, etc.). Not used by askAboutRecipe,
+   * which returns free-form prose, not structured data. */
+  jsonMode?: boolean;
+  /** Injectable for tests — defaults to the real global fetch. */
+  fetchImpl?: typeof fetch;
+}
+
+/** The one place that actually calls OpenAI. Both `askAboutRecipe` and the
+ * Smart Finder's `findRecipesWithAssistant` (recipeFinder.ts) go through
+ * this — same pinned model resolution, same timeout, same error mapping. */
+export async function callOpenAiChat(params: CallOpenAiChatParams): Promise<string> {
+  const fetchImpl = params.fetchImpl ?? fetch;
+  const model = params.model ?? process.env.OPENAI_MODEL ?? DEFAULT_OPENAI_MODEL;
+
+  const controller = new AbortController();
+  const timeout = setTimeout(() => controller.abort(), TIMEOUT_MS);
+
+  let res: Response;
+  try {
+    res = await fetchImpl(OPENAI_URL, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${params.apiKey}`,
+      },
+      body: JSON.stringify({
+        model,
+        messages: params.messages,
+        max_tokens: params.maxTokens ?? MAX_TOKENS,
+        temperature: params.temperature ?? 0.4,
+        ...(params.jsonMode ? { response_format: { type: "json_object" } } : {}),
+      }),
+      signal: controller.signal,
+    });
+  } catch (err) {
+    if (err instanceof Error && err.name === "AbortError") {
+      throw new LlmTimeoutError("The assistant took too long to respond.");
+    }
+    throw new LlmProviderError("Could not reach the assistant's provider.");
+  } finally {
+    clearTimeout(timeout);
+  }
+
+  if (!res.ok) {
+    throw new LlmProviderError(`Assistant provider returned status ${res.status}.`);
+  }
+
+  const data = (await res.json()) as OpenAiChatResponse;
+  const content = data.choices?.[0]?.message?.content?.trim();
+  if (!content) {
+    throw new LlmProviderError("Assistant provider returned an empty response.");
+  }
+  return content;
 }
 
 function buildSystemPrompt(recipe: RecipeDetail, dietaryProfile: string[] | undefined): string {
@@ -104,51 +176,18 @@ export interface AskAboutRecipeParams {
 }
 
 export async function askAboutRecipe(params: AskAboutRecipeParams): Promise<string> {
-  const fetchImpl = params.fetchImpl ?? fetch;
-  const model = params.model ?? process.env.OPENAI_MODEL ?? DEFAULT_OPENAI_MODEL;
+  const messages: ChatMessage[] = [
+    { role: "system", content: buildSystemPrompt(params.recipe, params.dietaryProfile) },
+    ...(params.history && params.history.length > 0
+      ? [{ role: "user" as const, content: buildHistoryContextMessage(params.history) }]
+      : []),
+    { role: "user", content: params.question },
+  ];
 
-  const controller = new AbortController();
-  const timeout = setTimeout(() => controller.abort(), TIMEOUT_MS);
-
-  let res: Response;
-  try {
-    res = await fetchImpl(OPENAI_URL, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${params.apiKey}`,
-      },
-      body: JSON.stringify({
-        model,
-        messages: [
-          { role: "system", content: buildSystemPrompt(params.recipe, params.dietaryProfile) },
-          ...(params.history && params.history.length > 0
-            ? [{ role: "user", content: buildHistoryContextMessage(params.history) }]
-            : []),
-          { role: "user", content: params.question },
-        ],
-        max_tokens: MAX_TOKENS,
-        temperature: 0.4,
-      }),
-      signal: controller.signal,
-    });
-  } catch (err) {
-    if (err instanceof Error && err.name === "AbortError") {
-      throw new LlmTimeoutError("The recipe assistant took too long to respond.");
-    }
-    throw new LlmProviderError("Could not reach the recipe assistant's provider.");
-  } finally {
-    clearTimeout(timeout);
-  }
-
-  if (!res.ok) {
-    throw new LlmProviderError(`Recipe assistant provider returned status ${res.status}.`);
-  }
-
-  const data = (await res.json()) as OpenAiChatResponse;
-  const answer = data.choices?.[0]?.message?.content?.trim();
-  if (!answer) {
-    throw new LlmProviderError("Recipe assistant provider returned an empty response.");
-  }
-  return answer;
+  return callOpenAiChat({
+    messages,
+    apiKey: params.apiKey,
+    model: params.model,
+    fetchImpl: params.fetchImpl,
+  });
 }

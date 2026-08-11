@@ -1,5 +1,13 @@
 import { afterEach, describe, expect, it, vi } from "vitest";
-import { ApiRequestError, askAboutRecipe, fetchIngredients, fetchLlmStatus, fetchRecipe, fetchRecipes } from "./api";
+import {
+  ApiRequestError,
+  askAboutRecipe,
+  fetchIngredients,
+  fetchLlmStatus,
+  fetchRecipe,
+  fetchRecipes,
+  findRecipesWithAssistant,
+} from "./api";
 
 function mockFetchOnce(response: { status: number; body: unknown }) {
   const fetchMock = vi.fn().mockResolvedValue({
@@ -129,6 +137,33 @@ describe("askAboutRecipe", () => {
   it("surfaces a 503 (feature disabled) as an ApiRequestError", async () => {
     mockFetchOnce({ status: 503, body: { error: { code: "SERVICE_UNAVAILABLE", message: "Not configured." } } });
     await expect(askAboutRecipe("1", "q")).rejects.toMatchObject({ status: 503, code: "SERVICE_UNAVAILABLE" });
+  });
+});
+
+describe("findRecipesWithAssistant", () => {
+  it("POSTs the query and dietary profile to /api/assistant/find-recipes", async () => {
+    const body = {
+      summary: "Here's a match",
+      matches: [{ recipe: { id: "1", title: "Test" }, reason: "It's quick" }],
+    };
+    const fetchMock = mockFetchOnce({ status: 200, body });
+    const result = await findRecipesWithAssistant("quick vegan dinner", ["vegan"]);
+
+    const [calledUrl, init] = fetchMock.mock.calls[0] as [string, RequestInit];
+    expect(new URL(calledUrl).pathname).toBe("/api/assistant/find-recipes");
+    expect(init.method).toBe("POST");
+    expect(JSON.parse(init.body as string)).toEqual({ query: "quick vegan dinner", dietaryProfile: ["vegan"] });
+    expect(result).toEqual(body);
+  });
+
+  it("surfaces a 503 (feature disabled) as an ApiRequestError, same as the recipe assistant", async () => {
+    mockFetchOnce({ status: 503, body: { error: { code: "SERVICE_UNAVAILABLE", message: "Not configured." } } });
+    await expect(findRecipesWithAssistant("dinner")).rejects.toMatchObject({ status: 503, code: "SERVICE_UNAVAILABLE" });
+  });
+
+  it("surfaces a 429 as an ApiRequestError", async () => {
+    mockFetchOnce({ status: 429, body: { error: { code: "RATE_LIMITED", message: "Too many searches." } } });
+    await expect(findRecipesWithAssistant("dinner")).rejects.toMatchObject({ status: 429, code: "RATE_LIMITED" });
   });
 });
 

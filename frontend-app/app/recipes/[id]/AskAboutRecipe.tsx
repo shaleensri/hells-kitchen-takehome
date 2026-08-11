@@ -25,6 +25,14 @@
  * back to the backend as conversation context on each new question — before
  * this, every question was answered with zero memory of earlier ones despite
  * the UI showing what looked like a running conversation.
+ *
+ * Prompt chips (Iteration 11, §3.33) submit through this exact same flow —
+ * `submitQuestion` is a shared function taking the question text as an
+ * explicit argument, not read from `question` state, specifically because
+ * `setQuestion(chip.question)` immediately followed by calling a
+ * state-reading submit function would submit the *stale* question (React
+ * state updates aren't synchronous) — a real bug caught during planning,
+ * not discovered by shipping it.
  */
 import { useEffect, useState } from "react";
 import type { RecipeDetail } from "@hells-kitchen/shared";
@@ -33,6 +41,7 @@ import { useProfile } from "@/lib/profile";
 import { getDietaryConflicts } from "@/lib/dietaryConflicts";
 import { useAskHistory } from "@/lib/askHistory";
 import { MarkdownLite } from "@/app/_components/MarkdownLite";
+import { RECIPE_PROMPT_CHIPS } from "@/lib/promptChips";
 import styles from "./AskAboutRecipe.module.css";
 
 const MAX_QUESTION_LENGTH = 500;
@@ -55,9 +64,8 @@ export function AskAboutRecipe({ recipe }: { recipe: RecipeDetail }) {
 
   const conflicts = hydrated ? getDietaryConflicts(profile.dietary, recipe.dietary) : [];
 
-  async function handleSubmit(e: React.FormEvent) {
-    e.preventDefault();
-    const q = question.trim();
+  async function submitQuestion(text: string) {
+    const q = text.trim();
     if (!q || loading) return;
 
     setLoading(true);
@@ -74,6 +82,15 @@ export function AskAboutRecipe({ recipe }: { recipe: RecipeDetail }) {
     } finally {
       setLoading(false);
     }
+  }
+
+  async function handleSubmit(e: React.FormEvent) {
+    e.preventDefault();
+    await submitQuestion(question);
+  }
+
+  function handleChipClick(chipQuestion: string) {
+    void submitQuestion(chipQuestion);
   }
 
   return (
@@ -131,6 +148,20 @@ export function AskAboutRecipe({ recipe }: { recipe: RecipeDetail }) {
                 </ul>
               </>
             )}
+
+            <div className={styles.chipRow}>
+              {RECIPE_PROMPT_CHIPS.map((chip) => (
+                <button
+                  key={chip.label}
+                  type="button"
+                  className={styles.chip}
+                  onClick={() => handleChipClick(chip.question)}
+                  disabled={loading}
+                >
+                  {chip.label}
+                </button>
+              ))}
+            </div>
 
             <form onSubmit={handleSubmit} className={styles.form}>
               <textarea

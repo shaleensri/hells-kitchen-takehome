@@ -7,6 +7,7 @@ import { FilterRail } from "./_components/FilterRail";
 import { SortControl } from "./_components/SortControl";
 import { RecipeCard } from "./_components/RecipeCard";
 import { ProfileAutoApply } from "./_components/ProfileAutoApply";
+import { SmartRecipeFinder } from "./SmartRecipeFinder";
 import styles from "./page.module.css";
 
 export const metadata: Metadata = {
@@ -75,6 +76,8 @@ export default async function RecipesPage({ searchParams }: RecipesPageProps) {
           )}
         </div>
       </div>
+
+      <SmartRecipeFinder />
 
       <form action="/recipes" method="GET" className={styles.searchForm}>
         <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">

@@ -9,6 +9,7 @@ import type {
   IngredientListItem,
   RecipeDetail,
   RecipeListItem,
+  SmartFinderResponse,
   SortField,
   SortOrder,
 } from "@hells-kitchen/shared";
@@ -146,4 +147,12 @@ export function askAboutRecipe(
     dietaryProfile,
     history,
   });
+}
+
+/** Smart Recipe Finder (§3.33, Iteration 11) — natural-language discovery
+ * over the existing catalog. Reuses GET /api/llm-status for its fail-soft
+ * check (no separate status endpoint, per the plan's "don't overbuild"
+ * addendum) and the same ApiRequestError shape as every other endpoint. */
+export function findRecipesWithAssistant(query: string, dietaryProfile?: string[]): Promise<SmartFinderResponse> {
+  return apiPost<SmartFinderResponse>("/api/assistant/find-recipes", { query, dietaryProfile });
 }

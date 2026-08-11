@@ -122,6 +122,34 @@
   padding: 1px 5px;
 }
 
+/* Same visual pattern as FilterRail's IngredientChips (§3.33) — a familiar
+ * chip look reused rather than inventing a second one. */
+.chipRow {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-bottom: var(--space-3);
+}
+
+.chip {
+  font-size: 11px;
+  padding: 4px 10px;
+  border: 1px solid var(--accent);
+  color: var(--accent);
+  background: transparent;
+  cursor: pointer;
+  transition: background var(--transition), opacity var(--transition);
+}
+
+.chip:hover:not(:disabled) {
+  background: var(--accent-soft);
+}
+
+.chip:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+
 .form {
   display: flex;
   flex-direction: column;
