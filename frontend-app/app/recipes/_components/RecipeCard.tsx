@@ -14,6 +14,7 @@ export function RecipeCard({ recipe }: { recipe: RecipeListItem }) {
         </span>
       </div>
       <p className={styles.description}>{recipe.description}</p>
+      <div className={styles.divider} />
       <dl className={styles.meta}>
         <div>
           <dt>Prep</dt>

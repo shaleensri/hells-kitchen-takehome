@@ -32,10 +32,14 @@ export default async function RecipesPage({ searchParams }: RecipesPageProps) {
   return (
     <div className={`container ${styles.page}`}>
       <h1 className={styles.heading}>Recipes</h1>
+      <p className={styles.subheading}>Browse, search, and filter what&rsquo;s in the kitchen.</p>
       <FilterBar q={q} tags={tags} ingredients={ingredients} />
 
       {recipes.length === 0 ? (
         <div className={styles.emptyState}>
+          <span className={styles.emptyStateIcon} aria-hidden="true">
+            🍽️
+          </span>
           <p>{hasFilters ? "No recipes match your filters." : "No recipes found."}</p>
           {hasFilters && <Link href="/recipes">Clear filters and start over</Link>}
         </div>

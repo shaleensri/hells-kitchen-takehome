@@ -58,7 +58,11 @@ export default async function RecipeDetailPage({ params }: RecipeDetailPageProps
           </div>
           <div>
             <dt>Difficulty</dt>
-            <dd>{recipe.difficulty}</dd>
+            <dd>
+              <span className={`${styles.difficulty} ${styles[`difficulty-${recipe.difficulty}`]}`}>
+                {recipe.difficulty}
+              </span>
+            </dd>
           </div>
           <div>
             <dt>Servings</dt>
@@ -84,7 +88,9 @@ export default async function RecipeDetailPage({ params }: RecipeDetailPageProps
 
       <div className={styles.columns}>
         <section aria-labelledby="ingredients-heading">
-          <h2 id="ingredients-heading">Ingredients</h2>
+          <h2 id="ingredients-heading">
+            <span aria-hidden="true">🥘</span> Ingredients
+          </h2>
           <ul className={styles.ingredientList}>
             {recipe.ingredients.map((line, i) => (
               <li key={`${line.ingredientId}-${i}`} className={styles.ingredientRow}>
@@ -110,7 +116,9 @@ export default async function RecipeDetailPage({ params }: RecipeDetailPageProps
         </section>
 
         <section aria-labelledby="instructions-heading">
-          <h2 id="instructions-heading">Instructions</h2>
+          <h2 id="instructions-heading">
+            <span aria-hidden="true">📋</span> Instructions
+          </h2>
           <ol className={styles.instructionList}>
             {recipe.instructions.map((step, i) => (
               <li key={i}>{step}</li>
@@ -120,7 +128,9 @@ export default async function RecipeDetailPage({ params }: RecipeDetailPageProps
       </div>
 
       <section aria-labelledby="nutrition-heading" className={styles.nutritionSection}>
-        <h2 id="nutrition-heading">Nutrition (per serving)</h2>
+        <h2 id="nutrition-heading">
+          <span aria-hidden="true">🔥</span> Nutrition (per serving)
+        </h2>
         {nutrition.partial && (
           <p className={styles.partialNote}>
             Some ingredients couldn&rsquo;t be fully resolved — these numbers may be incomplete.

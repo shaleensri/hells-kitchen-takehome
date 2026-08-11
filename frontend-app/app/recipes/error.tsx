@@ -12,6 +12,9 @@ export default function RecipesError({ error, reset }: { error: Error; reset: ()
 
   return (
     <div className={`container ${styles.wrapper}`}>
+      <span className={styles.icon} aria-hidden="true">
+        🔥
+      </span>
       <h1>Something went wrong loading recipes</h1>
       <p>
         {error.message || "The recipe server didn't respond. It may be starting up or temporarily unavailable."}

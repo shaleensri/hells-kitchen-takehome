@@ -1,19 +1,19 @@
-/* See frontend-app/app/recipes/error.module.css for why margin is reset
-   explicitly here (the combined .container class's margin:auto would
-   otherwise center this narrower box instead of left-aligning it). */
 .wrapper {
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-  gap: 14px;
-  padding: 60px 20px;
+  gap: var(--space-3);
+  padding: var(--space-8) var(--space-4);
   max-width: 520px;
   margin: 0;
 }
 
+.icon {
+  font-size: 2.2rem;
+}
+
 .wrapper h1 {
   font-size: 1.3rem;
-  font-weight: 700;
 }
 
 .wrapper p {
@@ -24,21 +24,31 @@
 .actions {
   display: flex;
   align-items: center;
-  gap: 16px;
+  gap: var(--space-4);
 }
 
 .retryButton {
-  padding: 10px 18px;
+  padding: 10px 20px;
   background: var(--accent);
   color: var(--accent-foreground);
   border: none;
-  border-radius: 8px;
+  border-radius: var(--radius-sm);
   font-weight: 600;
   cursor: pointer;
+  transition: background var(--transition);
+}
+
+.retryButton:hover {
+  background: var(--accent-hover);
 }
 
 .actions a {
   color: var(--muted);
   text-decoration: underline;
   font-size: 0.9rem;
+  transition: color var(--transition);
+}
+
+.actions a:hover {
+  color: var(--accent);
 }

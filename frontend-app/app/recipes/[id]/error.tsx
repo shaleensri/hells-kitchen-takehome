@@ -11,6 +11,9 @@ export default function RecipeDetailError({ error, reset }: { error: Error; rese
 
   return (
     <div className={`container ${styles.wrapper}`}>
+      <span className={styles.icon} aria-hidden="true">
+        🔥
+      </span>
       <h1>Something went wrong loading this recipe</h1>
       <p>{error.message || "The recipe server didn't respond. It may be starting up or temporarily unavailable."}</p>
       <div className={styles.actions}>

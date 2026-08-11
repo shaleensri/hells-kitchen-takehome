@@ -1,14 +1,13 @@
 .page {
-  padding-bottom: 60px;
+  padding-bottom: var(--space-8);
 }
 
-@keyframes pulse {
-  0%,
-  100% {
-    opacity: 0.6;
+@keyframes shimmer {
+  0% {
+    background-position: -200% 0;
   }
-  50% {
-    opacity: 1;
+  100% {
+    background-position: 200% 0;
   }
 }
 
@@ -16,37 +15,39 @@
 .titleSkeleton,
 .metaSkeleton,
 .blockSkeleton {
-  background: var(--surface-border);
-  border-radius: 6px;
-  animation: pulse 1.4s ease-in-out infinite;
+  background: linear-gradient(90deg, var(--surface-border) 25%, var(--surface) 37%, var(--surface-border) 63%);
+  background-size: 400% 100%;
+  animation: shimmer 1.6s ease-in-out infinite;
+  border-radius: var(--radius-sm);
 }
 
 .backSkeleton {
   width: 110px;
   height: 16px;
-  margin-top: 20px;
+  margin-top: var(--space-5);
 }
 
 .titleSkeleton {
   width: 60%;
-  height: 34px;
-  margin-top: 20px;
+  height: 36px;
+  margin-top: var(--space-5);
 }
 
 .metaSkeleton {
   width: 100%;
   height: 60px;
-  margin: 16px 0 28px;
+  margin: var(--space-4) 0 var(--space-6);
 }
 
 .columns {
   display: grid;
   grid-template-columns: 1fr 1.4fr;
-  gap: 36px;
+  gap: var(--space-7);
 }
 
 .blockSkeleton {
   height: 260px;
+  border-radius: var(--radius-md);
 }
 
 @media (max-width: 720px) {
