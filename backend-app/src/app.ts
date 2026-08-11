@@ -12,6 +12,17 @@ import { errorHandler, NotFoundError } from "./errors";
 
 export function createApp(appData: AppData): Express {
   const app = express();
+  // Trust exactly one reverse-proxy hop (Railway's edge, §3.27's deploy) so
+  // req.ip reflects the real client's X-Forwarded-For instead of the proxy's
+  // own address. Without this, every visitor behind the same proxy collapses
+  // into one req.ip — which the LLM endpoint's per-IP rate limiter
+  // (rateLimit.ts, §3.11) keys on, silently turning a per-user limit into one
+  // limit shared across everyone (Codex catch, confirmed via a diagnostic
+  // test before this fix: req.ip was identical regardless of
+  // X-Forwarded-For). `1` (not `true`) trusts only the nearest hop — the
+  // right value for a single reverse proxy, not an arbitrary chain a client
+  // could spoof further hops into.
+  app.set("trust proxy", 1);
   app.use(cors());
   app.use(express.json());
 

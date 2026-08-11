@@ -2,7 +2,7 @@ import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import request from "supertest";
 import { createApp } from "./app";
 import { DEFAULT_DATA_PATH, loadAppData } from "./data";
-import { resetRateLimiter } from "./rateLimit";
+import { RATE_LIMIT_MAX_REQUESTS, resetRateLimiter } from "./rateLimit";
 
 // HTTP-level integration tests against the real backend-app/db/data.json,
 // through the actual Express app (no mocking) — this is what verifies the
@@ -259,5 +259,37 @@ describe("POST /api/recipes/:id/ask", () => {
       lastStatus = res.status;
     }
     expect(lastStatus).toBe(429);
+  });
+
+  // §3.27 (Codex catch): app.ts must set `trust proxy` or req.ip — what the
+  // rate limiter keys on — ignores X-Forwarded-For entirely and collapses
+  // every visitor behind Railway's reverse proxy into one shared bucket.
+  // Proven directly here rather than just asserting app.get("trust proxy"):
+  // if two different forwarded IPs shared a bucket, the second client would
+  // incorrectly inherit the first's request count and could get rate
+  // limited on its very first real request.
+  it("keys the rate limit on the real client IP (X-Forwarded-For), not the shared proxy connection", async () => {
+    process.env.OPENAI_API_KEY = "sk-test";
+    vi.stubGlobal(
+      "fetch",
+      vi.fn().mockResolvedValue({
+        ok: true,
+        status: 200,
+        json: async () => ({ choices: [{ message: { content: "ok" } }] }),
+      })
+    );
+
+    // Exhaust the limit for one forwarded IP.
+    for (let i = 0; i < RATE_LIMIT_MAX_REQUESTS; i++) {
+      await request(app).post("/api/recipes/1/ask").set("X-Forwarded-For", "1.1.1.1").send({ question: `q${i}` });
+    }
+    const exhausted = await request(app).post("/api/recipes/1/ask").set("X-Forwarded-For", "1.1.1.1").send({ question: "one too many" });
+    expect(exhausted.status).toBe(429);
+
+    // A different forwarded IP must be unaffected — if trust proxy weren't
+    // set, both requests above would collapse to the same supertest-internal
+    // req.ip and this would also come back 429.
+    const otherClient = await request(app).post("/api/recipes/1/ask").set("X-Forwarded-For", "2.2.2.2").send({ question: "fresh client" });
+    expect(otherClient.status).toBe(200);
   });
 });
