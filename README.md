@@ -106,6 +106,7 @@ This became an npm workspaces monorepo (`shared`, `backend-app`, `frontend-app`)
 - **No real authentication.** Favoriting, a dietary/interest profile, and a shopping list are all `localStorage`-only, keyed by device/browser rather than account. The README doesn't ask for accounts, and building real auth on a recipe take-home reads as scope-mismatch more than initiative — see PLAN.md §3.1 for the full reasoning. It's a deliberate choice, not an oversight.
 - **The LLM feature is a grounded, narrow assistant, not a generic chatbot** bolted onto the page. The backend proxy builds its system prompt from the specific recipe's actual ingredients/instructions/nutrition, explicitly instructed not to invent facts about the recipe but to still give normal cooking help (substitutions, technique questions) — off-topic questions get politely declined. It also receives the visitor's saved dietary profile so it can proactively flag conflicts. Backend-only API key, question-length cap, per-IP rate limiting, and a pinned model string (`gpt-4o-mini`) so nothing about the endpoint depends on "whatever's currently cheapest."
 - **A deliberate design pass.** The initial build was functionally complete but visually generic; a later pass rebuilt the whole frontend against a real UI mockup (an "engineering spec sheet" look — corner-bracket card framing, dotted rules, a condensed technical typeface) rather than shipping default-Tailwind-card styling.
+- **The recipe dataset was expanded offline, not via a live API.** Started at 15 recipes/54 ingredients; grew to 32 recipes/54 ingredients through two batches of LLM-assisted drafting, checked into `data.json` exactly like the original seed data — no runtime dependency, no live recipe-import API added. Full provenance (drafting constraints, the raw batches, and what was actually validated vs. spot-checked) is in [`scripts/recipe-generation/`](./scripts/recipe-generation/), and PLAN.md §3.31-§3.32 has the full account, including a real planning mistake caught along the way rather than glossed over.
 
 ### Completed features
 
@@ -120,7 +121,7 @@ This became an npm workspaces monorepo (`shared`, `backend-app`, `frontend-app`)
 - **Ingredient nutrition values in the seed data are treated as per-100g.** The seed data doesn't state its basis explicitly; per-100g is the most common real-world convention and produces sane numbers against the recipes' actual serving sizes, but it's a documented assumption, not a verified fact about how the original data was authored.
 - **No accounts** — see "Implementation choices," above.
 - **Favoriting/shopping-list/profile are device-local**, not synced anywhere. Clearing browser storage clears them.
-- **The 15-recipe/54-ingredient seed dataset is the full catalog.** No live recipe-import API — see "Additional features," below.
+- **The 32-recipe/54-ingredient dataset (15 original + 17 added offline, see "Implementation choices") is the full catalog.** No live recipe-import API.
 
 ### Known limitations
 
@@ -128,11 +129,11 @@ This became an npm workspaces monorepo (`shared`, `backend-app`, `frontend-app`)
 - **CORS on the backend is fully permissive** (`cors()` with no origin restriction) rather than locked to the deployed frontend's origin — a reasonable simplification for a take-home with two public-but-obscure URLs, not something I'd ship at a company handling real user data.
 - **The LLM rate limiter is in-memory and per-process** — fine for this single-instance deploy, wouldn't hold up unmodified behind a horizontally-scaled backend.
 - **The shopping list adds a recipe at its own base servings**, not whatever serving count you'd scaled it to on the detail page — a deliberate scope cut, not a bug (see PLAN.md §3.25).
-- **The unmerged-ingredient path in the shopping list** (for a unit/ingredient combination with no conversion reference data) is implemented and unit-tested, but the current 15-recipe dataset happens to have zero ingredient lines that actually hit it — so it's real but currently unexercised by the live data.
+- **The unmerged-ingredient path in the shopping list** (for a unit/ingredient combination with no conversion reference data) is implemented and unit-tested, but the current dataset (all 32 recipes) happens to have zero ingredient lines that actually hit it — so it's real but currently unexercised by the live data.
 
 ### Additional features I'd add with more time
 
 - A real mobile filter-drawer pass (Iteration 7 in PLAN.md — deliberately skipped rather than unreached; see "Known limitations," above).
-- An expanded recipe dataset — the plan (PLAN.md §3.21, §6 Iteration 10) is either LLM-generating a larger, still-realistic set of recipes+ingredients offline, or importing from a real public recipe API, both deliberately run as an offline script rather than a new live runtime dependency.
+- A further-expanded recipe dataset (32 recipes is a real improvement over the original 15, per Iteration 10 — see "Implementation choices" above — but there's no ceiling on how much richer this could get with more batches, or by importing from a real public recipe API instead of drafting synthetic ones).
 - Real lightweight auth (email/magic-link) so favorites/profile/shopping-list could follow a person across devices instead of living in one browser's `localStorage`.
 - Locking down the backend's CORS policy and adding a persistent (not in-memory) rate-limit store, if this were headed toward real production traffic rather than a take-home demo.

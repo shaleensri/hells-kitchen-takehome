@@ -1,3 +1,7 @@
+# Validation notes — Iteration 10 (PLAN.md §3.31/§3.32)
+
+Jump to [Batch 2](#validation-notes--batch-2) for the second (final) batch.
+
 # Validation notes — Batch 1 (Iteration 10, PLAN.md §3.31)
 
 Stated plainly, per the plan's own requirement: this batch was validated
@@ -101,3 +105,105 @@ own instruction to treat this as source-code work, not data entry.
   `README.md`'s "How generation actually happened").
 - No database — still one static `data.json`, loaded once at boot.
 - Backend data-layer architecture untouched.
+
+---
+
+# Validation notes — Batch 2 (Iteration 10, PLAN.md §3.32)
+
+This is the second and final batch — after this, the dataset lands at 32
+recipes, within the 30-35 target, and Iteration 10 is considered complete.
+
+## What was checked, and how
+
+Same process as Batch 1: every line verified against the real
+`convertToGrams()`/nutrition formula *before* merging into `data.json`, the
+real derived `dietary.ts` intersection checked against every free-text tag
+before finalizing, the permanent `dataExpansion.test.ts` re-proven to still
+catch a regression (corrupted one line's unit, watched it fail, restored,
+watched it pass), and a full live Playwright pass after merging.
+
+**Zero new ingredients, zero new `shared/src/units.ts` entries needed** —
+every ingredient this batch used (`cauliflower`, `chickpeas`, `kale`,
+`tahini`, `granola`, `mixed_berries`, `almonds`, `banana`, `coconut_milk`,
+etc.) already had full conversion coverage, several of them because Batch
+1 or the original 15 had already exercised them.
+
+## A real planning mistake, caught by the live verification pass itself — not before
+
+Batch 2 was deliberately themed around ingredients believed to be
+under-used, to maximize variety. That belief was **wrong for three of
+them**: `cauliflower`, `chickpeas`, and `tahini` were assumed unused prior
+to this batch, based on a surface read of the aggregate 54-ingredient list
+rather than checking which *specific* recipes use which ingredients. In
+fact, the original recipe #7 ("Vegetable Curry") already uses `cauliflower`
++ `chickpeas` + `coconut_milk` + `curry_powder`, and #10 ("Quinoa Buddha
+Bowl") already uses `kale` + `chickpeas` + `tahini`.
+
+This surfaced during the live-verification pass itself, not before: an
+ingredient-filter test for `chickpeas` was written expecting exactly the 3
+new Batch 2 recipes, and instead returned 5 — the 2 original recipes above,
+plus the 3 new ones. Investigated immediately rather than just widening the
+assertion to make it pass: confirmed via `data.json` directly that recipes
+7 and 10 do genuinely already contain those ingredients. The test's
+expectation was wrong, not the app — fixed the assertion, not the code.
+
+**Consequence worth being honest about, not hiding:** this means two of
+Batch 2's recipes have more ingredient overlap with existing recipes than
+originally intended:
+- "Curried Cauliflower Chickpea Soup" (new) shares 4 of its 7 ingredients
+  (`cauliflower`, `chickpeas`, `coconut_milk`, `curry_powder`) with the
+  existing "Vegetable Curry."
+- "Tahini Kale Salad with Chickpeas" (new) shares 3 of its 6 ingredients
+  (`kale`, `chickpeas`, `tahini`) with the existing "Quinoa Buddha Bowl."
+
+**Judgment call, not a silent pass:** kept both recipes rather than
+reworking them, because the *finished dishes* are genuinely different —
+a blended curried soup vs. a chunky potato-forward stew; a massaged raw
+kale salad vs. a composed grain bowl built on quinoa — and the existing
+15-recipe dataset already has comparable ingredient-family overlap without
+being considered duplicates (three separate pasta dishes all built on
+pasta + garlic + olive oil, for instance). Recording this here rather than
+asserting it was fine without ever having checked.
+
+## Dietary tags
+
+Checked against the real derivation before finalizing, same as Batch 1.
+No overclaims found this time — every free-text `vegan`/`gluten-free` tag
+used already matched what `dietary.ts`'s real intersection produces.
+Interesting side effect: this batch meaningfully changed the *shape* of
+dietary coverage, not just the count — vegan went from 4 recipes (all of
+Iteration 1-9) to 9, gluten-free from 3 to 10.
+
+## Live browser verification
+
+Same discipline as Batch 1, against the full 32-recipe set: list page
+shows "32 of 32," the new `soup` tag (2 recipes) correctly filters even
+though it's too rare to appear in the filter rail's top-8 tags (confirmed
+via a real tag-frequency count before treating that as a bug — it isn't
+one), the vegan filter count matches a direct API call and includes new
+Batch 2 recipes, `breakfast` went from showing 1 recipe to 4, a Batch 2
+recipe's detail page shows the exact correct calorie figure, the
+`chickpeas` ingredient filter finds all 5 real matches (see the finding
+above), sort-by-calories still returns all 32, and the shopping list
+correctly merges garlic across a Batch 1 recipe and a Batch 2 recipe that
+have never been anywhere near each other in the codebase. Zero console
+errors.
+
+## Counts after Batch 2 (final, Iteration 10)
+
+- Recipes: 24 → **32**
+- Ingredients: 54 → **54** (unchanged across all of Iteration 10)
+- `shared/src/units.ts`: unchanged this batch (Batch 1's `peanut_butter`
+  entry was the only Iteration 10 addition)
+- Tests: 172 → **172** (no new test file this batch — `dataExpansion.test.ts`
+  already covers every recipe generically; 2 existing hardcoded-24
+  assertions updated to 32)
+
+## What's still true after Iteration 10
+
+- No live recipe API.
+- No runtime LLM generation.
+- No database — one static `data.json`, loaded once at boot.
+- Backend data-layer architecture untouched across both batches.
+- Zero unresolved ingredient lines, zero partial-nutrition recipes, across
+  all 32 — proven by `dataExpansion.test.ts`, not assumed.

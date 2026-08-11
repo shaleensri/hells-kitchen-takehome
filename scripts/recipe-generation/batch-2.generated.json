@@ -1,0 +1,204 @@
+[
+  {
+    "id": "25",
+    "title": "Curried Cauliflower Chickpea Soup",
+    "description": "A creamy, spiced soup with cauliflower, chickpeas, and coconut milk",
+    "servings": 6,
+    "prepTime": "15 minutes",
+    "cookTime": "30 minutes",
+    "difficulty": "easy",
+    "ingredients": [
+      { "ingredientId": "cauliflower", "amount": "1", "unit": "head" },
+      { "ingredientId": "chickpeas", "amount": "2", "unit": "can" },
+      { "ingredientId": "coconut_milk", "amount": "2", "unit": "cups" },
+      { "ingredientId": "curry_powder", "amount": "2", "unit": "tbsp" },
+      { "ingredientId": "onion", "amount": "1", "unit": "medium" },
+      { "ingredientId": "garlic", "amount": "3", "unit": "cloves" },
+      { "ingredientId": "ginger", "amount": "1", "unit": "tbsp" }
+    ],
+    "instructions": [
+      "Chop the cauliflower into florets and dice the onion",
+      "Sauté onion, minced garlic, and ginger in a large pot until fragrant",
+      "Stir in curry powder and toast for 30 seconds",
+      "Add cauliflower, drained chickpeas, and coconut milk",
+      "Simmer until the cauliflower is tender, about 20 minutes",
+      "Blend partially for a creamy texture with some chunks remaining, or serve as-is"
+    ],
+    "tags": ["soup", "indian", "healthy"],
+    "dateAdded": "2026-07-15T09:00:00Z"
+  },
+  {
+    "id": "26",
+    "title": "Broccoli & Potato Soup",
+    "description": "A comforting, blended soup of broccoli and potato",
+    "servings": 6,
+    "prepTime": "10 minutes",
+    "cookTime": "25 minutes",
+    "difficulty": "easy",
+    "ingredients": [
+      { "ingredientId": "broccoli", "amount": "4", "unit": "cups" },
+      { "ingredientId": "potato", "amount": "2", "unit": "medium" },
+      { "ingredientId": "onion", "amount": "1", "unit": "medium" },
+      { "ingredientId": "garlic", "amount": "2", "unit": "cloves" },
+      { "ingredientId": "butter", "amount": "2", "unit": "tbsp" },
+      { "ingredientId": "black_pepper", "amount": "0.5", "unit": "tsp" }
+    ],
+    "instructions": [
+      "Dice the potato and onion",
+      "Melt butter in a large pot and sauté onion and garlic until soft",
+      "Add potato, broccoli, and enough water to cover; season with black pepper",
+      "Simmer until the vegetables are very tender, about 20 minutes",
+      "Blend until smooth and creamy"
+    ],
+    "tags": ["soup", "comfort", "gluten-free"],
+    "dateAdded": "2026-07-16T09:00:00Z"
+  },
+  {
+    "id": "27",
+    "title": "Tahini Kale Salad with Chickpeas",
+    "description": "A hearty massaged kale salad with a creamy tahini-lemon dressing",
+    "servings": 4,
+    "prepTime": "15 minutes",
+    "cookTime": "0 minutes",
+    "difficulty": "easy",
+    "ingredients": [
+      { "ingredientId": "kale", "amount": "4", "unit": "cups" },
+      { "ingredientId": "chickpeas", "amount": "1", "unit": "can" },
+      { "ingredientId": "tahini", "amount": "3", "unit": "tbsp" },
+      { "ingredientId": "lemon", "amount": "1", "unit": "whole" },
+      { "ingredientId": "garlic", "amount": "1", "unit": "cloves" },
+      { "ingredientId": "olive_oil", "amount": "1", "unit": "tbsp" }
+    ],
+    "instructions": [
+      "Remove the kale stems, chop the leaves, and massage with a little olive oil until softened",
+      "Whisk together tahini, lemon juice, minced garlic, and a splash of water until smooth",
+      "Drain and rinse the chickpeas",
+      "Toss the kale with the chickpeas and dressing until well coated"
+    ],
+    "tags": ["salad", "healthy", "lunch"],
+    "dateAdded": "2026-07-17T09:00:00Z"
+  },
+  {
+    "id": "28",
+    "title": "Hummus & Veggie Lunch Bowl",
+    "description": "A simple lunch bowl of homemade hummus with fresh vegetables",
+    "servings": 4,
+    "prepTime": "15 minutes",
+    "cookTime": "0 minutes",
+    "difficulty": "easy",
+    "ingredients": [
+      { "ingredientId": "chickpeas", "amount": "2", "unit": "can" },
+      { "ingredientId": "tahini", "amount": "3", "unit": "tbsp" },
+      { "ingredientId": "lemon", "amount": "1", "unit": "whole" },
+      { "ingredientId": "garlic", "amount": "2", "unit": "cloves" },
+      { "ingredientId": "olive_oil", "amount": "2", "unit": "tbsp" },
+      { "ingredientId": "cucumber", "amount": "1", "unit": "medium" },
+      { "ingredientId": "carrot", "amount": "2", "unit": "medium" },
+      { "ingredientId": "bell_pepper", "amount": "1", "unit": "medium" }
+    ],
+    "instructions": [
+      "Blend drained chickpeas, tahini, lemon juice, minced garlic, and olive oil until smooth, adding water as needed",
+      "Slice the cucumber, carrot, and bell pepper into sticks",
+      "Divide the hummus between bowls and arrange the vegetables alongside"
+    ],
+    "tags": ["lunch", "healthy"],
+    "dateAdded": "2026-07-18T09:00:00Z"
+  },
+  {
+    "id": "29",
+    "title": "Greek Yogurt Parfait with Granola & Berries",
+    "description": "Layered yogurt, granola, and mixed berries with a drizzle of honey",
+    "servings": 2,
+    "prepTime": "5 minutes",
+    "cookTime": "0 minutes",
+    "difficulty": "easy",
+    "ingredients": [
+      { "ingredientId": "greek_yogurt", "amount": "1.5", "unit": "cup" },
+      { "ingredientId": "granola", "amount": "1", "unit": "cup" },
+      { "ingredientId": "mixed_berries", "amount": "1", "unit": "cup" },
+      { "ingredientId": "honey", "amount": "2", "unit": "tbsp" }
+    ],
+    "instructions": [
+      "Spoon a layer of greek yogurt into a glass or bowl",
+      "Add a layer of granola, then a layer of mixed berries",
+      "Repeat the layers",
+      "Finish with a drizzle of honey"
+    ],
+    "tags": ["breakfast", "quick"],
+    "dateAdded": "2026-07-19T09:00:00Z"
+  },
+  {
+    "id": "30",
+    "title": "Veggie & Egg Scramble",
+    "description": "A quick savory scramble with bell pepper, onion, and kale",
+    "servings": 2,
+    "prepTime": "10 minutes",
+    "cookTime": "10 minutes",
+    "difficulty": "easy",
+    "ingredients": [
+      { "ingredientId": "eggs", "amount": "4", "unit": "large" },
+      { "ingredientId": "bell_pepper", "amount": "1", "unit": "medium" },
+      { "ingredientId": "onion", "amount": "1", "unit": "medium" },
+      { "ingredientId": "kale", "amount": "1", "unit": "cups" },
+      { "ingredientId": "olive_oil", "amount": "1", "unit": "tbsp" },
+      { "ingredientId": "black_pepper", "amount": "0.25", "unit": "tsp" }
+    ],
+    "instructions": [
+      "Dice the bell pepper and onion, and roughly chop the kale",
+      "Heat olive oil in a skillet and sauté the bell pepper and onion until softened",
+      "Add the kale and cook until wilted",
+      "Whisk the eggs with black pepper, pour into the skillet, and scramble until just set"
+    ],
+    "tags": ["breakfast", "gluten-free", "quick", "healthy"],
+    "dateAdded": "2026-07-20T09:00:00Z"
+  },
+  {
+    "id": "31",
+    "title": "Roasted Cauliflower Steaks with Tahini Drizzle",
+    "description": "Thick-cut roasted cauliflower with a bright tahini-lemon sauce",
+    "servings": 4,
+    "prepTime": "10 minutes",
+    "cookTime": "25 minutes",
+    "difficulty": "medium",
+    "ingredients": [
+      { "ingredientId": "cauliflower", "amount": "2", "unit": "head" },
+      { "ingredientId": "tahini", "amount": "3", "unit": "tbsp" },
+      { "ingredientId": "lemon", "amount": "1", "unit": "whole" },
+      { "ingredientId": "garlic", "amount": "2", "unit": "cloves" },
+      { "ingredientId": "olive_oil", "amount": "3", "unit": "tbsp" },
+      { "ingredientId": "black_pepper", "amount": "0.5", "unit": "tsp" }
+    ],
+    "instructions": [
+      "Preheat oven to 425°F",
+      "Slice each cauliflower head into thick steaks through the core",
+      "Brush with olive oil and season with black pepper",
+      "Roast until golden and tender, about 20-25 minutes, flipping halfway",
+      "Whisk tahini, lemon juice, minced garlic, and a splash of water into a smooth sauce",
+      "Drizzle the sauce over the roasted cauliflower steaks before serving"
+    ],
+    "tags": ["dinner", "healthy"],
+    "dateAdded": "2026-07-21T09:00:00Z"
+  },
+  {
+    "id": "32",
+    "title": "Tropical Coconut Almond Smoothie",
+    "description": "A dairy-free banana smoothie with coconut milk and almonds",
+    "servings": 2,
+    "prepTime": "5 minutes",
+    "cookTime": "0 minutes",
+    "difficulty": "easy",
+    "ingredients": [
+      { "ingredientId": "banana", "amount": "2", "unit": "medium" },
+      { "ingredientId": "coconut_milk", "amount": "1.5", "unit": "cup" },
+      { "ingredientId": "almonds", "amount": "0.25", "unit": "cup" }
+    ],
+    "instructions": [
+      "Peel the bananas",
+      "Combine bananas, coconut milk, and almonds in a blender",
+      "Blend until smooth and creamy",
+      "Pour into glasses and serve immediately"
+    ],
+    "tags": ["breakfast", "quick"],
+    "dateAdded": "2026-07-22T09:00:00Z"
+  }
+]
