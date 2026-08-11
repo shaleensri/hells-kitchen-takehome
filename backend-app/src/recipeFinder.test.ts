@@ -1,9 +1,11 @@
 import { describe, expect, it, vi } from "vitest";
+import type { DietaryTag } from "@hells-kitchen/shared";
 import type { PrecomputedRecipe } from "./data";
 import { LlmProviderError } from "./llm";
 import {
   buildCompactCatalog,
   buildFinderSystemPrompt,
+  filterMatchesByDietaryProfile,
   findRecipesWithAssistant,
   MAX_FINDER_MATCHES,
   MAX_MAIN_INGREDIENTS,
@@ -185,6 +187,56 @@ describe("sanitizeMatches", () => {
   });
 });
 
+describe("filterMatchesByDietaryProfile (§3.33 follow-up: hard dietary filter)", () => {
+  const veganRecipe = fakeRecipe({ id: "1" }); // dietary: vegan, vegetarian, gluten-free
+  const vegetarianOnlyRecipe = { ...fakeRecipe({ id: "2" }), dietary: ["vegetarian"] as DietaryTag[] };
+  const recipes = [veganRecipe, vegetarianOnlyRecipe];
+  const matches = [
+    { recipeId: "1", reason: "vegan match" },
+    { recipeId: "2", reason: "vegetarian-only match" },
+  ];
+
+  it("returns matches unchanged when no dietary profile is saved", () => {
+    const result = filterMatchesByDietaryProfile(matches, recipes, undefined);
+    expect(result).toEqual({ matches, limitedByProfile: false });
+  });
+
+  it("returns matches unchanged when the profile is an empty array", () => {
+    const result = filterMatchesByDietaryProfile(matches, recipes, []);
+    expect(result).toEqual({ matches, limitedByProfile: false });
+  });
+
+  it("drops a match whose recipe doesn't satisfy every saved dietary tag", () => {
+    const result = filterMatchesByDietaryProfile(matches, recipes, ["vegan"]);
+    expect(result.matches).toEqual([{ recipeId: "1", reason: "vegan match" }]);
+    expect(result.limitedByProfile).toBe(true);
+  });
+
+  it("keeps a match whose dietary[] is a superset of the profile", () => {
+    // veganRecipe is vegan+vegetarian+gluten-free; a vegetarian-only profile
+    // should still keep it (satisfies every saved tag, has more besides).
+    const result = filterMatchesByDietaryProfile(matches, recipes, ["vegetarian"]);
+    expect(result.matches.map((m) => m.recipeId)).toEqual(["1", "2"]);
+    expect(result.limitedByProfile).toBe(false);
+  });
+
+  it("requires ALL saved tags to be satisfied, not just one", () => {
+    const result = filterMatchesByDietaryProfile(matches, recipes, ["vegan", "gluten-free"]);
+    expect(result.matches).toEqual([{ recipeId: "1", reason: "vegan match" }]);
+  });
+
+  it("can legitimately filter everything out — that's a correct result, surfaced via limitedByProfile, not an error", () => {
+    const result = filterMatchesByDietaryProfile(matches, recipes, ["keto"]);
+    expect(result.matches).toEqual([]);
+    expect(result.limitedByProfile).toBe(true);
+  });
+
+  it("treats a recipeId with no matching recipe as satisfying nothing (defensive, shouldn't happen post-sanitize)", () => {
+    const result = filterMatchesByDietaryProfile([{ recipeId: "unknown", reason: "x" }], recipes, ["vegan"]);
+    expect(result.matches).toEqual([]);
+  });
+});
+
 describe("findRecipesWithAssistant (end to end, mocked fetch)", () => {
   function fakeFetch(jsonBody: unknown): typeof fetch {
     return vi.fn().mockResolvedValue({
@@ -237,5 +289,41 @@ describe("findRecipesWithAssistant (end to end, mocked fetch)", () => {
       fetchImpl,
     });
     expect(result.matches).toEqual([{ recipeId: "1", reason: "real recipe" }]);
+  });
+
+  it("end-to-end hard-filters a match that doesn't satisfy the saved dietary profile, and says so in the summary", async () => {
+    const fetchImpl = fakeFetch({
+      summary: "Found two options.",
+      matches: [
+        { recipeId: "1", reason: "vegan match" },
+        { recipeId: "2", reason: "vegetarian-only match" },
+      ],
+    });
+    const veganRecipe = fakeRecipe({ id: "1" }); // dietary: vegan, vegetarian, gluten-free
+    const vegetarianOnlyRecipe = { ...fakeRecipe({ id: "2" }), dietary: ["vegetarian"] as DietaryTag[] };
+    const result = await findRecipesWithAssistant({
+      recipes: [veganRecipe, vegetarianOnlyRecipe],
+      query: "vegan dinners",
+      dietaryProfile: ["vegan"],
+      apiKey: "test-key",
+      fetchImpl,
+    });
+    expect(result.matches).toEqual([{ recipeId: "1", reason: "vegan match" }]);
+    expect(result.summary).toContain("narrowed further to fit your saved dietary preferences");
+  });
+
+  it("doesn't append the dietary-narrowing note when every match already satisfies the profile", async () => {
+    const fetchImpl = fakeFetch({
+      summary: "Found one option.",
+      matches: [{ recipeId: "1", reason: "vegan match" }],
+    });
+    const result = await findRecipesWithAssistant({
+      recipes: [fakeRecipe({ id: "1" })],
+      query: "vegan dinners",
+      dietaryProfile: ["vegan"],
+      apiKey: "test-key",
+      fetchImpl,
+    });
+    expect(result.summary).toBe("Found one option.");
   });
 });

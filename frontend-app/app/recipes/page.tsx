@@ -47,7 +47,7 @@ export default async function RecipesPage({ searchParams }: RecipesPageProps) {
 
   // Two fetches: the unfiltered list powers the header stats and the filter
   // rail's per-option counts; the filtered list is what's actually shown.
-  // Both cheap — 15-recipe dataset, no pagination (§3.10).
+  // Both cheap — 32-recipe dataset, no pagination (§3.10).
   const [allRecipes, filteredRecipes] = await Promise.all([
     fetchRecipes(),
     fetchRecipes({ q, tags, ingredients, dietary, difficulty, sort, order }),

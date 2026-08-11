@@ -448,6 +448,41 @@ describe("POST /api/assistant/find-recipes (§3.33, Iteration 11)", () => {
     expect(res.body.matches[0].recipe.id).toBe("1");
   });
 
+  // §3.33 follow-up: dietary profile is now a hard filter, not just a
+  // prompt hint. Recipe "1" (Classic Margherita Pizza) is vegetarian, not
+  // vegan (real data.json) — a vegan profile must drop it even though the
+  // (mocked) model returned it as a match.
+  it("hard-filters a real recipe that doesn't satisfy the saved dietary profile, even when the model returns it", async () => {
+    process.env.OPENAI_API_KEY = "sk-test";
+    vi.stubGlobal(
+      "fetch",
+      vi.fn().mockResolvedValue({
+        ok: true,
+        status: 200,
+        json: async () => ({
+          choices: [
+            {
+              message: {
+                content: JSON.stringify({
+                  summary: "Found a match.",
+                  matches: [{ recipeId: "1", reason: "Quick and easy." }],
+                }),
+              },
+            },
+          ],
+        }),
+      })
+    );
+
+    const res = await request(app)
+      .post("/api/assistant/find-recipes")
+      .send({ query: "vegan dinner", dietaryProfile: ["vegan"] });
+
+    expect(res.status).toBe(200);
+    expect(res.body.matches).toHaveLength(0);
+    expect(res.body.summary).toContain("narrowed further to fit your saved dietary preferences");
+  });
+
   it("includes the dietary profile in the prompt when provided", async () => {
     process.env.OPENAI_API_KEY = "sk-test";
     const mockFetch = vi.fn().mockResolvedValue({

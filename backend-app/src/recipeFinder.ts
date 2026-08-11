@@ -156,6 +156,43 @@ export function sanitizeMatches(rawMatches: RawFinderMatch[], validIds: Readonly
   return result;
 }
 
+export interface FilterByDietaryProfileResult {
+  matches: SanitizedMatch[];
+  limitedByProfile: boolean;
+}
+
+/**
+ * Hard dietary filter, added after a live check found the soft version
+ * wasn't enough (PLAN.md §3.33 follow-up review): sanitizeMatches only ever
+ * enforced recipe *IDs* against real data — a saved dietary profile was
+ * just a prompt instruction, and the model didn't always honor it (a
+ * vegan-profile query came back with a vegetarian-only match). This closes
+ * that for real: any match whose actual `dietary[]` doesn't cover every
+ * saved tag is dropped here, unconditionally, using the app's own
+ * precomputed dietary data — same "never trust the model, verify against
+ * real data" posture as sanitizeMatches, just for dietary tags instead of
+ * IDs. Filtering can legitimately zero out all matches; that's a correct
+ * result, not an error — the caller surfaces it via `limitedByProfile`
+ * rather than silently returning fewer results with no explanation.
+ */
+export function filterMatchesByDietaryProfile(
+  matches: SanitizedMatch[],
+  recipes: PrecomputedRecipe[],
+  dietaryProfile: string[] | undefined
+): FilterByDietaryProfileResult {
+  if (!dietaryProfile || dietaryProfile.length === 0) {
+    return { matches, limitedByProfile: false };
+  }
+
+  const dietaryById = new Map(recipes.map((p) => [p.raw.id, p.dietary as string[]]));
+  const filtered = matches.filter((match) => {
+    const dietary = dietaryById.get(match.recipeId) ?? [];
+    return dietaryProfile.every((tag) => dietary.includes(tag));
+  });
+
+  return { matches: filtered, limitedByProfile: filtered.length < matches.length };
+}
+
 export interface FindRecipesParams {
   recipes: PrecomputedRecipe[];
   query: string;
@@ -190,7 +227,12 @@ export async function findRecipesWithAssistant(params: FindRecipesParams): Promi
 
   const parsed = parseFinderResponse(raw);
   const validIds = new Set(params.recipes.map((p) => p.raw.id));
-  const matches = sanitizeMatches(parsed.matches, validIds);
+  const sanitized = sanitizeMatches(parsed.matches, validIds);
+  const { matches, limitedByProfile } = filterMatchesByDietaryProfile(sanitized, params.recipes, params.dietaryProfile);
 
-  return { summary: parsed.summary, matches };
+  const summary = limitedByProfile
+    ? `${parsed.summary.trim()} Some catalog matches were narrowed further to fit your saved dietary preferences.`
+    : parsed.summary;
+
+  return { summary, matches };
 }
