@@ -130,9 +130,20 @@ export function fetchLlmStatus(): Promise<{ available: boolean }> {
   return apiFetch<{ available: boolean }>("/api/llm-status");
 }
 
-export function askAboutRecipe(recipeId: string, question: string, dietaryProfile?: string[]): Promise<{ answer: string }> {
+export interface AskHistoryExchange {
+  question: string;
+  answer: string;
+}
+
+export function askAboutRecipe(
+  recipeId: string,
+  question: string,
+  dietaryProfile?: string[],
+  history?: AskHistoryExchange[]
+): Promise<{ answer: string }> {
   return apiPost<{ answer: string }>(`/api/recipes/${encodeURIComponent(recipeId)}/ask`, {
     question,
     dietaryProfile,
+    history,
   });
 }

@@ -17,28 +17,33 @@
  * profile in its prompt (askAboutRecipe's dietaryProfile param) so its
  * answers can proactively mention conflicts/substitutions when relevant to
  * whatever's actually asked — the two are complementary, not duplicates.
+ *
+ * Two things fixed after direct user testing (§3.29), both real gaps the
+ * first version had: the transcript now persists per-recipe in localStorage
+ * (lib/askHistory.ts, same pattern as favorites/profile/shopping-list) so
+ * navigating away and back doesn't lose it, and prior exchanges are now sent
+ * back to the backend as conversation context on each new question — before
+ * this, every question was answered with zero memory of earlier ones despite
+ * the UI showing what looked like a running conversation.
  */
 import { useEffect, useState } from "react";
 import type { RecipeDetail } from "@hells-kitchen/shared";
 import { ApiRequestError, askAboutRecipe, fetchLlmStatus } from "@/lib/api";
 import { useProfile } from "@/lib/profile";
 import { getDietaryConflicts } from "@/lib/dietaryConflicts";
+import { useAskHistory } from "@/lib/askHistory";
+import { MarkdownLite } from "@/app/_components/MarkdownLite";
 import styles from "./AskAboutRecipe.module.css";
 
 const MAX_QUESTION_LENGTH = 500;
-
-interface Exchange {
-  question: string;
-  answer: string;
-}
 
 type Status = "checking" | "available" | "unavailable";
 
 export function AskAboutRecipe({ recipe }: { recipe: RecipeDetail }) {
   const { profile, hydrated } = useProfile();
+  const { exchanges, append, clear } = useAskHistory(recipe.id);
   const [status, setStatus] = useState<Status>("checking");
   const [question, setQuestion] = useState("");
-  const [exchanges, setExchanges] = useState<Exchange[]>([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
@@ -58,8 +63,11 @@ export function AskAboutRecipe({ recipe }: { recipe: RecipeDetail }) {
     setLoading(true);
     setError(null);
     try {
-      const { answer } = await askAboutRecipe(recipe.id, q, profile.dietary);
-      setExchanges((prev) => [...prev, { question: q, answer }]);
+      // Prior exchanges go along as conversation context — the backend caps
+      // how much of this it actually forwards to the model (routes/recipes.ts),
+      // so sending the full locally-stored transcript here is safe.
+      const { answer } = await askAboutRecipe(recipe.id, q, profile.dietary, exchanges);
+      append({ question: q, answer });
       setQuestion("");
     } catch (err) {
       setError(err instanceof ApiRequestError ? err.message : "Something went wrong. Try again.");
@@ -99,20 +107,29 @@ export function AskAboutRecipe({ recipe }: { recipe: RecipeDetail }) {
         {status === "available" && (
           <>
             {exchanges.length > 0 && (
-              <ul className={styles.exchangeList}>
-                {exchanges.map((ex, i) => (
-                  <li key={i} className={styles.exchange}>
-                    <p className={styles.question}>
-                      <span className="label">You asked</span>
-                      {ex.question}
-                    </p>
-                    <p className={styles.answer}>
-                      <span className="label">Assistant</span>
-                      {ex.answer}
-                    </p>
-                  </li>
-                ))}
-              </ul>
+              <>
+                <div className={styles.exchangeListHeader}>
+                  <button type="button" className={styles.clearBtn} onClick={clear}>
+                    Clear conversation
+                  </button>
+                </div>
+                <ul className={styles.exchangeList}>
+                  {exchanges.map((ex, i) => (
+                    <li key={i} className={styles.exchange}>
+                      <p className={styles.question}>
+                        <span className="label">You asked</span>
+                        {ex.question}
+                      </p>
+                      {/* A <div>, not <p> — MarkdownLite renders its own block-level
+                          elements (p/ul/ol), which a <p> parent can't legally contain. */}
+                      <div className={styles.answer}>
+                        <span className="label">Assistant</span>
+                        <MarkdownLite text={ex.answer} />
+                      </div>
+                    </li>
+                  ))}
+                </ul>
+              </>
             )}
 
             <form onSubmit={handleSubmit} className={styles.form}>

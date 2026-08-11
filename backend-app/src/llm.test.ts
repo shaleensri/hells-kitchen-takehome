@@ -86,6 +86,38 @@ describe("askAboutRecipe", () => {
     expect(systemMessage.toLowerCase()).toContain("proactively");
   });
 
+  it("includes prior history as alternating user/assistant messages before the current question (§3.29)", async () => {
+    const fetchImpl = fakeFetch({ jsonBody: { choices: [{ message: { content: "ok" } }] } });
+
+    await askAboutRecipe({
+      recipe: fakeRecipe(),
+      question: "What about the second one?",
+      apiKey: "test-key",
+      history: [
+        { question: "Any substitution ideas?", answer: "You could use butter instead of oil, or a plant-based cheese." },
+      ],
+      fetchImpl,
+    });
+
+    const [, requestInit] = (fetchImpl as ReturnType<typeof vi.fn>).mock.calls[0];
+    const body = JSON.parse(requestInit.body as string);
+    // system, then the history's user+assistant pair, then the new question — in that exact order.
+    expect(body.messages.map((m: { role: string }) => m.role)).toEqual(["system", "user", "assistant", "user"]);
+    expect(body.messages[1].content).toBe("Any substitution ideas?");
+    expect(body.messages[2].content).toBe("You could use butter instead of oil, or a plant-based cheese.");
+    expect(body.messages[3].content).toBe("What about the second one?");
+  });
+
+  it("works exactly as before when no history is passed (backward compatible)", async () => {
+    const fetchImpl = fakeFetch({ jsonBody: { choices: [{ message: { content: "ok" } }] } });
+
+    await askAboutRecipe({ recipe: fakeRecipe(), question: "q", apiKey: "test-key", fetchImpl });
+
+    const [, requestInit] = (fetchImpl as ReturnType<typeof vi.fn>).mock.calls[0];
+    const body = JSON.parse(requestInit.body as string);
+    expect(body.messages.map((m: { role: string }) => m.role)).toEqual(["system", "user"]);
+  });
+
   it("uses the pinned default model unless OPENAI_MODEL/model override is set", async () => {
     const fetchImpl = fakeFetch({ jsonBody: { choices: [{ message: { content: "ok" } }] } });
 

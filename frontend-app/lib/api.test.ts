@@ -117,6 +117,15 @@ describe("askAboutRecipe", () => {
     expect(result).toEqual({ answer: "Yes, that works." });
   });
 
+  it("includes prior conversation history in the POST body when provided", async () => {
+    const fetchMock = mockFetchOnce({ status: 200, body: { answer: "The second one." } });
+    const history = [{ question: "Which is better, A or B?", answer: "Both work." }];
+    await askAboutRecipe("1", "Pick one for me.", undefined, history);
+
+    const [, init] = fetchMock.mock.calls[0] as [string, RequestInit];
+    expect(JSON.parse(init.body as string)).toEqual({ question: "Pick one for me.", dietaryProfile: undefined, history });
+  });
+
   it("surfaces a 503 (feature disabled) as an ApiRequestError", async () => {
     mockFetchOnce({ status: 503, body: { error: { code: "SERVICE_UNAVAILABLE", message: "Not configured." } } });
     await expect(askAboutRecipe("1", "q")).rejects.toMatchObject({ status: 503, code: "SERVICE_UNAVAILABLE" });

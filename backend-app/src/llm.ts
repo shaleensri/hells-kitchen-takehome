@@ -36,6 +36,7 @@ function buildSystemPrompt(recipe: RecipeDetail, dietaryProfile: string[] | unde
   let prompt = [
     `You are a cooking assistant answering questions about exactly one recipe: "${recipe.title}".`,
     `Base your answers on the exact ingredients/instructions/nutrition below — never claim the recipe already contains something it doesn't, or invent steps or nutrition numbers that aren't implied by it. Within that, you SHOULD give normal cooking help: suggest reasonable ingredient substitutions, answer "can I use X instead of Y" questions, and offer technique tips — that's expected and useful, not "inventing" the recipe. If asked something with no real connection to this recipe or cooking it, politely decline and steer back to the recipe.`,
+    `Formatting: plain, concise prose. **Bold** a key term or short bullet lists (using "-") are fine when they genuinely help (e.g. listing substitution options), but skip headings, tables, or heavy markdown — this renders in a simple chat panel, not a document.`,
     ``,
     `Serves: ${recipe.servings}`,
     `Difficulty: ${recipe.difficulty}`,
@@ -58,10 +59,20 @@ function buildSystemPrompt(recipe: RecipeDetail, dietaryProfile: string[] | unde
   return prompt;
 }
 
+export interface HistoryExchange {
+  question: string;
+  answer: string;
+}
+
 export interface AskAboutRecipeParams {
   recipe: RecipeDetail;
   question: string;
   dietaryProfile?: string[];
+  /** Prior Q&A pairs from this session, oldest first — without this, every
+   * question was answered in total isolation (a real gap the "conversation"
+   * UI implied but didn't deliver, caught via direct user testing). Already
+   * capped by the caller (routes/recipes.ts) before it reaches here. */
+  history?: HistoryExchange[];
   apiKey: string;
   model?: string;
   /** Injectable for tests — defaults to the real global fetch. */
@@ -87,6 +98,10 @@ export async function askAboutRecipe(params: AskAboutRecipeParams): Promise<stri
         model,
         messages: [
           { role: "system", content: buildSystemPrompt(params.recipe, params.dietaryProfile) },
+          ...(params.history ?? []).flatMap((exchange) => [
+            { role: "user", content: exchange.question },
+            { role: "assistant", content: exchange.answer },
+          ]),
           { role: "user", content: params.question },
         ],
         max_tokens: MAX_TOKENS,

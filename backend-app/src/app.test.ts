@@ -230,6 +230,58 @@ describe("POST /api/recipes/:id/ask", () => {
     expect(body.messages[0].content).toContain("Classic Margherita Pizza");
   });
 
+  it("forwards a well-formed history array to the provider as prior conversation turns (§3.29)", async () => {
+    process.env.OPENAI_API_KEY = "sk-test";
+    const mockFetch = vi.fn().mockResolvedValue({
+      ok: true,
+      status: 200,
+      json: async () => ({ choices: [{ message: { content: "Sure, either works." } }] }),
+    });
+    vi.stubGlobal("fetch", mockFetch);
+
+    const res = await request(app)
+      .post("/api/recipes/1/ask")
+      .send({
+        question: "Which one is better?",
+        history: [{ question: "Can I use butter or oil?", answer: "Both work, butter gives a richer flavor." }],
+      });
+
+    expect(res.status).toBe(200);
+    const [, requestInit] = mockFetch.mock.calls[0];
+    const body = JSON.parse(requestInit.body);
+    expect(body.messages.map((m: { role: string }) => m.role)).toEqual(["system", "user", "assistant", "user"]);
+    expect(body.messages[1].content).toBe("Can I use butter or oil?");
+  });
+
+  it("drops malformed history entries and truncates an oversized array instead of erroring (§3.29)", async () => {
+    process.env.OPENAI_API_KEY = "sk-test";
+    const mockFetch = vi.fn().mockResolvedValue({
+      ok: true,
+      status: 200,
+      json: async () => ({ choices: [{ message: { content: "ok" } }] }),
+    });
+    vi.stubGlobal("fetch", mockFetch);
+
+    const oversized = Array.from({ length: 20 }, (_, i) => ({ question: `q${i}`, answer: `a${i}` }));
+    const res = await request(app)
+      .post("/api/recipes/1/ask")
+      .send({
+        question: "final question",
+        // Mixed in: valid entries, a malformed one (missing "answer"), and a
+        // non-object — all should be silently dropped/truncated, not a 400.
+        history: [...oversized, { question: "no answer field" }, "not even an object"],
+      });
+
+    expect(res.status).toBe(200);
+    const [, requestInit] = mockFetch.mock.calls[0];
+    const body = JSON.parse(requestInit.body);
+    // system + (5 capped exchanges × 2 messages) + the final question = 12.
+    expect(body.messages).toHaveLength(12);
+    // The malformed/non-object entries never made it in, and only the *last*
+    // 5 of the 20 valid ones survived the cap.
+    expect(body.messages[1].content).toBe("q15");
+  });
+
   it("returns 502 when the provider errors", async () => {
     process.env.OPENAI_API_KEY = "sk-test";
     vi.stubGlobal(

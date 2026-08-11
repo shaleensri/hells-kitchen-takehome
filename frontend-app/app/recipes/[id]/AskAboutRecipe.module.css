@@ -27,6 +27,25 @@
   line-height: 1.5;
 }
 
+.exchangeListHeader {
+  display: flex;
+  justify-content: flex-end;
+  margin-bottom: var(--space-2);
+}
+
+.clearBtn {
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  color: var(--faint);
+  font-size: 12px;
+  text-decoration: underline;
+}
+
+.clearBtn:hover {
+  color: var(--danger);
+}
+
 .exchangeList {
   display: flex;
   flex-direction: column;
@@ -44,22 +63,63 @@
   padding-bottom: 0;
 }
 
-.question,
-.answer {
+.question {
   display: flex;
   flex-direction: column;
   gap: 3px;
   font-size: 14px;
   line-height: 1.5;
-}
-
-.question {
   color: var(--muted);
   margin-bottom: 8px;
 }
 
+/* MarkdownLite (§3.29) renders its own block elements (p/ul/ol) here — not
+ * flex+gap like .question, since a variable number of blocks needs real
+ * paragraph/list spacing, not a fixed gap between every child including
+ * the "Assistant" label. */
 .answer {
   color: var(--foreground);
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+.answer :global(.label) {
+  display: block;
+  margin-bottom: 4px;
+}
+
+.answer p {
+  margin: 0 0 8px;
+}
+
+.answer p:last-child {
+  margin-bottom: 0;
+}
+
+.answer ul,
+.answer ol {
+  margin: 4px 0 8px 1.3em;
+  list-style: revert;
+}
+
+.answer ul:last-child,
+.answer ol:last-child {
+  margin-bottom: 0;
+}
+
+.answer li {
+  margin-bottom: 2px;
+}
+
+.answer strong {
+  font-weight: 600;
+}
+
+.answer code {
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: 0.9em;
+  background: var(--tag-bg);
+  padding: 1px 5px;
 }
 
 .form {

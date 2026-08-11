@@ -6,11 +6,39 @@ import type { AppData } from "../data";
 import { toRecipeDetail, toRecipeListItem } from "../data";
 import { filterRecipes, parseRecipeQuery, sortRecipes } from "../filtering";
 import { BadRequestError, NotFoundError, TooManyRequestsError, ServiceUnavailableError, BadGatewayError, GatewayTimeoutError } from "../errors";
-import { askAboutRecipe, LlmProviderError, LlmTimeoutError } from "../llm";
+import { askAboutRecipe, LlmProviderError, LlmTimeoutError, type HistoryExchange } from "../llm";
 import { isRateLimited } from "../rateLimit";
 
 // §3.11: reject anything over this before it ever reaches the LLM provider.
 const MAX_QUESTION_LENGTH = 500;
+// Prior-conversation context sent back to the model (§3.29 — without this,
+// every question was answered with zero memory of earlier ones in the same
+// session, despite the UI showing a running transcript). Capped independent
+// of whatever the client sends: bounds token cost/latency per request, and
+// means a malicious caller can't pad the history array to blow up spend
+// even though the endpoint is already rate-limited.
+const MAX_HISTORY_EXCHANGES = 5;
+const MAX_HISTORY_ANSWER_LENGTH = 4000;
+
+/** Loose on purpose — a malformed history entry is dropped, not a 400. This
+ * is context for a better answer, not a required field; failing soft here
+ * (matching §3.3's overall philosophy) beats rejecting the whole question
+ * over a client-side history bug. */
+function sanitizeHistory(raw: unknown): HistoryExchange[] {
+  if (!Array.isArray(raw)) return [];
+  const cleaned: HistoryExchange[] = [];
+  for (const entry of raw) {
+    if (typeof entry !== "object" || entry === null) continue;
+    const { question, answer } = entry as Record<string, unknown>;
+    if (typeof question !== "string" || typeof answer !== "string") continue;
+    if (!question.trim() || !answer.trim()) continue;
+    cleaned.push({
+      question: question.slice(0, MAX_QUESTION_LENGTH),
+      answer: answer.slice(0, MAX_HISTORY_ANSWER_LENGTH),
+    });
+  }
+  return cleaned.slice(-MAX_HISTORY_EXCHANGES);
+}
 
 export function createRecipesRouter(appData: AppData): Router {
   const router = Router();
@@ -69,11 +97,13 @@ export function createRecipesRouter(appData: AppData): Router {
         const dietaryProfile = Array.isArray(req.body?.dietaryProfile)
           ? req.body.dietaryProfile.filter((t: unknown): t is string => typeof t === "string")
           : undefined;
+        const history = sanitizeHistory(req.body?.history);
 
         const answer = await askAboutRecipe({
           recipe: toRecipeDetail(recipe),
           question,
           dietaryProfile,
+          history,
           apiKey,
         });
 
