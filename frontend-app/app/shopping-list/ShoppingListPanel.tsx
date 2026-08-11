@@ -30,6 +30,11 @@ export function ShoppingListPanel() {
   useEffect(() => {
     if (!hydrated || entries.length === 0) {
       setRecipes({});
+      // Also reset loading — without this, clearing/removing the last entry
+      // while a previous fetch is still in flight leaves `loading` stuck at
+      // true forever: the in-flight fetch's own .then() sees `cancelled` and
+      // bails before it would otherwise call setLoading(false) (Codex catch).
+      setLoading(false);
       return;
     }
     let cancelled = false;
