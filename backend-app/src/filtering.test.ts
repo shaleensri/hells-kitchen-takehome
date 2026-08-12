@@ -6,7 +6,7 @@ import type { RawData } from "@hells-kitchen/shared";
 
 // Small synthetic dataset — deliberately varied on every axis these
 // functions filter/sort by, so each test is unambiguous about what it's
-// checking rather than relying on the real 15-recipe dataset's incidental shape.
+// checking rather than relying on the real 32-recipe dataset's incidental shape.
 const FIXTURE: RawData = {
   ingredients: [
     { id: "kale", name: "Kale", category: "vegetable", nutrition: { calories: 50, protein: 3, carbs: 9, fat: 0.5 }, commonAllergens: [], dietary: ["vegan", "gluten-free"] },

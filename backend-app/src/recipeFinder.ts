@@ -168,26 +168,45 @@ export interface FilterByDietaryProfileResult {
  * just a prompt instruction, and the model didn't always honor it (a
  * vegan-profile query came back with a vegetarian-only match). This closes
  * that for real: any match whose actual `dietary[]` doesn't cover every
- * saved tag is dropped here, unconditionally, using the app's own
- * precomputed dietary data — same "never trust the model, verify against
- * real data" posture as sanitizeMatches, just for dietary tags instead of
- * IDs. Filtering can legitimately zero out all matches; that's a correct
- * result, not an error — the caller surfaces it via `limitedByProfile`
- * rather than silently returning fewer results with no explanation.
+ * *hard-filterable* saved tag is dropped here, unconditionally, using the
+ * app's own precomputed dietary data — same "never trust the model, verify
+ * against real data" posture as sanitizeMatches, just for dietary tags
+ * instead of IDs. Filtering can legitimately zero out all matches; that's a
+ * correct result, not an error — the caller surfaces it via
+ * `limitedByProfile` rather than silently returning fewer results with no
+ * explanation.
+ *
+ * Only `HARD_FILTERABLE_DIETARY_TAGS` are enforced this way — a real bug,
+ * caught by a follow-up review (PLAN.md §3.36) and reproduced before being
+ * fixed: `deriveDietaryTags` (dietary.ts) requires *every* ingredient in a
+ * recipe to individually carry a tag, which real multi-ingredient dishes
+ * can plausibly satisfy for vegan/vegetarian/gluten-free but almost never
+ * for keto/high-protein (a chicken breast recipe that also calls for
+ * breadcrumbs or rice fails that all-or-nothing test even though the dish
+ * is reasonably high-protein). Across the current 32-recipe dataset, zero
+ * recipes are ever tagged keto or high-protein — so hard-enforcing those
+ * two the same way as the other three meant any user who saved either in
+ * `/preferences` got zero Smart Finder results, for every query, forever,
+ * with no error or explanation. keto/high-protein are still passed to the
+ * model as soft prompt context (buildFinderSystemPrompt, below) — just
+ * never used to hard-drop a match server-side.
  */
+export const HARD_FILTERABLE_DIETARY_TAGS: ReadonlySet<string> = new Set(["vegan", "vegetarian", "gluten-free"]);
+
 export function filterMatchesByDietaryProfile(
   matches: SanitizedMatch[],
   recipes: PrecomputedRecipe[],
   dietaryProfile: string[] | undefined
 ): FilterByDietaryProfileResult {
-  if (!dietaryProfile || dietaryProfile.length === 0) {
+  const hardTags = (dietaryProfile ?? []).filter((tag) => HARD_FILTERABLE_DIETARY_TAGS.has(tag));
+  if (hardTags.length === 0) {
     return { matches, limitedByProfile: false };
   }
 
   const dietaryById = new Map(recipes.map((p) => [p.raw.id, p.dietary as string[]]));
   const filtered = matches.filter((match) => {
     const dietary = dietaryById.get(match.recipeId) ?? [];
-    return dietaryProfile.every((tag) => dietary.includes(tag));
+    return hardTags.every((tag) => dietary.includes(tag));
   });
 
   return { matches: filtered, limitedByProfile: filtered.length < matches.length };

@@ -7,6 +7,7 @@ import {
   buildFinderSystemPrompt,
   filterMatchesByDietaryProfile,
   findRecipesWithAssistant,
+  HARD_FILTERABLE_DIETARY_TAGS,
   MAX_FINDER_MATCHES,
   MAX_MAIN_INGREDIENTS,
   parseFinderResponse,
@@ -225,8 +226,20 @@ describe("filterMatchesByDietaryProfile (§3.33 follow-up: hard dietary filter)"
     expect(result.matches).toEqual([{ recipeId: "1", reason: "vegan match" }]);
   });
 
-  it("can legitimately filter everything out — that's a correct result, surfaced via limitedByProfile, not an error", () => {
-    const result = filterMatchesByDietaryProfile(matches, recipes, ["keto"]);
+  it("can still legitimately filter everything out for genuinely hard-filterable tags", () => {
+    // Neither recipe here satisfies BOTH vegan and gluten-free at once —
+    // proves zero-out is still a real, correct outcome for the tags that
+    // are actually hard-enforced, not just something the old (buggy) test
+    // below relied on.
+    const glutenFreeOnlyRecipe = { ...fakeRecipe({ id: "3" }), dietary: ["gluten-free"] as DietaryTag[] };
+    const result = filterMatchesByDietaryProfile(
+      [
+        { recipeId: "2", reason: "vegetarian-only" },
+        { recipeId: "3", reason: "gluten-free-only" },
+      ],
+      [vegetarianOnlyRecipe, glutenFreeOnlyRecipe],
+      ["vegan", "gluten-free"]
+    );
     expect(result.matches).toEqual([]);
     expect(result.limitedByProfile).toBe(true);
   });
@@ -234,6 +247,41 @@ describe("filterMatchesByDietaryProfile (§3.33 follow-up: hard dietary filter)"
   it("treats a recipeId with no matching recipe as satisfying nothing (defensive, shouldn't happen post-sanitize)", () => {
     const result = filterMatchesByDietaryProfile([{ recipeId: "unknown", reason: "x" }], recipes, ["vegan"]);
     expect(result.matches).toEqual([]);
+  });
+
+  // §3.36 regression: keto/high-protein used to be hard-enforced exactly
+  // like vegan/vegetarian/gluten-free, but deriveDietaryTags (dietary.ts)
+  // requires every ingredient to individually carry a tag — which no real
+  // recipe in the current dataset ever satisfies for these two. Hard-
+  // filtering on them meant any user who saved either preference got zero
+  // Smart Finder results, for every query, forever, silently.
+  it("does NOT hard-filter on keto — the dataset can never earn it", () => {
+    const result = filterMatchesByDietaryProfile(matches, recipes, ["keto"]);
+    expect(result.matches).toEqual(matches);
+    expect(result.limitedByProfile).toBe(false);
+  });
+
+  it("does NOT hard-filter on high-protein, for the same reason", () => {
+    const result = filterMatchesByDietaryProfile(matches, recipes, ["high-protein"]);
+    expect(result.matches).toEqual(matches);
+    expect(result.limitedByProfile).toBe(false);
+  });
+
+  it("hard-filters only the enforceable tags in a mixed profile, silently ignoring keto/high-protein for filtering purposes", () => {
+    // profile says vegan AND high-protein; only "vegan" should actually
+    // narrow results here — high-protein is still sent to the model as a
+    // soft prompt hint (buildFinderSystemPrompt), just never used to
+    // hard-drop a match.
+    const result = filterMatchesByDietaryProfile(matches, recipes, ["vegan", "high-protein"]);
+    expect(result.matches).toEqual([{ recipeId: "1", reason: "vegan match" }]);
+  });
+
+  it("HARD_FILTERABLE_DIETARY_TAGS excludes keto and high-protein on purpose", () => {
+    expect(HARD_FILTERABLE_DIETARY_TAGS.has("keto")).toBe(false);
+    expect(HARD_FILTERABLE_DIETARY_TAGS.has("high-protein")).toBe(false);
+    expect(HARD_FILTERABLE_DIETARY_TAGS.has("vegan")).toBe(true);
+    expect(HARD_FILTERABLE_DIETARY_TAGS.has("vegetarian")).toBe(true);
+    expect(HARD_FILTERABLE_DIETARY_TAGS.has("gluten-free")).toBe(true);
   });
 });
 

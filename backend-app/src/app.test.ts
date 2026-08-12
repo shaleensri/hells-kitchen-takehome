@@ -483,6 +483,44 @@ describe("POST /api/assistant/find-recipes (§3.33, Iteration 11)", () => {
     expect(res.body.summary).toContain("narrowed further to fit your saved dietary preferences");
   });
 
+  // §3.36 regression, against the real route + real seed data: a
+  // high-protein profile must NOT zero out every result. Zero real recipes
+  // in this dataset are ever tagged "high-protein" (deriveDietaryTags
+  // requires every ingredient to individually carry it), so hard-enforcing
+  // it the same way as vegan/vegetarian/gluten-free silently broke the
+  // Smart Finder for good for anyone who saved that preference.
+  it("does NOT zero out results for a high-protein profile, even though no real recipe is tagged high-protein", async () => {
+    process.env.OPENAI_API_KEY = "sk-test";
+    vi.stubGlobal(
+      "fetch",
+      vi.fn().mockResolvedValue({
+        ok: true,
+        status: 200,
+        json: async () => ({
+          choices: [
+            {
+              message: {
+                content: JSON.stringify({
+                  summary: "Found a match.",
+                  matches: [{ recipeId: "1", reason: "High in protein, quick to make." }],
+                }),
+              },
+            },
+          ],
+        }),
+      })
+    );
+
+    const res = await request(app)
+      .post("/api/assistant/find-recipes")
+      .send({ query: "high protein dinner", dietaryProfile: ["high-protein"] });
+
+    expect(res.status).toBe(200);
+    expect(res.body.matches).toHaveLength(1);
+    expect(res.body.matches[0].recipe.id).toBe("1");
+    expect(res.body.summary).not.toContain("narrowed further");
+  });
+
   it("includes the dietary profile in the prompt when provided", async () => {
     process.env.OPENAI_API_KEY = "sk-test";
     const mockFetch = vi.fn().mockResolvedValue({
