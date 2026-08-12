@@ -5,6 +5,7 @@ import { ApiRequestError, fetchRecipe } from "@/lib/api";
 import { dedupeTagsAgainstDietary } from "@/lib/tags";
 import { FavoriteButton } from "@/app/_components/FavoriteButton";
 import { AddToListButton } from "@/app/_components/AddToListButton";
+import { CustomizeRecipeButton } from "@/app/_components/CustomizeRecipeButton";
 import { RecipeImage } from "@/app/_components/RecipeImage";
 import { ScalableRecipeBody } from "./ScalableRecipeBody";
 import { AskAboutRecipe } from "./AskAboutRecipe";
@@ -81,6 +82,7 @@ export default async function RecipeDetailPage({ params }: RecipeDetailPageProps
                 below) — see lib/shoppingList.ts's file header for why. */}
             <AddToListButton recipeId={recipe.id} servings={recipe.servings} variant="button" />
             <FavoriteButton recipeId={recipe.id} variant="button" />
+            <CustomizeRecipeButton recipe={recipe} />
           </div>
         </div>
 
