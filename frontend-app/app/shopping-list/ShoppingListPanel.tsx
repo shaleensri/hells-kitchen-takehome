@@ -70,7 +70,7 @@ export function ShoppingListPanel() {
       <div className="eyebrow">Shopping List</div>
       <h1 className={styles.heading}>Shopping List</h1>
       <p className={styles.description}>
-        Ingredients merged across every recipe you&rsquo;ve added, matched by ingredient — not by name (PLAN.md §3.9).
+        Ingredients merged across every recipe you&rsquo;ve added, matched by ingredient — not by name.
       </p>
 
       <div className="rule" style={{ margin: "var(--space-5) 0" }} />
@@ -151,7 +151,7 @@ export function ShoppingListPanel() {
             <section className={styles.unmergedSection}>
               <h2 className={styles.sectionHeading}>Couldn&rsquo;t auto-merge ({list.unmerged.length})</h2>
               <p className={styles.unmergedNote}>
-                No unit-conversion reference data for these — listed as-is rather than dropped (PLAN.md §3.9).
+                No unit-conversion reference data for these — listed as-is rather than dropped.
               </p>
               <ul className={styles.ingredientList}>
                 {list.unmerged.map((uline) => {
