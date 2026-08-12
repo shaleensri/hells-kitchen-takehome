@@ -53,40 +53,44 @@ export default async function RecipeDetailPage({ params }: RecipeDetailPageProps
         Back to index
       </Link>
 
-      <div className="eyebrow" style={{ marginTop: "var(--space-5)" }}>
-        Entry {no} — {eyebrowTags}
-      </div>
-      <h1 className={styles.title}>{recipe.title}</h1>
-      <p className={styles.description}>{recipe.description}</p>
+      <div className={styles.headerRow}>
+        <div className={styles.headerText}>
+          <div className="eyebrow" style={{ marginTop: "var(--space-5)" }}>
+            Entry {no} — {eyebrowTags}
+          </div>
+          <h1 className={styles.title}>{recipe.title}</h1>
+          <p className={styles.description}>{recipe.description}</p>
 
-      {(plainTags.length > 0 || recipe.dietary.length > 0) && (
-        <ul className={styles.tagList}>
-          {recipe.dietary.map((tag) => (
-            <li key={tag} className={styles.dietaryTag}>
-              {tag}
-            </li>
-          ))}
-          {plainTags.map((tag) => (
-            <li key={tag} className={styles.tag}>
-              {tag}
-            </li>
-          ))}
-        </ul>
-      )}
+          {(plainTags.length > 0 || recipe.dietary.length > 0) && (
+            <ul className={styles.tagList}>
+              {recipe.dietary.map((tag) => (
+                <li key={tag} className={styles.dietaryTag}>
+                  {tag}
+                </li>
+              ))}
+              {plainTags.map((tag) => (
+                <li key={tag} className={styles.tag}>
+                  {tag}
+                </li>
+              ))}
+            </ul>
+          )}
 
-      <div className={`blueprint ${styles.hero}`}>
-        <i className="corner tl" />
-        <i className="corner tr" />
-        <i className="corner bl" />
-        <i className="corner br" />
-        <RecipeImage recipeId={recipe.id} title={recipe.title} sizes="(max-width: 720px) 100vw, 900px" priority />
-      </div>
+          <div className={styles.actions}>
+            {/* Adds at the recipe's base servings (not the live-scaled count
+                below) — see lib/shoppingList.ts's file header for why. */}
+            <AddToListButton recipeId={recipe.id} servings={recipe.servings} variant="button" />
+            <FavoriteButton recipeId={recipe.id} variant="button" />
+          </div>
+        </div>
 
-      <div className={styles.actions}>
-        {/* Adds at the recipe's base servings (not the live-scaled count
-            below) — see lib/shoppingList.ts's file header for why. */}
-        <AddToListButton recipeId={recipe.id} servings={recipe.servings} variant="button" />
-        <FavoriteButton recipeId={recipe.id} variant="button" />
+        <div className={`blueprint ${styles.headerImage}`}>
+          <i className="corner tl" />
+          <i className="corner tr" />
+          <i className="corner bl" />
+          <i className="corner br" />
+          <RecipeImage recipeId={recipe.id} title={recipe.title} sizes="(max-width: 720px) 100vw, 280px" priority />
+        </div>
       </div>
 
       <div className={styles.statsStrip}>

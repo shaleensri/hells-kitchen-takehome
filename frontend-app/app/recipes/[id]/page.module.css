@@ -36,13 +36,26 @@
   margin-top: var(--space-4);
 }
 
-/* Full-bleed inside its own corner-bracket frame (PLAN.md §3.35) — the
- * corners sit exactly at the image's edges, viewfinder-style, rather than
- * in a padded gutter around it like the rest of this page's panels. */
-.hero {
+/* Title/description/tags/actions on the left, a small photo on the right
+ * roughly level with the title (PLAN.md §3.35 follow-up — the original
+ * full-width hero pushed everything else too far down the page). */
+.headerRow {
+  display: grid;
+  grid-template-columns: 1fr 260px;
+  gap: var(--space-6);
+  align-items: start;
+}
+
+.headerText {
+  min-width: 0;
+}
+
+/* Same viewfinder framing as the card thumbnail's corner brackets, just
+ * bigger and squarer — small and contained, not full-bleed. */
+.headerImage {
   position: relative;
   margin-top: var(--space-5);
-  aspect-ratio: 21 / 9;
+  aspect-ratio: 4 / 3;
   overflow: hidden;
 }
 
@@ -275,8 +288,12 @@
     font-size: 38px;
   }
 
-  .hero {
-    aspect-ratio: 4 / 3;
+  .headerRow {
+    grid-template-columns: 1fr;
+  }
+
+  .headerImage {
+    max-width: 260px;
   }
 
   .statsStrip {
