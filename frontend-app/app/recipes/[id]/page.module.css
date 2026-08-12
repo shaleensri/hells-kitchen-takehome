@@ -113,6 +113,19 @@
   padding-top: var(--space-6);
 }
 
+/* Nutrition + "Ask about this recipe" side by side (§3.37 follow-up) —
+ * previously Nutrition was stacked under Method and Ask was a full-width
+ * block below everything, leaving Nutrition's card with a lot of empty
+ * space on its right. Narrower nutrition column since its content is just
+ * four stats; Ask gets the rest, since chips + conversation need more room. */
+.bottomRow {
+  display: grid;
+  grid-template-columns: 1fr 1.25fr;
+  gap: var(--space-7);
+  align-items: start;
+  padding-top: var(--space-6);
+}
+
 .columns h2 {
   font-size: 22px;
 }
@@ -237,7 +250,13 @@
 }
 
 .nutritionHeading {
-  margin: var(--space-6) 0 var(--space-4);
+  /* No top margin — .bottomRow's own padding-top provides the space above
+   * this row now that Nutrition sits beside Ask rather than under Method.
+   * font-size pinned explicitly — it used to inherit 22px from ".columns
+   * h2" (Ingredients/Method's rule) by nesting accident; now that it's
+   * moved to .bottomRow, that selector no longer reaches it. */
+  margin: 0 0 var(--space-4);
+  font-size: 22px;
 }
 
 .nutritionCard {
@@ -310,6 +329,11 @@
   }
 
   .columns {
+    grid-template-columns: 1fr;
+    gap: var(--space-6);
+  }
+
+  .bottomRow {
     grid-template-columns: 1fr;
     gap: var(--space-6);
   }

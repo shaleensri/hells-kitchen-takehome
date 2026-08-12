@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import type { ReactNode } from "react";
 import type { RecipeDetail } from "@hells-kitchen/shared";
 import { parseAmount } from "@hells-kitchen/shared";
 import styles from "./page.module.css";
@@ -12,6 +13,14 @@ import styles from "./page.module.css";
  * endpoint: ingredient amounts scale by (servings / baseServings); nutrition
  * per-serving values never change (a serving is a serving) — only the
  * "recipe total" line scales, since total = perServing × servings.
+ *
+ * `children` (§3.37 follow-up): the Nutrition card lives here because it
+ * needs the live `servings` state for its "recipe total" line, but the
+ * caller (page.tsx) wants it laid out side-by-side with AskAboutRecipe
+ * rather than stacked above/below it — passing AskAboutRecipe in as a
+ * child lets both sit in the same grid row without lifting servings state
+ * up into the server-component page or prop-drilling it into a component
+ * that doesn't need it.
  */
 
 const MIN_SERVINGS = 1;
@@ -22,7 +31,7 @@ function formatAmount(n: number): string {
   return String(rounded);
 }
 
-export function ScalableRecipeBody({ recipe }: { recipe: RecipeDetail }) {
+export function ScalableRecipeBody({ recipe, children }: { recipe: RecipeDetail; children?: ReactNode }) {
   const [servings, setServings] = useState(recipe.servings);
   const ratio = servings / recipe.servings;
   const { nutrition } = recipe;
@@ -97,8 +106,14 @@ export function ScalableRecipeBody({ recipe }: { recipe: RecipeDetail }) {
               </li>
             ))}
           </ol>
+        </section>
+      </div>
 
-          <h2 className={styles.nutritionHeading}>Nutrition</h2>
+      <div className={styles.bottomRow}>
+        <section aria-labelledby="nutrition-heading">
+          <h2 id="nutrition-heading" className={styles.nutritionHeading}>
+            Nutrition
+          </h2>
           <div className={`blueprint ${styles.nutritionCard}`}>
             <i className="corner tl" />
             <i className="corner tr" />
@@ -140,6 +155,8 @@ export function ScalableRecipeBody({ recipe }: { recipe: RecipeDetail }) {
             </p>
           </div>
         </section>
+
+        {children}
       </div>
     </>
   );

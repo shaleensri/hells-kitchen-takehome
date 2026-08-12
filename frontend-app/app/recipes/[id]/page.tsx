@@ -112,8 +112,9 @@ export default async function RecipeDetailPage({ params }: RecipeDetailPageProps
         </div>
       </div>
 
-      <ScalableRecipeBody recipe={recipe} />
-      <AskAboutRecipe recipe={recipe} />
+      <ScalableRecipeBody recipe={recipe}>
+        <AskAboutRecipe recipe={recipe} />
+      </ScalableRecipeBody>
     </div>
   );
 }

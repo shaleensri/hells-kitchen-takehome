@@ -1,5 +1,8 @@
 .section {
-  margin-top: var(--space-7);
+  /* No top margin — this now sits inside page.module.css's .bottomRow
+   * beside the Nutrition card (§3.37 follow-up), which provides its own
+   * top spacing for the whole row; a margin here would misalign the two
+   * headings instead of lining them up. */
   max-width: 720px;
 }
 
