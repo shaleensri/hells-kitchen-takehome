@@ -32,6 +32,11 @@ lines.append("| # | Recipe | Source file (Wikimedia Commons) | Author | License 
 lines.append("|---|--------|----------------------------------|--------|---------|")
 for rid in sorted(data.keys(), key=int):
     e = data[rid]
+    if not e.get("fileTitle"):
+        # Replaced outside the fetch scripts (e.g. swapped by hand) —
+        # provenance not yet confirmed. Flagged, not silently omitted.
+        lines.append(f"| {rid} | {e['recipeTitle']} | *unconfirmed — see note below* | — | — |")
+        continue
     title = e["fileTitle"].replace("File:", "")
     url = e["descriptionUrl"]
     artist = e["artist"] or "—"
@@ -55,6 +60,21 @@ for rid in sorted(data.keys(), key=int):
     if e.get("approximateMatchNote"):
         lines.append(f"- **#{rid} {e['recipeTitle']}** — {e['approximateMatchNote']}")
 lines.append("")
+
+unconfirmed = [rid for rid in sorted(data.keys(), key=int) if data[rid].get("note")]
+if unconfirmed:
+    lines.append("## Unconfirmed provenance (needs follow-up)")
+    lines.append("")
+    lines.append(
+        "These photos did not go through the fetch scripts above, so there's "
+        "no Commons file/license recorded for them yet — flagged here rather "
+        "than left silently inconsistent with the rest of this table:"
+    )
+    lines.append("")
+    for rid in unconfirmed:
+        e = data[rid]
+        lines.append(f"- **#{rid} {e['recipeTitle']}** — {e['note']}")
+    lines.append("")
 
 (HERE / "attribution.md").write_text("\n".join(lines))
 print("wrote attribution.md")

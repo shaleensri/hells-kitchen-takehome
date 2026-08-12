@@ -7,7 +7,7 @@ Every entry below was chosen only after the agent implementing this visually loo
 | # | Recipe | Source file (Wikimedia Commons) | Author | License |
 |---|--------|----------------------------------|--------|---------|
 | 1 | Classic Margherita Pizza | [Margherita Originale.JPG](https://commons.wikimedia.org/wiki/File:Margherita_Originale.JPG) | Mario56 | [CC BY-SA 3.0](https://creativecommons.org/licenses/by-sa/3.0) |
-| 2 | Chocolate Chip Cookies | [Choc-Chip-Cookie.jpg](https://commons.wikimedia.org/wiki/File:Choc-Chip-Cookie.jpg) | Evan-Amos | Public domain |
+| 2 | Chocolate Chip Cookies | *unconfirmed — see note below* | — | — |
 | 3 | Chicken Stir-Fry | [Chicken fried rice - Stir Fry by CK 2023-12-02.jpg](https://commons.wikimedia.org/wiki/File:Chicken_fried_rice_-_Stir_Fry_by_CK_2023-12-02.jpg) | Andy Li | [CC0](http://creativecommons.org/publicdomain/zero/1.0/deed.en) |
 | 4 | Beef Tacos | [Sonoritas DTLA Beef and chicken tacos (July 2022).jpg](https://commons.wikimedia.org/wiki/File:Sonoritas_DTLA_Beef_and_chicken_tacos_(July_2022).jpg) | Benoît Prieur | [CC0](http://creativecommons.org/publicdomain/zero/1.0/deed.en) |
 | 5 | Greek Salad | [Greek salad and Tzatziki.jpg](https://commons.wikimedia.org/wiki/File:Greek_salad_and_Tzatziki.jpg) | Paasikivi | [CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0) |
@@ -49,3 +49,9 @@ Commons doesn't have a free, correctly-licensed, visually-accurate photo for eve
 - **#28 Hummus & Veggie Lunch Bowl** — Turmeric hummus rather than plain hummus, served as a fuller mezze plate; still genuinely a hummus bowl with vegetables.
 - **#29 Greek Yogurt Parfait with Granola & Berries** — Home-style yogurt with berries and shredded coconut rather than a visibly layered granola parfait; closest real match found after multiple search rounds.
 - **#31 Roasted Cauliflower Steaks with Tahini Drizzle** — Whole roasted cauliflower rather than sliced into 'steaks', but otherwise an exact dish match (roasted, whole, plated).
+
+## Unconfirmed provenance (needs follow-up)
+
+These photos did not go through the fetch scripts above, so there's no Commons file/license recorded for them yet — flagged here rather than left silently inconsistent with the rest of this table:
+
+- **#2 Chocolate Chip Cookies** — Replaced directly by the user (not via the fetch scripts) on 2026-08-11 to swap out the original isolated-product-shot photo for a more natural, in-context one. Source/license not yet confirmed — needs follow-up before this can be called properly attributed like the rest of the set.
