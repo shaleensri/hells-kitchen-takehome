@@ -117,13 +117,23 @@
  * previously Nutrition was stacked under Method and Ask was a full-width
  * block below everything, leaving Nutrition's card with a lot of empty
  * space on its right. Narrower nutrition column since its content is just
- * four stats; Ask gets the rest, since chips + conversation need more room. */
+ * four stats; Ask gets the rest, since chips + conversation need more room.
+ * align-items: stretch (the default, stated explicitly) makes both
+ * sections the same height — Nutrition's card and Ask's panel then grow to
+ * fill that height too (.nutritionSection/.nutritionCard below,
+ * AskAboutRecipe.module.css's .section/.panel), so their corner-bracket
+ * frames line up on all four sides instead of just at the top. */
 .bottomRow {
   display: grid;
   grid-template-columns: 1fr 1.25fr;
   gap: var(--space-7);
-  align-items: start;
+  align-items: stretch;
   padding-top: var(--space-6);
+}
+
+.nutritionSection {
+  display: flex;
+  flex-direction: column;
 }
 
 .columns h2 {
@@ -260,6 +270,7 @@
 }
 
 .nutritionCard {
+  flex: 1;
   padding: var(--space-4) var(--space-5);
 }
 

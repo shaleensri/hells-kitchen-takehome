@@ -110,7 +110,7 @@ export function ScalableRecipeBody({ recipe, children }: { recipe: RecipeDetail;
       </div>
 
       <div className={styles.bottomRow}>
-        <section aria-labelledby="nutrition-heading">
+        <section aria-labelledby="nutrition-heading" className={styles.nutritionSection}>
           <h2 id="nutrition-heading" className={styles.nutritionHeading}>
             Nutrition
           </h2>

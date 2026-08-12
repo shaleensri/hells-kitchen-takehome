@@ -2,7 +2,13 @@
   /* No top margin — this now sits inside page.module.css's .bottomRow
    * beside the Nutrition card (§3.37 follow-up), which provides its own
    * top spacing for the whole row; a margin here would misalign the two
-   * headings instead of lining them up. */
+   * headings instead of lining them up. flex column + .panel's flex: 1
+   * (below) so this section's box always fills the row's full height —
+   * .bottomRow stretches both sections to match the taller one, and
+   * without this the shorter box's corner-bracket frame would stop short
+   * of the taller one's instead of lining up on all four sides. */
+  display: flex;
+  flex-direction: column;
   max-width: 720px;
 }
 
@@ -21,6 +27,7 @@
 }
 
 .panel {
+  flex: 1;
   padding: var(--space-5);
 }
 
