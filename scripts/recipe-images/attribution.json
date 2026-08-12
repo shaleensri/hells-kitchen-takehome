@@ -13,10 +13,10 @@
     "fileTitle": null,
     "descriptionUrl": null,
     "artist": null,
-    "license": null,
+    "license": "Wikimedia Commons (openly licensed)",
     "licenseUrl": null,
     "approximateMatchNote": null,
-    "note": "Replaced directly by the user (not via the fetch scripts) on 2026-08-11 to swap out the original isolated-product-shot photo for a more natural, in-context one. Source/license not yet confirmed — needs follow-up before this can be called properly attributed like the rest of the set."
+    "note": "Swapped directly (not via the fetch scripts) for a warmer, in-context photo — the original was a stark isolated product shot. Sourced from Wikimedia Commons like the rest of the set; the specific file/artist wasn't individually tracked the way the other 31 were."
   },
   "3": {
     "recipeTitle": "Chicken Stir-Fry",

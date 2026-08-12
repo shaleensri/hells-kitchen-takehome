@@ -33,9 +33,12 @@ lines.append("|---|--------|----------------------------------|--------|--------
 for rid in sorted(data.keys(), key=int):
     e = data[rid]
     if not e.get("fileTitle"):
-        # Replaced outside the fetch scripts (e.g. swapped by hand) —
-        # provenance not yet confirmed. Flagged, not silently omitted.
-        lines.append(f"| {rid} | {e['recipeTitle']} | *unconfirmed — see note below* | — | — |")
+        # Replaced outside the fetch scripts (e.g. swapped by hand) — no
+        # specific Commons file/artist tracked, but the source/license may
+        # still be known (see the note below). Flagged, not silently
+        # presented as if it went through the same process as the rest.
+        lic = e.get("license") or "unconfirmed"
+        lines.append(f"| {rid} | {e['recipeTitle']} | *see note below* | — | {lic} |")
         continue
     title = e["fileTitle"].replace("File:", "")
     url = e["descriptionUrl"]
@@ -63,12 +66,13 @@ lines.append("")
 
 unconfirmed = [rid for rid in sorted(data.keys(), key=int) if data[rid].get("note")]
 if unconfirmed:
-    lines.append("## Unconfirmed provenance (needs follow-up)")
+    lines.append("## Not individually file-tracked")
     lines.append("")
     lines.append(
-        "These photos did not go through the fetch scripts above, so there's "
-        "no Commons file/license recorded for them yet — flagged here rather "
-        "than left silently inconsistent with the rest of this table:"
+        "These photos didn't go through the fetch scripts above, so there's no "
+        "specific Commons file/artist recorded for them the way there is for "
+        "the rest of this table — flagged here rather than left silently "
+        "inconsistent with it:"
     )
     lines.append("")
     for rid in unconfirmed:
