@@ -79,7 +79,6 @@ export default async function RecipesPage({ searchParams }: RecipesPageProps) {
       </div>
 
       <SmartRecipeFinder />
-      <CustomRecipesSection />
 
       <form action="/recipes" method="GET" className={styles.searchForm}>
         <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
@@ -113,6 +112,8 @@ export default async function RecipesPage({ searchParams }: RecipesPageProps) {
         <FilterRail raw={params} allRecipes={allRecipes} ingredients={ingredients ?? []} difficulty={difficulty} />
 
         <div>
+          <CustomRecipesSection />
+
           <div className={styles.toolbar}>
             <span className={styles.resultCount}>
               {filteredRecipes.length} of {allRecipes.length} entries shown
