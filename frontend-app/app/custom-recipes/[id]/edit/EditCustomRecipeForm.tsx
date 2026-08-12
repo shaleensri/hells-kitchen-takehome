@@ -7,7 +7,6 @@ import type { FormEvent } from "react";
 import {
   MAX_CUSTOM_RECIPE_SERVINGS,
   MIN_CUSTOM_RECIPE_SERVINGS,
-  getCustomRecipe,
   useCustomRecipes,
   validateCustomRecipeInput,
   type EditableCustomRecipeFields,
@@ -28,7 +27,7 @@ function textToLines(text: string): string[] {
 export function EditCustomRecipeForm({ id }: { id: string }) {
   const router = useRouter();
   const { customRecipes, hydrated, update } = useCustomRecipes();
-  const recipe = customRecipes.find((r) => r.id === id) ?? (!hydrated ? getCustomRecipe(id) : null);
+  const recipe = customRecipes.find((r) => r.id === id) ?? null;
   const [errors, setErrors] = useState<string[]>([]);
 
   const initial = useMemo(() => {

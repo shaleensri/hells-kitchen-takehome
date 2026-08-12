@@ -120,11 +120,11 @@ describe("custom recipe storage", () => {
   it("saves, loads, updates existing ids, and deletes only the requested recipe", () => {
     const a = createCustomRecipeFromRecipe(recipe({ id: "1", title: "A" }));
     const b = createCustomRecipeFromRecipe(recipe({ id: "2", title: "B" }));
-    saveCustomRecipe(a);
-    saveCustomRecipe(b);
+    expect(saveCustomRecipe(a)).toBe(true);
+    expect(saveCustomRecipe(b)).toBe(true);
     expect(getCustomRecipes().map((r) => r.title)).toEqual(["A", "B"]);
 
-    saveCustomRecipe({ ...a, title: "A changed" });
+    expect(saveCustomRecipe({ ...a, title: "A changed" })).toBe(true);
     expect(getCustomRecipes().map((r) => r.title)).toEqual(["A changed", "B"]);
 
     deleteCustomRecipe(a.id);
@@ -133,10 +133,16 @@ describe("custom recipe storage", () => {
 
   it("rejects a non-custom-prefixed id on save/update/delete", () => {
     const custom = createCustomRecipeFromRecipe(recipe());
-    saveCustomRecipe({ ...custom, id: "7" });
+    expect(saveCustomRecipe({ ...custom, id: "7" })).toBe(false);
     expect(getCustomRecipes()).toEqual([]);
     expect(updateCustomRecipe("7", custom)).toBeNull();
     deleteCustomRecipe("7");
+    expect(getCustomRecipes()).toEqual([]);
+  });
+
+  it("returns false when a custom recipe fails validation instead of silently hiding the failure", () => {
+    const custom = createCustomRecipeFromRecipe(recipe({ servings: 30 }));
+    expect(saveCustomRecipe(custom)).toBe(false);
     expect(getCustomRecipes()).toEqual([]);
   });
 });

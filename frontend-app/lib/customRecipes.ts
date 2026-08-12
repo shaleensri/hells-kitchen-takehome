@@ -195,13 +195,14 @@ export function createCustomRecipeFromRecipe(recipe: RecipeDetail): CustomRecipe
   };
 }
 
-export function saveCustomRecipe(recipe: CustomRecipe): void {
-  if (!isCustomRecipe(recipe)) return;
+export function saveCustomRecipe(recipe: CustomRecipe): boolean {
+  if (!isCustomRecipe(recipe)) return false;
   const current = getCustomRecipes();
   const next = current.some((r) => r.id === recipe.id)
     ? current.map((r) => (r.id === recipe.id ? recipe : r))
     : [...current, recipe];
   setCustomRecipes(next);
+  return true;
 }
 
 export function updateCustomRecipe(id: string, updates: EditableCustomRecipeFields): CustomRecipe | null {
@@ -242,14 +243,15 @@ export function useCustomRecipes() {
 
   const createFromRecipe = useCallback((recipe: RecipeDetail) => {
     const custom = createCustomRecipeFromRecipe(recipe);
-    saveCustomRecipe(custom);
+    const saved = saveCustomRecipe(custom);
     setCustomRecipesState(getCustomRecipes());
-    return custom;
+    return saved ? custom : null;
   }, []);
 
   const save = useCallback((recipe: CustomRecipe) => {
-    saveCustomRecipe(recipe);
+    const saved = saveCustomRecipe(recipe);
     setCustomRecipesState(getCustomRecipes());
+    return saved;
   }, []);
 
   const update = useCallback((id: string, updates: EditableCustomRecipeFields) => {

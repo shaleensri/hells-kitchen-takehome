@@ -3,13 +3,13 @@
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { RecipeImage } from "@/app/_components/RecipeImage";
-import { getCustomRecipe, useCustomRecipes } from "@/lib/customRecipes";
+import { useCustomRecipes } from "@/lib/customRecipes";
 import styles from "./customRecipe.module.css";
 
 export function CustomRecipeDetail({ id }: { id: string }) {
   const router = useRouter();
   const { customRecipes, hydrated, remove } = useCustomRecipes();
-  const recipe = customRecipes.find((r) => r.id === id) ?? (!hydrated ? getCustomRecipe(id) : null);
+  const recipe = customRecipes.find((r) => r.id === id) ?? null;
 
   if (!hydrated) {
     return (
