@@ -24,6 +24,16 @@
   z-index: 1;
 }
 
+/* Contained thumbnail, not full-bleed — stays inside the card's own
+ * padding so it never paints over the corner-bracket marks (which sit at
+ * the card's outer edges, PLAN.md §3.35). */
+.thumb {
+  position: relative;
+  aspect-ratio: 16 / 10;
+  border: 1px solid var(--surface-border);
+  overflow: hidden;
+}
+
 .cardHeader {
   display: flex;
   align-items: flex-start;

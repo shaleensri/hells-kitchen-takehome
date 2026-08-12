@@ -181,6 +181,10 @@ img {
   width: 11px;
   height: 11px;
   pointer-events: none;
+  /* Always the topmost decorative frame — matters now that a .blueprint box
+     can contain full-bleed content (the recipe hero image, PLAN.md §3.35)
+     that would otherwise paint over these marks at the shared edge. */
+  z-index: 2;
 }
 
 .corner.tl {

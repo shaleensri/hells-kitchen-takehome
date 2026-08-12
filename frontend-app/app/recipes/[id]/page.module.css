@@ -36,6 +36,16 @@
   margin-top: var(--space-4);
 }
 
+/* Full-bleed inside its own corner-bracket frame (PLAN.md §3.35) — the
+ * corners sit exactly at the image's edges, viewfinder-style, rather than
+ * in a padded gutter around it like the rest of this page's panels. */
+.hero {
+  position: relative;
+  margin-top: var(--space-5);
+  aspect-ratio: 21 / 9;
+  overflow: hidden;
+}
+
 .dietaryTag {
   font-size: 11px;
   letter-spacing: 0.06em;
@@ -263,6 +273,10 @@
 @media (max-width: 720px) {
   .title {
     font-size: 38px;
+  }
+
+  .hero {
+    aspect-ratio: 4 / 3;
   }
 
   .statsStrip {

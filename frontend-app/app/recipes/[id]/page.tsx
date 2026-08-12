@@ -5,6 +5,7 @@ import { ApiRequestError, fetchRecipe } from "@/lib/api";
 import { dedupeTagsAgainstDietary } from "@/lib/tags";
 import { FavoriteButton } from "@/app/_components/FavoriteButton";
 import { AddToListButton } from "@/app/_components/AddToListButton";
+import { RecipeImage } from "@/app/_components/RecipeImage";
 import { ScalableRecipeBody } from "./ScalableRecipeBody";
 import { AskAboutRecipe } from "./AskAboutRecipe";
 import styles from "./page.module.css";
@@ -72,6 +73,14 @@ export default async function RecipeDetailPage({ params }: RecipeDetailPageProps
           ))}
         </ul>
       )}
+
+      <div className={`blueprint ${styles.hero}`}>
+        <i className="corner tl" />
+        <i className="corner tr" />
+        <i className="corner bl" />
+        <i className="corner br" />
+        <RecipeImage recipeId={recipe.id} title={recipe.title} sizes="(max-width: 720px) 100vw, 900px" priority />
+      </div>
 
       <div className={styles.actions}>
         {/* Adds at the recipe's base servings (not the live-scaled count

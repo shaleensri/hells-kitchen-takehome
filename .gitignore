@@ -31,3 +31,7 @@ out/
 # Logs
 npm-debug.log*
 *.log
+
+# Python bytecode cache (scripts/recipe-images's one-off fetch scripts, §3.35)
+__pycache__/
+*.pyc

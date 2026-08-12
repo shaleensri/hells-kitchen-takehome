@@ -1,0 +1,1059 @@
+{
+  "1": {
+    "title": "Classic Margherita Pizza",
+    "query": "margherita pizza",
+    "tried": [
+      {
+        "fileTitle": "File:Margherita Originale.JPG",
+        "descriptionUrl": "https://commons.wikimedia.org/wiki/File:Margherita_Originale.JPG",
+        "thumbUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/d/d4/Margherita_Originale.JPG/1920px-Margherita_Originale.JPG?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+        "mime": "image/jpeg",
+        "width": 1400,
+        "height": 1050,
+        "license": "CC BY-SA 3.0",
+        "licenseUrl": "https://creativecommons.org/licenses/by-sa/3.0",
+        "artist": "Mario56",
+        "credit": "Own work",
+        "imageDescription": "PIZZA-BRAISES 56450 THEIX FRANCE",
+        "accepted": true
+      }
+    ],
+    "chosen": {
+      "fileTitle": "File:Margherita Originale.JPG",
+      "descriptionUrl": "https://commons.wikimedia.org/wiki/File:Margherita_Originale.JPG",
+      "thumbUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/d/d4/Margherita_Originale.JPG/1920px-Margherita_Originale.JPG?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "mime": "image/jpeg",
+      "width": 1400,
+      "height": 1050,
+      "license": "CC BY-SA 3.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/3.0",
+      "artist": "Mario56",
+      "credit": "Own work",
+      "imageDescription": "PIZZA-BRAISES 56450 THEIX FRANCE"
+    }
+  },
+  "2": {
+    "title": "Chocolate Chip Cookies",
+    "query": "chocolate chip cookies",
+    "tried": [
+      {
+        "fileTitle": "File:6cookies.JPG",
+        "descriptionUrl": "https://commons.wikimedia.org/wiki/File:6cookies.JPG",
+        "thumbUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/4/41/6cookies.JPG/1920px-6cookies.JPG?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+        "mime": "image/jpeg",
+        "width": 1400,
+        "height": 1118,
+        "license": "GFDL 1.2",
+        "licenseUrl": "http://www.gnu.org/licenses/old-licenses/fdl-1.2.html",
+        "artist": "Jonathunder",
+        "credit": "Own work",
+        "imageDescription": "Half a dozen home-made cookies. Ingredients: butter, flour, white sugar, brown sugar, eggs, vanilla, soda, salt, and chocolate chips.",
+        "rejected": "license not in allowed set ('GFDL 1.2')"
+      },
+      {
+        "fileTitle": "File:Choc-Chip-Cookie.jpg",
+        "descriptionUrl": "https://commons.wikimedia.org/wiki/File:Choc-Chip-Cookie.jpg",
+        "thumbUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/1/16/Choc-Chip-Cookie.jpg/1920px-Choc-Chip-Cookie.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+        "mime": "image/jpeg",
+        "width": 1400,
+        "height": 963,
+        "license": "Public domain",
+        "licenseUrl": "",
+        "artist": "Evan-Amos",
+        "credit": "Own work",
+        "imageDescription": "A chocolate chip cookie.  This is from a Duane Reade brand of cookies.",
+        "accepted": true
+      }
+    ],
+    "chosen": {
+      "fileTitle": "File:Choc-Chip-Cookie.jpg",
+      "descriptionUrl": "https://commons.wikimedia.org/wiki/File:Choc-Chip-Cookie.jpg",
+      "thumbUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/1/16/Choc-Chip-Cookie.jpg/1920px-Choc-Chip-Cookie.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "mime": "image/jpeg",
+      "width": 1400,
+      "height": 963,
+      "license": "Public domain",
+      "licenseUrl": "",
+      "artist": "Evan-Amos",
+      "credit": "Own work",
+      "imageDescription": "A chocolate chip cookie.  This is from a Duane Reade brand of cookies."
+    }
+  },
+  "3": {
+    "title": "Chicken Stir-Fry",
+    "query": "chicken stir fry",
+    "tried": [
+      {
+        "fileTitle": "File:Chicken fried rice - Stir Fry by CK 2023-12-02.jpg",
+        "descriptionUrl": "https://commons.wikimedia.org/wiki/File:Chicken_fried_rice_-_Stir_Fry_by_CK_2023-12-02.jpg",
+        "thumbUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/5/5b/Chicken_fried_rice_-_Stir_Fry_by_CK_2023-12-02.jpg/1920px-Chicken_fried_rice_-_Stir_Fry_by_CK_2023-12-02.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+        "mime": "image/jpeg",
+        "width": 1400,
+        "height": 1050,
+        "license": "CC0",
+        "licenseUrl": "http://creativecommons.org/publicdomain/zero/1.0/deed.en",
+        "artist": "Andy Li",
+        "credit": "Own work",
+        "imageDescription": "Chicken fried rice - Stir Fry by CK",
+        "accepted": true
+      }
+    ],
+    "chosen": {
+      "fileTitle": "File:Chicken fried rice - Stir Fry by CK 2023-12-02.jpg",
+      "descriptionUrl": "https://commons.wikimedia.org/wiki/File:Chicken_fried_rice_-_Stir_Fry_by_CK_2023-12-02.jpg",
+      "thumbUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/5/5b/Chicken_fried_rice_-_Stir_Fry_by_CK_2023-12-02.jpg/1920px-Chicken_fried_rice_-_Stir_Fry_by_CK_2023-12-02.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "mime": "image/jpeg",
+      "width": 1400,
+      "height": 1050,
+      "license": "CC0",
+      "licenseUrl": "http://creativecommons.org/publicdomain/zero/1.0/deed.en",
+      "artist": "Andy Li",
+      "credit": "Own work",
+      "imageDescription": "Chicken fried rice - Stir Fry by CK"
+    }
+  },
+  "4": {
+    "title": "Beef Tacos",
+    "query": "beef tacos",
+    "tried": [
+      {
+        "fileTitle": "File:001 Tacos de carnitas, carne asada y al pastor.jpg",
+        "descriptionUrl": "https://commons.wikimedia.org/wiki/File:001_Tacos_de_carnitas,_carne_asada_y_al_pastor.jpg",
+        "thumbUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/7/73/001_Tacos_de_carnitas%2C_carne_asada_y_al_pastor.jpg/1920px-001_Tacos_de_carnitas%2C_carne_asada_y_al_pastor.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+        "mime": "image/jpeg",
+        "width": 1400,
+        "height": 1050,
+        "license": "CC BY-SA 2.0",
+        "licenseUrl": "https://creativecommons.org/licenses/by-sa/2.0",
+        "artist": "Larry Miller",
+        "credit": "Flickr: Tinos Tacos, Roseburg, Ore.",
+        "imageDescription": "Carnitas, carne asada and al pastor. Tino's is a food truck in Roseburg. Sits at a Shell Station on Garden Valley Blvd. The carnitas was especially good.\n\nTinos Tacos, Roseburg, Ore",
+        "accepted": true
+      }
+    ],
+    "chosen": {
+      "fileTitle": "File:001 Tacos de carnitas, carne asada y al pastor.jpg",
+      "descriptionUrl": "https://commons.wikimedia.org/wiki/File:001_Tacos_de_carnitas,_carne_asada_y_al_pastor.jpg",
+      "thumbUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/7/73/001_Tacos_de_carnitas%2C_carne_asada_y_al_pastor.jpg/1920px-001_Tacos_de_carnitas%2C_carne_asada_y_al_pastor.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "mime": "image/jpeg",
+      "width": 1400,
+      "height": 1050,
+      "license": "CC BY-SA 2.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/2.0",
+      "artist": "Larry Miller",
+      "credit": "Flickr: Tinos Tacos, Roseburg, Ore.",
+      "imageDescription": "Carnitas, carne asada and al pastor. Tino's is a food truck in Roseburg. Sits at a Shell Station on Garden Valley Blvd. The carnitas was especially good.\n\nTinos Tacos, Roseburg, Ore"
+    }
+  },
+  "5": {
+    "title": "Greek Salad",
+    "query": "greek salad",
+    "tried": [
+      {
+        "fileTitle": "File:Greek salad and Tzatziki.jpg",
+        "descriptionUrl": "https://commons.wikimedia.org/wiki/File:Greek_salad_and_Tzatziki.jpg",
+        "thumbUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/1/1b/Greek_salad_and_Tzatziki.jpg/1920px-Greek_salad_and_Tzatziki.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+        "mime": "image/jpeg",
+        "width": 1400,
+        "height": 1536,
+        "license": "CC BY-SA 4.0",
+        "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+        "artist": "Paasikivi",
+        "credit": "Own work",
+        "imageDescription": "Kreikkalainen salaatti ja tzatziki",
+        "accepted": true
+      }
+    ],
+    "chosen": {
+      "fileTitle": "File:Greek salad and Tzatziki.jpg",
+      "descriptionUrl": "https://commons.wikimedia.org/wiki/File:Greek_salad_and_Tzatziki.jpg",
+      "thumbUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/1/1b/Greek_salad_and_Tzatziki.jpg/1920px-Greek_salad_and_Tzatziki.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "mime": "image/jpeg",
+      "width": 1400,
+      "height": 1536,
+      "license": "CC BY-SA 4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+      "artist": "Paasikivi",
+      "credit": "Own work",
+      "imageDescription": "Kreikkalainen salaatti ja tzatziki"
+    }
+  },
+  "6": {
+    "title": "Sushi Roll",
+    "query": "sushi roll maki",
+    "tried": [
+      {
+        "fileTitle": "File:Vegetarian Sushi Maki roll.jpg",
+        "descriptionUrl": "https://commons.wikimedia.org/wiki/File:Vegetarian_Sushi_Maki_roll.jpg",
+        "thumbUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/0/02/Vegetarian_Sushi_Maki_roll.jpg/1920px-Vegetarian_Sushi_Maki_roll.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+        "mime": "image/jpeg",
+        "width": 1400,
+        "height": 1867,
+        "license": "CC0",
+        "licenseUrl": "http://creativecommons.org/publicdomain/zero/1.0/deed.en",
+        "artist": "Miscellaneous contributor",
+        "credit": "Own work",
+        "imageDescription": "iPhone photo of a six-piece vegetarian sushi roll",
+        "accepted": true
+      }
+    ],
+    "chosen": {
+      "fileTitle": "File:Vegetarian Sushi Maki roll.jpg",
+      "descriptionUrl": "https://commons.wikimedia.org/wiki/File:Vegetarian_Sushi_Maki_roll.jpg",
+      "thumbUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/0/02/Vegetarian_Sushi_Maki_roll.jpg/1920px-Vegetarian_Sushi_Maki_roll.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "mime": "image/jpeg",
+      "width": 1400,
+      "height": 1867,
+      "license": "CC0",
+      "licenseUrl": "http://creativecommons.org/publicdomain/zero/1.0/deed.en",
+      "artist": "Miscellaneous contributor",
+      "credit": "Own work",
+      "imageDescription": "iPhone photo of a six-piece vegetarian sushi roll"
+    }
+  },
+  "7": {
+    "title": "Vegetable Curry",
+    "query": "vegetable curry",
+    "tried": [
+      {
+        "fileTitle": "File:Mixed vegetable curry 2.jpg",
+        "descriptionUrl": "https://commons.wikimedia.org/wiki/File:Mixed_vegetable_curry_2.jpg",
+        "thumbUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/b/b3/Mixed_vegetable_curry_2.jpg/1920px-Mixed_vegetable_curry_2.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+        "mime": "image/jpeg",
+        "width": 1400,
+        "height": 1178,
+        "license": "CC BY-SA 4.0",
+        "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+        "artist": "Dolon Prova",
+        "credit": "Own work",
+        "imageDescription": "Mixed vegetable curry",
+        "accepted": true
+      }
+    ],
+    "chosen": {
+      "fileTitle": "File:Mixed vegetable curry 2.jpg",
+      "descriptionUrl": "https://commons.wikimedia.org/wiki/File:Mixed_vegetable_curry_2.jpg",
+      "thumbUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/b/b3/Mixed_vegetable_curry_2.jpg/1920px-Mixed_vegetable_curry_2.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "mime": "image/jpeg",
+      "width": 1400,
+      "height": 1178,
+      "license": "CC BY-SA 4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+      "artist": "Dolon Prova",
+      "credit": "Own work",
+      "imageDescription": "Mixed vegetable curry"
+    }
+  },
+  "8": {
+    "title": "Berry Smoothie Bowl",
+    "query": "smoothie bowl berries",
+    "tried": [
+      {
+        "fileTitle": "File:Green smoothie bowl with berries and seeds.jpg",
+        "descriptionUrl": "https://commons.wikimedia.org/wiki/File:Green_smoothie_bowl_with_berries_and_seeds.jpg",
+        "thumbUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/9/96/Green_smoothie_bowl_with_berries_and_seeds.jpg/1920px-Green_smoothie_bowl_with_berries_and_seeds.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+        "mime": "image/jpeg",
+        "width": 1400,
+        "height": 1050,
+        "license": "CC BY-SA 4.0",
+        "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+        "artist": "Miscellaneous contributor",
+        "credit": "Own work",
+        "imageDescription": "A smoothie served in a bowl with berries and seeds",
+        "accepted": true
+      }
+    ],
+    "chosen": {
+      "fileTitle": "File:Green smoothie bowl with berries and seeds.jpg",
+      "descriptionUrl": "https://commons.wikimedia.org/wiki/File:Green_smoothie_bowl_with_berries_and_seeds.jpg",
+      "thumbUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/9/96/Green_smoothie_bowl_with_berries_and_seeds.jpg/1920px-Green_smoothie_bowl_with_berries_and_seeds.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "mime": "image/jpeg",
+      "width": 1400,
+      "height": 1050,
+      "license": "CC BY-SA 4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+      "artist": "Miscellaneous contributor",
+      "credit": "Own work",
+      "imageDescription": "A smoothie served in a bowl with berries and seeds"
+    }
+  },
+  "9": {
+    "title": "Pasta Carbonara",
+    "query": "spaghetti carbonara",
+    "tried": [
+      {
+        "fileTitle": "File:Espaguetis carbonara.jpg",
+        "descriptionUrl": "https://commons.wikimedia.org/wiki/File:Espaguetis_carbonara.jpg",
+        "thumbUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/3/33/Espaguetis_carbonara.jpg/1920px-Espaguetis_carbonara.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+        "mime": "image/jpeg",
+        "width": 1400,
+        "height": 933,
+        "license": "CC BY-SA 4.0",
+        "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+        "artist": "Javier Somoza",
+        "credit": "Espaguetis carbonara tradicionales",
+        "imageDescription": "Plato de espaguetis con la salsa carbonara tradicional, hecha a base de huevo, guanciale de cerdo y queso pecorino romano.",
+        "accepted": true
+      }
+    ],
+    "chosen": {
+      "fileTitle": "File:Espaguetis carbonara.jpg",
+      "descriptionUrl": "https://commons.wikimedia.org/wiki/File:Espaguetis_carbonara.jpg",
+      "thumbUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/3/33/Espaguetis_carbonara.jpg/1920px-Espaguetis_carbonara.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "mime": "image/jpeg",
+      "width": 1400,
+      "height": 933,
+      "license": "CC BY-SA 4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+      "artist": "Javier Somoza",
+      "credit": "Espaguetis carbonara tradicionales",
+      "imageDescription": "Plato de espaguetis con la salsa carbonara tradicional, hecha a base de huevo, guanciale de cerdo y queso pecorino romano."
+    }
+  },
+  "10": {
+    "title": "Quinoa Buddha Bowl",
+    "query": "buddha bowl quinoa vegetables",
+    "tried": [],
+    "chosen": null
+  },
+  "11": {
+    "title": "Shrimp Scampi",
+    "query": "shrimp scampi pasta",
+    "tried": [
+      {
+        "fileTitle": "File:Shrimp scampi at B&V Whiskey Bar & Grill - Sarah Stierch - June 2023.jpg",
+        "descriptionUrl": "https://commons.wikimedia.org/wiki/File:Shrimp_scampi_at_B%26V_Whiskey_Bar_%26_Grill_-_Sarah_Stierch_-_June_2023.jpg",
+        "thumbUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/f/f5/Shrimp_scampi_at_B%26V_Whiskey_Bar_%26_Grill_-_Sarah_Stierch_-_June_2023.jpg/1920px-Shrimp_scampi_at_B%26V_Whiskey_Bar_%26_Grill_-_Sarah_Stierch_-_June_2023.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+        "mime": "image/jpeg",
+        "width": 1400,
+        "height": 1050,
+        "license": "CC BY 4.0",
+        "licenseUrl": "https://creativecommons.org/licenses/by/4.0",
+        "artist": "Missvain",
+        "credit": "Own work",
+        "imageDescription": "Shrimp scampi at B&amp;V Whiskey Bar &amp; Grill",
+        "accepted": true
+      }
+    ],
+    "chosen": {
+      "fileTitle": "File:Shrimp scampi at B&V Whiskey Bar & Grill - Sarah Stierch - June 2023.jpg",
+      "descriptionUrl": "https://commons.wikimedia.org/wiki/File:Shrimp_scampi_at_B%26V_Whiskey_Bar_%26_Grill_-_Sarah_Stierch_-_June_2023.jpg",
+      "thumbUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/f/f5/Shrimp_scampi_at_B%26V_Whiskey_Bar_%26_Grill_-_Sarah_Stierch_-_June_2023.jpg/1920px-Shrimp_scampi_at_B%26V_Whiskey_Bar_%26_Grill_-_Sarah_Stierch_-_June_2023.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "mime": "image/jpeg",
+      "width": 1400,
+      "height": 1050,
+      "license": "CC BY 4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by/4.0",
+      "artist": "Missvain",
+      "credit": "Own work",
+      "imageDescription": "Shrimp scampi at B&amp;V Whiskey Bar &amp; Grill"
+    }
+  },
+  "12": {
+    "title": "Stir-Fried Tofu",
+    "query": "tofu stir fry vegetables",
+    "tried": [
+      {
+        "fileTitle": "File:Stir-fry spinach with tofu - Golden white jade and Green Parrot (\u83e0\u83dc\u7092\u8c46\u8150 - \u91d1\u9472\u767d\u7389\u677f\uff0c\u7d05\u5634\u7da0\u9e1a\u54e5)(2).jpg",
+        "descriptionUrl": "https://commons.wikimedia.org/wiki/File:Stir-fry_spinach_with_tofu_-_Golden_white_jade_and_Green_Parrot_(%E8%8F%A0%E8%8F%9C%E7%82%92%E8%B1%86%E8%85%90_-_%E9%87%91%E9%91%B2%E7%99%BD%E7%8E%89%E6%9D%BF%EF%BC%8C%E7%B4%85%E5%98%B4%E7%B6%A0%E9%B8%9A%E5%93%A5)(2).jpg",
+        "thumbUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/d/d8/Stir-fry_spinach_with_tofu_-_Golden_white_jade_and_Green_Parrot_%28%E8%8F%A0%E8%8F%9C%E7%82%92%E8%B1%86%E8%85%90_-_%E9%87%91%E9%91%B2%E7%99%BD%E7%8E%89%E6%9D%BF%EF%BC%8C%E7%B4%85%E5%98%B4%E7%B6%A0%E9%B8%9A%E5%93%A5%29%282%29.jpg/1920px-Stir-fry_spinach_with_tofu_-_Golden_white_jade_and_Green_Parrot_%28%E8%8F%A0%E8%8F%9C%E7%82%92%E8%B1%86%E8%85%90_-_%E9%87%91%E9%91%B2%E7%99%BD%E7%8E%89%E6%9D%BF%EF%BC%8C%E7%B4%85%E5%98%B4%E7%B6%A0%E9%B8%9A%E5%93%A5%29%282%29.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+        "mime": "image/jpeg",
+        "width": 1400,
+        "height": 947,
+        "license": "CC BY-SA 4.0",
+        "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+        "artist": "NeoBatfreak",
+        "credit": "Own work",
+        "imageDescription": "A dish of Stir-Fry Spinach with Tofu \u83e0\u83dc\u7092\u8c46\u8150, also referred as \u91d1\u9472\u767d\u7389\u677f\uff0c\u7d05\u5634\u7da0\u9e1a\u54e5[1], roughly translated in English as Golden White Jade and Green Parrot. In China, it is rumored that both Qianlong Emperor and Empress Dowager Cixi liked the simple-yet-delicious stir-fried dish. Picture taken in Clovis California.\nRecipe:\n\na pack of firm tofu\n4 cups of cooking oil for deep-frying (or 2 teaspoons of it for air frying)\n2/3 pound of spinach\n1/4 pound ground pork\n1/2 tablespoon minced garlic\n1/3 teaspoon salt\n1/3 teaspoon pepper\n1/3 sesame oil\n1. Cut tofu into pieces, pat dry with a paper towel\n2. Heat oil and deep-fry tofu for 4 minutes over high heat until crispy and golden. Remove and drain. (Alternatively, if rather using an air fryer instead, cook on 370\u00baF for 20 minutes after coating the tofu with just 2 teaspoons of cooking oil.)\n\n3. Rinse spinach then cut into 4 section. Heat 1 1/2 tablespoon oil and then stir-fry minced garlic and ground pork until fragrant. Add the spinach and stir-fry briefly. Add 1/3 cup of water and add salt, pepper, and sesame oil with fried tofu and cook until steamy; continue to cook for 2 minutes. Remove and serve.",
+        "accepted": true
+      }
+    ],
+    "chosen": {
+      "fileTitle": "File:Stir-fry spinach with tofu - Golden white jade and Green Parrot (\u83e0\u83dc\u7092\u8c46\u8150 - \u91d1\u9472\u767d\u7389\u677f\uff0c\u7d05\u5634\u7da0\u9e1a\u54e5)(2).jpg",
+      "descriptionUrl": "https://commons.wikimedia.org/wiki/File:Stir-fry_spinach_with_tofu_-_Golden_white_jade_and_Green_Parrot_(%E8%8F%A0%E8%8F%9C%E7%82%92%E8%B1%86%E8%85%90_-_%E9%87%91%E9%91%B2%E7%99%BD%E7%8E%89%E6%9D%BF%EF%BC%8C%E7%B4%85%E5%98%B4%E7%B6%A0%E9%B8%9A%E5%93%A5)(2).jpg",
+      "thumbUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/d/d8/Stir-fry_spinach_with_tofu_-_Golden_white_jade_and_Green_Parrot_%28%E8%8F%A0%E8%8F%9C%E7%82%92%E8%B1%86%E8%85%90_-_%E9%87%91%E9%91%B2%E7%99%BD%E7%8E%89%E6%9D%BF%EF%BC%8C%E7%B4%85%E5%98%B4%E7%B6%A0%E9%B8%9A%E5%93%A5%29%282%29.jpg/1920px-Stir-fry_spinach_with_tofu_-_Golden_white_jade_and_Green_Parrot_%28%E8%8F%A0%E8%8F%9C%E7%82%92%E8%B1%86%E8%85%90_-_%E9%87%91%E9%91%B2%E7%99%BD%E7%8E%89%E6%9D%BF%EF%BC%8C%E7%B4%85%E5%98%B4%E7%B6%A0%E9%B8%9A%E5%93%A5%29%282%29.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "mime": "image/jpeg",
+      "width": 1400,
+      "height": 947,
+      "license": "CC BY-SA 4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+      "artist": "NeoBatfreak",
+      "credit": "Own work",
+      "imageDescription": "A dish of Stir-Fry Spinach with Tofu \u83e0\u83dc\u7092\u8c46\u8150, also referred as \u91d1\u9472\u767d\u7389\u677f\uff0c\u7d05\u5634\u7da0\u9e1a\u54e5[1], roughly translated in English as Golden White Jade and Green Parrot. In China, it is rumored that both Qianlong Emperor and Empress Dowager Cixi liked the simple-yet-delicious stir-fried dish. Picture taken in Clovis California.\nRecipe:\n\na pack of firm tofu\n4 cups of cooking oil for deep-frying (or 2 teaspoons of it for air frying)\n2/3 pound of spinach\n1/4 pound ground pork\n1/2 tablespoon minced garlic\n1/3 teaspoon salt\n1/3 teaspoon pepper\n1/3 sesame oil\n1. Cut tofu into pieces, pat dry with a paper towel\n2. Heat oil and deep-fry tofu for 4 minutes over high heat until crispy and golden. Remove and drain. (Alternatively, if rather using an air fryer instead, cook on 370\u00baF for 20 minutes after coating the tofu with just 2 teaspoons of cooking oil.)\n\n3. Rinse spinach then cut into 4 section. Heat 1 1/2 tablespoon oil and then stir-fry minced garlic and ground pork until fragrant. Add the spinach and stir-fry briefly. Add 1/3 cup of water and add salt, pepper, and sesame oil with fried tofu and cook until steamy; continue to cook for 2 minutes. Remove and serve."
+    }
+  },
+  "13": {
+    "title": "Grilled Salmon with Asparagus",
+    "query": "grilled salmon asparagus",
+    "tried": [
+      {
+        "fileTitle": "File:Grilled salmon and asparagus on rice - Boston, Massachusetts.jpg",
+        "descriptionUrl": "https://commons.wikimedia.org/wiki/File:Grilled_salmon_and_asparagus_on_rice_-_Boston,_Massachusetts.jpg",
+        "thumbUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/e/e7/Grilled_salmon_and_asparagus_on_rice_-_Boston%2C_Massachusetts.jpg/1920px-Grilled_salmon_and_asparagus_on_rice_-_Boston%2C_Massachusetts.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+        "mime": "image/jpeg",
+        "width": 1400,
+        "height": 1399,
+        "license": "CC0",
+        "licenseUrl": "http://creativecommons.org/publicdomain/zero/1.0/deed.en",
+        "artist": "Daderot",
+        "credit": "Own work",
+        "imageDescription": "Grilled salmon and asparagus on rice - Boston, Massachusetts, USA.",
+        "accepted": true
+      }
+    ],
+    "chosen": {
+      "fileTitle": "File:Grilled salmon and asparagus on rice - Boston, Massachusetts.jpg",
+      "descriptionUrl": "https://commons.wikimedia.org/wiki/File:Grilled_salmon_and_asparagus_on_rice_-_Boston,_Massachusetts.jpg",
+      "thumbUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/e/e7/Grilled_salmon_and_asparagus_on_rice_-_Boston%2C_Massachusetts.jpg/1920px-Grilled_salmon_and_asparagus_on_rice_-_Boston%2C_Massachusetts.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "mime": "image/jpeg",
+      "width": 1400,
+      "height": 1399,
+      "license": "CC0",
+      "licenseUrl": "http://creativecommons.org/publicdomain/zero/1.0/deed.en",
+      "artist": "Daderot",
+      "credit": "Own work",
+      "imageDescription": "Grilled salmon and asparagus on rice - Boston, Massachusetts, USA."
+    }
+  },
+  "14": {
+    "title": "Almond-Crusted Chicken",
+    "query": "almond crusted chicken",
+    "tried": [
+      {
+        "fileTitle": "File:Almond of Loretto; being the life and a selection from the letters of Hely Hutchinson Almond, M. A. Glasgow; M. A. Oxon; LL. D. Glasgow; headmaster of Loretto school (1862-1903) (IA almondoflorettob00mack).pdf",
+        "rejected": "extension .pdf not allowed"
+      },
+      {
+        "fileTitle": "File:Mazurek bunny 2.JPG",
+        "descriptionUrl": "https://commons.wikimedia.org/wiki/File:Mazurek_bunny_2.JPG",
+        "thumbUrl": "https://upload.wikimedia.org/wikipedia/commons/0/0f/Mazurek_bunny_2.JPG?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail_unscaled",
+        "mime": "image/jpeg",
+        "width": 1400,
+        "height": 1345,
+        "license": "CC BY-SA 4.0",
+        "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+        "artist": "SpiderMum",
+        "credit": "Own work",
+        "imageDescription": "Mazurek made of shortcrust pastry, covered with fudge caramel cream (with cocoa). A bunny made of coconut shreds and grated almonds. The eyes - raisins, the moustaches  - lemon zest, the nose - candied orange peel, the snout was sprinkled with linseed. Twigs of cranberry or buxus. The crust was glazed with chicken egg yolk. Made in Poland\u00a0:).",
+        "accepted": true
+      }
+    ],
+    "chosen": {
+      "fileTitle": "File:Mazurek bunny 2.JPG",
+      "descriptionUrl": "https://commons.wikimedia.org/wiki/File:Mazurek_bunny_2.JPG",
+      "thumbUrl": "https://upload.wikimedia.org/wikipedia/commons/0/0f/Mazurek_bunny_2.JPG?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail_unscaled",
+      "mime": "image/jpeg",
+      "width": 1400,
+      "height": 1345,
+      "license": "CC BY-SA 4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+      "artist": "SpiderMum",
+      "credit": "Own work",
+      "imageDescription": "Mazurek made of shortcrust pastry, covered with fudge caramel cream (with cocoa). A bunny made of coconut shreds and grated almonds. The eyes - raisins, the moustaches  - lemon zest, the nose - candied orange peel, the snout was sprinkled with linseed. Twigs of cranberry or buxus. The crust was glazed with chicken egg yolk. Made in Poland\u00a0:)."
+    }
+  },
+  "15": {
+    "title": "Lemon Garlic Pasta",
+    "query": "lemon garlic pasta",
+    "tried": [
+      {
+        "fileTitle": "File:Pasta salad with spinach and garlic bread.jpg",
+        "descriptionUrl": "https://commons.wikimedia.org/wiki/File:Pasta_salad_with_spinach_and_garlic_bread.jpg",
+        "thumbUrl": "https://upload.wikimedia.org/wikipedia/commons/9/97/Pasta_salad_with_spinach_and_garlic_bread.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail_unscaled",
+        "mime": "image/jpeg",
+        "width": 1400,
+        "height": 932,
+        "license": "CC BY 2.0",
+        "licenseUrl": "https://creativecommons.org/licenses/by/2.0",
+        "artist": "jeffreyw",
+        "credit": "mmm...bacon and some more stuff\n\nUploaded by F\u00e6",
+        "imageDescription": "whats4dinnersolutions.wordpress.com/2010/03/03/cooking-wi...",
+        "accepted": true
+      }
+    ],
+    "chosen": {
+      "fileTitle": "File:Pasta salad with spinach and garlic bread.jpg",
+      "descriptionUrl": "https://commons.wikimedia.org/wiki/File:Pasta_salad_with_spinach_and_garlic_bread.jpg",
+      "thumbUrl": "https://upload.wikimedia.org/wikipedia/commons/9/97/Pasta_salad_with_spinach_and_garlic_bread.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail_unscaled",
+      "mime": "image/jpeg",
+      "width": 1400,
+      "height": 932,
+      "license": "CC BY 2.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by/2.0",
+      "artist": "jeffreyw",
+      "credit": "mmm...bacon and some more stuff\n\nUploaded by F\u00e6",
+      "imageDescription": "whats4dinnersolutions.wordpress.com/2010/03/03/cooking-wi..."
+    }
+  },
+  "16": {
+    "title": "Honey Garlic Chicken with Broccoli",
+    "query": "honey garlic chicken broccoli",
+    "tried": [
+      {
+        "fileTitle": "File:Brown rice with sizzling chicken and vegetables (IA CAT31300704).pdf",
+        "rejected": "extension .pdf not allowed"
+      },
+      {
+        "fileTitle": "File:Hayes seed annual. Season 1919 - everything in seed for the farm, field and garden - Hayes Seed House ; owner, Hayes Produce Co. (IA CAT31302498).pdf",
+        "rejected": "extension .pdf not allowed"
+      },
+      {
+        "fileTitle": "File:Kilgore's bred-right seeds for spring 1929 - Kilgore Seed Co. (IA CAT31330471).pdf",
+        "rejected": "extension .pdf not allowed"
+      },
+      {
+        "fileTitle": "File:EUR 2016-46.pdf",
+        "rejected": "extension .pdf not allowed"
+      },
+      {
+        "fileTitle": "File:Seed annual, season 1935 - garden, flower and field seeds, poultry, bird, dairy and dog supplies - Muskogee Seed House. (IA CAT31345614).pdf",
+        "rejected": "extension .pdf not allowed"
+      },
+      {
+        "fileTitle": "File:Food consumption, prices, expenditures -supplement for 1969 (IA CAT88217951).pdf",
+        "rejected": "extension .pdf not allowed"
+      },
+      {
+        "fileTitle": "File:OJ L 202401318 of 2024 - EN English.pdf",
+        "rejected": "extension .pdf not allowed"
+      },
+      {
+        "fileTitle": "File:OJ L 336 of 2014 - EN English.pdf",
+        "rejected": "extension .pdf not allowed"
+      }
+    ],
+    "chosen": null
+  },
+  "17": {
+    "title": "Sheet-Pan Honey Garlic Salmon",
+    "query": "honey garlic salmon sheet pan",
+    "tried": [
+      {
+        "fileTitle": "File:Commodity fact sheets (IA CAT10570482).pdf",
+        "rejected": "extension .pdf not allowed"
+      },
+      {
+        "fileTitle": "File:Healthy eating in Indian country (IA CAT10671786).pdf",
+        "rejected": "extension .pdf not allowed"
+      },
+      {
+        "fileTitle": "File:Farm, field and garden seeds and poultry supplies - 1924 price list - Union Seed & Fuel Co. (IA CAT31315130).pdf",
+        "rejected": "extension .pdf not allowed"
+      },
+      {
+        "fileTitle": "File:Simpson's garden & farm book - spring 1930 - Simpson Seed & Floral Co. (IA CAT31334459).pdf",
+        "rejected": "extension .pdf not allowed"
+      },
+      {
+        "fileTitle": "File:The all-American cook book; (IA allamericancookb01breb).pdf",
+        "rejected": "extension .pdf not allowed"
+      },
+      {
+        "fileTitle": "File:Quick & easy commodity recipes for the food distribution program on Indian reservations (IA CAT31311217).pdf",
+        "rejected": "extension .pdf not allowed"
+      },
+      {
+        "fileTitle": "File:The dinner bell - a gastronomic manual teaching the mistress how to rule a dainty and thrifty cuisine, and the cook how to prepare a great variety of dishes with economy (IA b28140564).pdf",
+        "rejected": "extension .pdf not allowed"
+      },
+      {
+        "fileTitle": "File:The Warren cook book; (IA warrencookbook00warr 1).pdf",
+        "rejected": "extension .pdf not allowed"
+      }
+    ],
+    "chosen": null
+  },
+  "18": {
+    "title": "Weeknight Egg Fried Rice",
+    "query": "egg fried rice",
+    "tried": [
+      {
+        "fileTitle": "File:Fried rice with chicken and egg.jpg",
+        "descriptionUrl": "https://commons.wikimedia.org/wiki/File:Fried_rice_with_chicken_and_egg.jpg",
+        "thumbUrl": "https://upload.wikimedia.org/wikipedia/commons/3/30/Fried_rice_with_chicken_and_egg.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail_unscaled",
+        "mime": "image/jpeg",
+        "width": 1400,
+        "height": 1750,
+        "license": "CC BY-SA 4.0",
+        "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+        "artist": "daSupremo",
+        "credit": "Own work",
+        "imageDescription": "Fried rice with chicken and egg",
+        "accepted": true
+      }
+    ],
+    "chosen": {
+      "fileTitle": "File:Fried rice with chicken and egg.jpg",
+      "descriptionUrl": "https://commons.wikimedia.org/wiki/File:Fried_rice_with_chicken_and_egg.jpg",
+      "thumbUrl": "https://upload.wikimedia.org/wikipedia/commons/3/30/Fried_rice_with_chicken_and_egg.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail_unscaled",
+      "mime": "image/jpeg",
+      "width": 1400,
+      "height": 1750,
+      "license": "CC BY-SA 4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+      "artist": "daSupremo",
+      "credit": "Own work",
+      "imageDescription": "Fried rice with chicken and egg"
+    }
+  },
+  "19": {
+    "title": "Family-Style Shrimp Tacos",
+    "query": "shrimp tacos",
+    "tried": [
+      {
+        "fileTitle": "File:001 Tacos de carnitas, carne asada y al pastor.jpg",
+        "descriptionUrl": "https://commons.wikimedia.org/wiki/File:001_Tacos_de_carnitas,_carne_asada_y_al_pastor.jpg",
+        "thumbUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/7/73/001_Tacos_de_carnitas%2C_carne_asada_y_al_pastor.jpg/1920px-001_Tacos_de_carnitas%2C_carne_asada_y_al_pastor.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+        "mime": "image/jpeg",
+        "width": 1400,
+        "height": 1050,
+        "license": "CC BY-SA 2.0",
+        "licenseUrl": "https://creativecommons.org/licenses/by-sa/2.0",
+        "artist": "Larry Miller",
+        "credit": "Flickr: Tinos Tacos, Roseburg, Ore.",
+        "imageDescription": "Carnitas, carne asada and al pastor. Tino's is a food truck in Roseburg. Sits at a Shell Station on Garden Valley Blvd. The carnitas was especially good.\n\nTinos Tacos, Roseburg, Ore",
+        "accepted": true
+      }
+    ],
+    "chosen": {
+      "fileTitle": "File:001 Tacos de carnitas, carne asada y al pastor.jpg",
+      "descriptionUrl": "https://commons.wikimedia.org/wiki/File:001_Tacos_de_carnitas,_carne_asada_y_al_pastor.jpg",
+      "thumbUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/7/73/001_Tacos_de_carnitas%2C_carne_asada_y_al_pastor.jpg/1920px-001_Tacos_de_carnitas%2C_carne_asada_y_al_pastor.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "mime": "image/jpeg",
+      "width": 1400,
+      "height": 1050,
+      "license": "CC BY-SA 2.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/2.0",
+      "artist": "Larry Miller",
+      "credit": "Flickr: Tinos Tacos, Roseburg, Ore.",
+      "imageDescription": "Carnitas, carne asada and al pastor. Tino's is a food truck in Roseburg. Sits at a Shell Station on Garden Valley Blvd. The carnitas was especially good.\n\nTinos Tacos, Roseburg, Ore"
+    }
+  },
+  "20": {
+    "title": "Greek Yogurt Tandoori Chicken",
+    "query": "tandoori chicken",
+    "tried": [
+      {
+        "fileTitle": "File:Tandoori chicken Indian.jpg",
+        "descriptionUrl": "https://commons.wikimedia.org/wiki/File:Tandoori_chicken_Indian.jpg",
+        "thumbUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/2/27/Tandoori_chicken_Indian.jpg/1920px-Tandoori_chicken_Indian.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+        "mime": "image/jpeg",
+        "width": 1400,
+        "height": 1050,
+        "license": "CC BY-SA 2.0",
+        "licenseUrl": "https://creativecommons.org/licenses/by-sa/2.0",
+        "artist": "pelican",
+        "credit": "https://www.flickr.com/photos/pelican/4823281484/",
+        "imageDescription": "Tandoori Chicken Indian cuisine",
+        "accepted": true
+      }
+    ],
+    "chosen": {
+      "fileTitle": "File:Tandoori chicken Indian.jpg",
+      "descriptionUrl": "https://commons.wikimedia.org/wiki/File:Tandoori_chicken_Indian.jpg",
+      "thumbUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/2/27/Tandoori_chicken_Indian.jpg/1920px-Tandoori_chicken_Indian.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "mime": "image/jpeg",
+      "width": 1400,
+      "height": 1050,
+      "license": "CC BY-SA 2.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/2.0",
+      "artist": "pelican",
+      "credit": "https://www.flickr.com/photos/pelican/4823281484/",
+      "imageDescription": "Tandoori Chicken Indian cuisine"
+    }
+  },
+  "21": {
+    "title": "Sweet Potato & Beef Skillet",
+    "query": "ground beef sweet potato skillet",
+    "tried": [
+      {
+        "fileTitle": "File:Beef - how to choose and cook it (IA beefhowtochoosec00cana).pdf",
+        "rejected": "extension .pdf not allowed"
+      },
+      {
+        "fileTitle": "File:Bulgur recipes (IA CAT10667171).pdf",
+        "rejected": "extension .pdf not allowed"
+      },
+      {
+        "fileTitle": "File:Inexpensive meat dishes for warm fall days (IA inexpensivemeatd1933unit).pdf",
+        "rejected": "extension .pdf not allowed"
+      },
+      {
+        "fileTitle": "File:The universal cookery book - practical recipes for household use (IA universalcookery00stro 0).pdf",
+        "rejected": "extension .pdf not allowed"
+      },
+      {
+        "fileTitle": "File:The all-American cook book; (IA allamericancookb01breb).pdf",
+        "rejected": "extension .pdf not allowed"
+      },
+      {
+        "fileTitle": "File:Lessons in cooking through preparation of meals (IA lessonsincooking00robi).pdf",
+        "rejected": "extension .pdf not allowed"
+      },
+      {
+        "fileTitle": "File:Quick & easy commodity recipes for the food distribution program on Indian reservations (IA CAT31311217).pdf",
+        "rejected": "extension .pdf not allowed"
+      },
+      {
+        "fileTitle": "File:Domestic cook book; a companion to Pulte's domestic physician; being a practical guide in the preparation of food for the well and the sick .. (IA cu31924085646812).pdf",
+        "rejected": "extension .pdf not allowed"
+      }
+    ],
+    "chosen": null
+  },
+  "22": {
+    "title": "Crispy Peanut Tofu with Quinoa",
+    "query": "peanut tofu quinoa",
+    "tried": [
+      {
+        "fileTitle": "File:Food sources of magnesium (magnesium-rich foods).pdf",
+        "rejected": "extension .pdf not allowed"
+      },
+      {
+        "fileTitle": "File:Food sources of magnesium (magnesium-rich foods).jpg",
+        "descriptionUrl": "https://commons.wikimedia.org/wiki/File:Food_sources_of_magnesium_(magnesium-rich_foods).jpg",
+        "thumbUrl": "https://upload.wikimedia.org/wikipedia/commons/b/be/Food_sources_of_magnesium_%28magnesium-rich_foods%29.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail_unscaled",
+        "mime": "image/jpeg",
+        "width": 1400,
+        "height": 2022,
+        "license": "CC BY-SA 4.0",
+        "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+        "artist": "SSamadi15",
+        "credit": "Own work. Click Here to download a high resolution figure.",
+        "imageDescription": "About 97.2% of foods contained magnesium. On the basis of the proposed method, the average (%) of foods containing appropriate magnesium levels in food groups was 13.81%, of which 10.7% was the average of magnesium source (good source of magnesium) foods, and 3.11% was the average of high magnesium (excellent source of magnesium) foods. Legumes and legume products with 64.84%, nut and seed products with 54.41%, baby foods with 53.7%, breakfast cereals with 35.34%, and cereal grains and pasta with 32.04% had the highest averages of foods containing appropriate magnesium levels. Foods containing appropriate magnesium levels were not found in five food groups (beef products; fats and oils; pork products; sausages and luncheon meats; spices and herbs) and were few in 11 food groups (fast foods; lamb, veal, and game products; poultry products; baked products; fruits and fruit juices; soups, sauces, and gravies; sweets; restaurant foods; dairy and egg products; meals, entrees, and side dishes; beverages).\nThe highest amounts of magnesium were found in breakfast cereal (made with bran, germ, or whole grain containing an appropriate magnesium level), snail, lambsquarters, hemp seeds, conch, soybean curd cheese, pumpkin and squash seeds, watermelon seed kernels, protein shake (magnesium-fortified), meat extender, papad, moth beans, fireweed leaves, cottonseed kernels, whey protein powder isolate, yardlong beans, whelk, leafy tips of bitter gourd, prickly pears, peanut butter (magnesium-fortified), flaxseed, rice bran, oat bran muffins, dock, cottonseed meal, spinach, Brazil nuts, Swiss chard, amaranth grain, cottonseed flour, nutrition shake (magnesium-fortified), sesame seeds, hyacinth beans, safflower seed kernels, chinook salmon, buckwheat, white and wild rice mix, chia seeds, soybeans, sunflower seed butter, formulated bar (made with whole grain, nut, legume, soy or whey protein, or chocolate containing an appropriate magnesium level), yellow beans, lima beans, Sisymbrium sp. seeds, spinach spaghetti, mungo beans, wheat bran, Piki bread made from blue cornmeal, quinoa, almond butter, white beans, cashew nuts, chili with beans, almonds, rose hips, pink beans, chocolate instant breakfast drink (magnesium-fortified), pili nuts, teff, cashew butter, oats, wild rice, black bean soup, buckwheat pancakes, buckwheat flour, sesame crunch, scotch kale, sorghum, Atlantic mackerel, Atlantic Pollock, French beans, whole wheat pasta, beaked hazelnuts, lupin beans, pine nuts, common ling, cowpeas, tempeh, spelt, cocoa-rich chocolate (at least 70% cocoa solids), chocolate yogurt, tofu yogurt, fava beans, great northern beans, mung beans, durum wheat, medium-grain brown rice, pigeon peas, Indian buffalo milk, and yellow rice with seasoning.\n\nSuggested citation: Forouzesh, Abed; Forouzesh, Fatemeh; Samadi Foroushani, Sadegh; Forouzesh, Abolfazl. A new method for calculating magnesium content and determining appropriate magnesium levels in foods. SSRN 2022. DOI: 10.2139/ssrn.4133396",
+        "accepted": true
+      }
+    ],
+    "chosen": {
+      "fileTitle": "File:Food sources of magnesium (magnesium-rich foods).jpg",
+      "descriptionUrl": "https://commons.wikimedia.org/wiki/File:Food_sources_of_magnesium_(magnesium-rich_foods).jpg",
+      "thumbUrl": "https://upload.wikimedia.org/wikipedia/commons/b/be/Food_sources_of_magnesium_%28magnesium-rich_foods%29.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail_unscaled",
+      "mime": "image/jpeg",
+      "width": 1400,
+      "height": 2022,
+      "license": "CC BY-SA 4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+      "artist": "SSamadi15",
+      "credit": "Own work. Click Here to download a high resolution figure.",
+      "imageDescription": "About 97.2% of foods contained magnesium. On the basis of the proposed method, the average (%) of foods containing appropriate magnesium levels in food groups was 13.81%, of which 10.7% was the average of magnesium source (good source of magnesium) foods, and 3.11% was the average of high magnesium (excellent source of magnesium) foods. Legumes and legume products with 64.84%, nut and seed products with 54.41%, baby foods with 53.7%, breakfast cereals with 35.34%, and cereal grains and pasta with 32.04% had the highest averages of foods containing appropriate magnesium levels. Foods containing appropriate magnesium levels were not found in five food groups (beef products; fats and oils; pork products; sausages and luncheon meats; spices and herbs) and were few in 11 food groups (fast foods; lamb, veal, and game products; poultry products; baked products; fruits and fruit juices; soups, sauces, and gravies; sweets; restaurant foods; dairy and egg products; meals, entrees, and side dishes; beverages).\nThe highest amounts of magnesium were found in breakfast cereal (made with bran, germ, or whole grain containing an appropriate magnesium level), snail, lambsquarters, hemp seeds, conch, soybean curd cheese, pumpkin and squash seeds, watermelon seed kernels, protein shake (magnesium-fortified), meat extender, papad, moth beans, fireweed leaves, cottonseed kernels, whey protein powder isolate, yardlong beans, whelk, leafy tips of bitter gourd, prickly pears, peanut butter (magnesium-fortified), flaxseed, rice bran, oat bran muffins, dock, cottonseed meal, spinach, Brazil nuts, Swiss chard, amaranth grain, cottonseed flour, nutrition shake (magnesium-fortified), sesame seeds, hyacinth beans, safflower seed kernels, chinook salmon, buckwheat, white and wild rice mix, chia seeds, soybeans, sunflower seed butter, formulated bar (made with whole grain, nut, legume, soy or whey protein, or chocolate containing an appropriate magnesium level), yellow beans, lima beans, Sisymbrium sp. seeds, spinach spaghetti, mungo beans, wheat bran, Piki bread made from blue cornmeal, quinoa, almond butter, white beans, cashew nuts, chili with beans, almonds, rose hips, pink beans, chocolate instant breakfast drink (magnesium-fortified), pili nuts, teff, cashew butter, oats, wild rice, black bean soup, buckwheat pancakes, buckwheat flour, sesame crunch, scotch kale, sorghum, Atlantic mackerel, Atlantic Pollock, French beans, whole wheat pasta, beaked hazelnuts, lupin beans, pine nuts, common ling, cowpeas, tempeh, spelt, cocoa-rich chocolate (at least 70% cocoa solids), chocolate yogurt, tofu yogurt, fava beans, great northern beans, mung beans, durum wheat, medium-grain brown rice, pigeon peas, Indian buffalo milk, and yellow rice with seasoning.\n\nSuggested citation: Forouzesh, Abed; Forouzesh, Fatemeh; Samadi Foroushani, Sadegh; Forouzesh, Abolfazl. A new method for calculating magnesium content and determining appropriate magnesium levels in foods. SSRN 2022. DOI: 10.2139/ssrn.4133396"
+    }
+  },
+  "23": {
+    "title": "Spanish-Style Potato & Egg Skillet",
+    "query": "spanish tortilla potato omelette",
+    "tried": [
+      {
+        "fileTitle": "File:Tortilla Espa\u00f1ola (Spanish Potato Omelet).jpg",
+        "descriptionUrl": "https://commons.wikimedia.org/wiki/File:Tortilla_Espa%C3%B1ola_(Spanish_Potato_Omelet).jpg",
+        "thumbUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/3/38/Tortilla_Espa%C3%B1ola_%28Spanish_Potato_Omelet%29.jpg/1920px-Tortilla_Espa%C3%B1ola_%28Spanish_Potato_Omelet%29.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+        "mime": "image/jpeg",
+        "width": 1400,
+        "height": 1400,
+        "license": "CC BY 2.0",
+        "licenseUrl": "https://creativecommons.org/licenses/by/2.0",
+        "artist": "Joy",
+        "credit": "https://www.flickr.com/photos/joyosity/27362763041/",
+        "imageDescription": "the-cooking-of-joy.blogspot.com/2016/06/tortilla-espanola...",
+        "accepted": true
+      }
+    ],
+    "chosen": {
+      "fileTitle": "File:Tortilla Espa\u00f1ola (Spanish Potato Omelet).jpg",
+      "descriptionUrl": "https://commons.wikimedia.org/wiki/File:Tortilla_Espa%C3%B1ola_(Spanish_Potato_Omelet).jpg",
+      "thumbUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/3/38/Tortilla_Espa%C3%B1ola_%28Spanish_Potato_Omelet%29.jpg/1920px-Tortilla_Espa%C3%B1ola_%28Spanish_Potato_Omelet%29.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "mime": "image/jpeg",
+      "width": 1400,
+      "height": 1400,
+      "license": "CC BY 2.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by/2.0",
+      "artist": "Joy",
+      "credit": "https://www.flickr.com/photos/joyosity/27362763041/",
+      "imageDescription": "the-cooking-of-joy.blogspot.com/2016/06/tortilla-espanola..."
+    }
+  },
+  "24": {
+    "title": "Pan-Seared Crab Cakes",
+    "query": "crab cakes",
+    "tried": [
+      {
+        "fileTitle": "File:Dungeness crab cake at Oso - Sarah Stierch.jpg",
+        "descriptionUrl": "https://commons.wikimedia.org/wiki/File:Dungeness_crab_cake_at_Oso_-_Sarah_Stierch.jpg",
+        "thumbUrl": "https://upload.wikimedia.org/wikipedia/commons/a/a3/Dungeness_crab_cake_at_Oso_-_Sarah_Stierch.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail_unscaled",
+        "mime": "image/jpeg",
+        "width": 1400,
+        "height": 1050,
+        "license": "CC BY 4.0",
+        "licenseUrl": "https://creativecommons.org/licenses/by/4.0",
+        "artist": "Missvain",
+        "credit": "Own work",
+        "imageDescription": "Dungeness crab cake at Oso",
+        "accepted": true
+      }
+    ],
+    "chosen": {
+      "fileTitle": "File:Dungeness crab cake at Oso - Sarah Stierch.jpg",
+      "descriptionUrl": "https://commons.wikimedia.org/wiki/File:Dungeness_crab_cake_at_Oso_-_Sarah_Stierch.jpg",
+      "thumbUrl": "https://upload.wikimedia.org/wikipedia/commons/a/a3/Dungeness_crab_cake_at_Oso_-_Sarah_Stierch.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail_unscaled",
+      "mime": "image/jpeg",
+      "width": 1400,
+      "height": 1050,
+      "license": "CC BY 4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by/4.0",
+      "artist": "Missvain",
+      "credit": "Own work",
+      "imageDescription": "Dungeness crab cake at Oso"
+    }
+  },
+  "25": {
+    "title": "Curried Cauliflower Chickpea Soup",
+    "query": "cauliflower chickpea curry soup",
+    "tried": [
+      {
+        "fileTitle": "File:Vegetarian diet and dishes (IA vegetariandietdi00lyma).pdf",
+        "rejected": "extension .pdf not allowed"
+      },
+      {
+        "fileTitle": "File:Keep the beat heart healthy recipes from the National Heart, Lung, and Blood Institute (IA CAT31306756).pdf",
+        "rejected": "extension .pdf not allowed"
+      },
+      {
+        "fileTitle": "File:The agricultural economy of Ethiopia (IA agriculturalecon13tege).pdf",
+        "rejected": "extension .pdf not allowed"
+      },
+      {
+        "fileTitle": "File:The 2013 healthy lunchtime challenge cookbook - 54 winning recipes from America's junior chefs (IA CAT31300391).pdf",
+        "rejected": "extension .pdf not allowed"
+      },
+      {
+        "fileTitle": "File:Get smart - in your family dinner (IA CAT31310250).pdf",
+        "rejected": "extension .pdf not allowed"
+      }
+    ],
+    "chosen": null
+  },
+  "26": {
+    "title": "Broccoli & Potato Soup",
+    "query": "broccoli potato soup",
+    "tried": [
+      {
+        "fileTitle": "File:Broccoli Potato Soup (140490371).jpeg",
+        "descriptionUrl": "https://commons.wikimedia.org/wiki/File:Broccoli_Potato_Soup_(140490371).jpeg",
+        "thumbUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/0/07/Broccoli_Potato_Soup_%28140490371%29.jpeg/1920px-Broccoli_Potato_Soup_%28140490371%29.jpeg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+        "mime": "image/jpeg",
+        "width": 1400,
+        "height": 933,
+        "license": "CC BY 3.0",
+        "licenseUrl": "https://creativecommons.org/licenses/by/3.0",
+        "artist": "J Doll",
+        "credit": "Imported from 500px (archived version) by the Archive Team. (detail page)",
+        "imageDescription": "500px provided description: Broccoli Potato Soup [#Food ,#veganomnom]",
+        "accepted": true
+      }
+    ],
+    "chosen": {
+      "fileTitle": "File:Broccoli Potato Soup (140490371).jpeg",
+      "descriptionUrl": "https://commons.wikimedia.org/wiki/File:Broccoli_Potato_Soup_(140490371).jpeg",
+      "thumbUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/0/07/Broccoli_Potato_Soup_%28140490371%29.jpeg/1920px-Broccoli_Potato_Soup_%28140490371%29.jpeg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "mime": "image/jpeg",
+      "width": 1400,
+      "height": 933,
+      "license": "CC BY 3.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by/3.0",
+      "artist": "J Doll",
+      "credit": "Imported from 500px (archived version) by the Archive Team. (detail page)",
+      "imageDescription": "500px provided description: Broccoli Potato Soup [#Food ,#veganomnom]"
+    }
+  },
+  "27": {
+    "title": "Tahini Kale Salad with Chickpeas",
+    "query": "kale salad chickpeas",
+    "tried": [
+      {
+        "fileTitle": "File:Kale & ChickPea Salad (8425128977).jpg",
+        "descriptionUrl": "https://commons.wikimedia.org/wiki/File:Kale_%26_ChickPea_Salad_(8425128977).jpg",
+        "thumbUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/8/83/Kale_%26_ChickPea_Salad_%288425128977%29.jpg/1920px-Kale_%26_ChickPea_Salad_%288425128977%29.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+        "mime": "image/jpeg",
+        "width": 1400,
+        "height": 1050,
+        "license": "CC BY-SA 2.0",
+        "licenseUrl": "https://creativecommons.org/licenses/by-sa/2.0",
+        "artist": "Cajsa Lilliehook from Portland",
+        "credit": "Kale &amp; ChickPea Salad",
+        "imageDescription": "singleservingrecipes.wordpress.com/2013/01/29/kale-chickp...",
+        "accepted": true
+      }
+    ],
+    "chosen": {
+      "fileTitle": "File:Kale & ChickPea Salad (8425128977).jpg",
+      "descriptionUrl": "https://commons.wikimedia.org/wiki/File:Kale_%26_ChickPea_Salad_(8425128977).jpg",
+      "thumbUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/8/83/Kale_%26_ChickPea_Salad_%288425128977%29.jpg/1920px-Kale_%26_ChickPea_Salad_%288425128977%29.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "mime": "image/jpeg",
+      "width": 1400,
+      "height": 1050,
+      "license": "CC BY-SA 2.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/2.0",
+      "artist": "Cajsa Lilliehook from Portland",
+      "credit": "Kale &amp; ChickPea Salad",
+      "imageDescription": "singleservingrecipes.wordpress.com/2013/01/29/kale-chickp..."
+    }
+  },
+  "28": {
+    "title": "Hummus & Veggie Lunch Bowl",
+    "query": "hummus vegetable bowl",
+    "tried": [
+      {
+        "fileTitle": "File:Add more vegetables to your day 10 tips to help you eat more vegetables (IA CAT31299579).pdf",
+        "rejected": "extension .pdf not allowed"
+      },
+      {
+        "fileTitle": "File:How to use fruits and vegetables to help manage your weight (IA CAT31310781).pdf",
+        "rejected": "extension .pdf not allowed"
+      },
+      {
+        "fileTitle": "File:Fruits & veggies on the go! (IA CAT31311998).pdf",
+        "rejected": "extension .pdf not allowed"
+      },
+      {
+        "fileTitle": "File:Celebrate healthy, active celebrations - easy ways to eat smart and play hard with friends and family (IA CAT31310859).pdf",
+        "rejected": "extension .pdf not allowed"
+      },
+      {
+        "fileTitle": "File:Team up at home Team Nutrition activity book, lots of fun activities for the family (IA CAT31309397).pdf",
+        "rejected": "extension .pdf not allowed"
+      },
+      {
+        "fileTitle": "File:Owner's manual for your body - how to fuel it and move it for a fun and healthy life (IA CAT31307267).pdf",
+        "rejected": "extension .pdf not allowed"
+      },
+      {
+        "fileTitle": "File:Balance Newsletter August 2014 (IA 2014AugustBalanceNewsletterBackToSchoolINAL).pdf",
+        "rejected": "extension .pdf not allowed"
+      },
+      {
+        "fileTitle": "File:Mini-fridge makeover - 10 healthy choices to keep in your dorm mini-fridge (IA CAT31301686).pdf",
+        "rejected": "extension .pdf not allowed"
+      }
+    ],
+    "chosen": null
+  },
+  "29": {
+    "title": "Greek Yogurt Parfait with Granola & Berries",
+    "query": "yogurt parfait granola berries",
+    "tried": [
+      {
+        "fileTitle": "File:Milk, yogurt & cheese recipes (IA CAT31314481).pdf",
+        "rejected": "extension .pdf not allowed"
+      },
+      {
+        "fileTitle": "File:Bodyworks - a toolkit for healthy girls & strong women (IA CAT31314559).pdf",
+        "rejected": "extension .pdf not allowed"
+      },
+      {
+        "fileTitle": "File:Making nutrition count for children - nutrition guidance for child care homes (IA CAT31314979).pdf",
+        "rejected": "extension .pdf not allowed"
+      },
+      {
+        "fileTitle": "File:A harvest of recipes with USDA foods - the Food Distribution Program on Indian Reservations (FDPIR) (IA CAT31315008).pdf",
+        "rejected": "extension .pdf not allowed"
+      },
+      {
+        "fileTitle": "File:Team up at home Team Nutrition activity book, lots of fun activities for the family (IA CAT31309397).pdf",
+        "rejected": "extension .pdf not allowed"
+      },
+      {
+        "fileTitle": "File:Team up at home - Team Nutrition activity book, lots of fun activities for the family (IA CAT31314978).pdf",
+        "rejected": "extension .pdf not allowed"
+      }
+    ],
+    "chosen": null
+  },
+  "30": {
+    "title": "Veggie & Egg Scramble",
+    "query": "scrambled eggs vegetables",
+    "tried": [
+      {
+        "fileTitle": "File:Scrambled eggs with cucumbers.jpg",
+        "descriptionUrl": "https://commons.wikimedia.org/wiki/File:Scrambled_eggs_with_cucumbers.jpg",
+        "thumbUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/3/3a/Scrambled_eggs_with_cucumbers.jpg/1920px-Scrambled_eggs_with_cucumbers.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+        "mime": "image/jpeg",
+        "width": 1400,
+        "height": 1217,
+        "license": "CC BY-SA 4.0",
+        "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+        "artist": "Zhou Yuji1028",
+        "credit": "Own work",
+        "imageDescription": "Traditional Chinese dish scrambled eggs with cucumber",
+        "accepted": true
+      }
+    ],
+    "chosen": {
+      "fileTitle": "File:Scrambled eggs with cucumbers.jpg",
+      "descriptionUrl": "https://commons.wikimedia.org/wiki/File:Scrambled_eggs_with_cucumbers.jpg",
+      "thumbUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/3/3a/Scrambled_eggs_with_cucumbers.jpg/1920px-Scrambled_eggs_with_cucumbers.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "mime": "image/jpeg",
+      "width": 1400,
+      "height": 1217,
+      "license": "CC BY-SA 4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+      "artist": "Zhou Yuji1028",
+      "credit": "Own work",
+      "imageDescription": "Traditional Chinese dish scrambled eggs with cucumber"
+    }
+  },
+  "31": {
+    "title": "Roasted Cauliflower Steaks with Tahini Drizzle",
+    "query": "roasted cauliflower steak",
+    "tried": [
+      {
+        "fileTitle": "File:Liat Portal for Foodie Disorder - Homemade Steak with Roasted Vegetables.jpg",
+        "descriptionUrl": "https://commons.wikimedia.org/wiki/File:Liat_Portal_for_Foodie_Disorder_-_Homemade_Steak_with_Roasted_Vegetables.jpg",
+        "thumbUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/c/cd/Liat_Portal_for_Foodie_Disorder_-_Homemade_Steak_with_Roasted_Vegetables.jpg/1920px-Liat_Portal_for_Foodie_Disorder_-_Homemade_Steak_with_Roasted_Vegetables.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+        "mime": "image/jpeg",
+        "width": 1400,
+        "height": 1867,
+        "license": "CC BY-SA 4.0",
+        "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+        "artist": "HaJunkiyada",
+        "credit": "Own work",
+        "imageDescription": "High-quality photograph by Liat Portal showing a homemade lunch plate with medium-cooked sliced steak, roasted cauliflower, and roasted onions arranged on a white plate. This image documents a home-prepared meal by Liat Portal as part of the Foodie Disorder global food culture archive.",
+        "accepted": true
+      }
+    ],
+    "chosen": {
+      "fileTitle": "File:Liat Portal for Foodie Disorder - Homemade Steak with Roasted Vegetables.jpg",
+      "descriptionUrl": "https://commons.wikimedia.org/wiki/File:Liat_Portal_for_Foodie_Disorder_-_Homemade_Steak_with_Roasted_Vegetables.jpg",
+      "thumbUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/c/cd/Liat_Portal_for_Foodie_Disorder_-_Homemade_Steak_with_Roasted_Vegetables.jpg/1920px-Liat_Portal_for_Foodie_Disorder_-_Homemade_Steak_with_Roasted_Vegetables.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "mime": "image/jpeg",
+      "width": 1400,
+      "height": 1867,
+      "license": "CC BY-SA 4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+      "artist": "HaJunkiyada",
+      "credit": "Own work",
+      "imageDescription": "High-quality photograph by Liat Portal showing a homemade lunch plate with medium-cooked sliced steak, roasted cauliflower, and roasted onions arranged on a white plate. This image documents a home-prepared meal by Liat Portal as part of the Foodie Disorder global food culture archive."
+    }
+  },
+  "32": {
+    "title": "Tropical Coconut Almond Smoothie",
+    "query": "tropical smoothie coconut",
+    "tried": [
+      {
+        "fileTitle": "File:Keep the beat heart healthy recipes from the National Heart, Lung, and Blood Institute (IA CAT31306756).pdf",
+        "rejected": "extension .pdf not allowed"
+      },
+      {
+        "fileTitle": "File:Celebrate healthy, active celebrations - easy ways to eat smart and play hard with friends and family (IA CAT31310859).pdf",
+        "rejected": "extension .pdf not allowed"
+      },
+      {
+        "fileTitle": "File:Nutrition and physical activity - the 100 way (IA CAT30910337).pdf",
+        "rejected": "extension .pdf not allowed"
+      },
+      {
+        "fileTitle": "File:The Examiner Vol. 23 No. 7 (IA July2015Examiner).pdf",
+        "rejected": "extension .pdf not allowed"
+      }
+    ],
+    "chosen": null
+  }
+}

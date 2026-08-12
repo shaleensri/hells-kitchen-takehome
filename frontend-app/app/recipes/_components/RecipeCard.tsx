@@ -3,6 +3,7 @@ import type { RecipeListItem } from "@hells-kitchen/shared";
 import { dedupeTagsAgainstDietary } from "@/lib/tags";
 import { FavoriteButton } from "@/app/_components/FavoriteButton";
 import { AddToListButton } from "@/app/_components/AddToListButton";
+import { RecipeImage } from "@/app/_components/RecipeImage";
 import styles from "./RecipeCard.module.css";
 
 export function RecipeCard({ recipe }: { recipe: RecipeListItem }) {
@@ -28,6 +29,14 @@ export function RecipeCard({ recipe }: { recipe: RecipeListItem }) {
       <i className="corner bl" />
       <i className="corner br" />
       <Link href={`/recipes/${recipe.id}`} className={styles.cardLink} aria-label={recipe.title} />
+
+      <div className={styles.thumb}>
+        <RecipeImage
+          recipeId={recipe.id}
+          title={recipe.title}
+          sizes="(max-width: 560px) 100vw, (max-width: 900px) 50vw, 320px"
+        />
+      </div>
 
       <div className={styles.cardHeader}>
         <span className={styles.no}>{no}</span>
